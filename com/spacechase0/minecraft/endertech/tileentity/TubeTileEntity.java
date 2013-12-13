@@ -1,5 +1,7 @@
 package com.spacechase0.minecraft.endertech.tileentity;
 
+import com.spacechase0.minecraft.endertech.entity.TransportingEntity;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -236,7 +238,21 @@ public class TubeTileEntity extends TileEntity
 	
 	private void trySend()
 	{
-		// ...
+		if ( buffer == null ) return;
+		for ( int i = 0; i < output.length; ++i )
+		{
+			if ( !output[ i ] ) continue;
+			
+			ForgeDirection dir = ForgeDirection.getOrientation( i );
+			
+			TransportingEntity entity = new TransportingEntity( worldObj, buffer, dir, 1 );
+			entity.posX = xCoord + 0.5;
+			entity.posY = yCoord + 0.5;
+			entity.posZ = zCoord + 0.5;
+			worldObj.spawnEntityInWorld( entity );
+			
+			buffer = null;
+		}
 	}
 	
 	private static byte condense( boolean[] bools )
