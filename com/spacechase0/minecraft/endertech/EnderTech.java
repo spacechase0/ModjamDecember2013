@@ -1,6 +1,12 @@
 package com.spacechase0.minecraft.endertech;
 
+import com.spacechase0.minecraft.endertech.item.Items;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -9,6 +15,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @NetworkMod( clientSideRequired = true, serverSideRequired = false )
 @Mod( modid = "SC0_EnderTech", useMetadata = true )
@@ -25,12 +33,17 @@ public class EnderTech
 	public void preInit( FMLPreInitializationEvent event )
 	{
 		config = new Configuration( event.getSuggestedConfigurationFile() );
+		
+		items = new Items();
+		items.register( config );
 	}
 	
 	@EventHandler
 	public void init( FMLInitializationEvent event )
 	{
-		
+		LanguageRegistry.instance().loadLocalization( "/assets/endertech/lang/en_US.lang", "en_US", false );
+		registerOreDictionary();
+		registerRecipes();
 	}
 	
 	@EventHandler
@@ -39,5 +52,28 @@ public class EnderTech
 		config.save();
 	}
 	
+	private void registerOreDictionary()
+	{
+		OreDictionary.registerOre( "nuggetIron", new ItemStack( items.nugget, 1, 0 ) );
+		OreDictionary.registerOre( "nuggetDiamond", new ItemStack( items.nugget, 1, 1 ) );
+	}
+	
+	private void registerRecipes()
+	{
+		GameRegistry.addShapelessRecipe( new ItemStack( items.nugget, 9, 0 ), Item.ingotIron );
+		GameRegistry.addShapelessRecipe( new ItemStack( items.nugget, 9, 1 ), Item.diamond );
+		GameRegistry.addRecipe( new ShapedOreRecipe( new ItemStack( Item.ingotIron ),
+		                                             "***",
+		                                             "***",
+		                                             "***",
+		                                             '*', "nuggetIron" ) );
+		GameRegistry.addRecipe( new ShapedOreRecipe( new ItemStack( Item.diamond ),
+		                                             "***",
+		                                             "***",
+		                                             "***",
+		                                             '*', "nuggetDiamond" ) );
+	}
+	
+	public Items items;
 	public Configuration config;
 }
