@@ -2,6 +2,7 @@ package com.spacechase0.minecraft.endertech;
 
 import com.spacechase0.minecraft.endertech.block.Blocks;
 import com.spacechase0.minecraft.endertech.item.Items;
+import com.spacechase0.minecraft.endertech.tileentity.TubeTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -41,6 +42,8 @@ public class EnderTech
 		
 		items = new Items();
 		items.register( config );
+		
+		registerTileEntities();
 	}
 	
 	@EventHandler
@@ -49,12 +52,19 @@ public class EnderTech
 		LanguageRegistry.instance().loadLocalization( "/assets/endertech/lang/en_US.lang", "en_US", false );
 		registerOreDictionary();
 		registerRecipes();
+		
+		proxy.init();
 	}
 	
 	@EventHandler
 	public void postInit( FMLPostInitializationEvent event )
 	{
 		config.save();
+	}
+	
+	private void registerTileEntities()
+	{
+		GameRegistry.registerTileEntity( TubeTileEntity.class, "EnderTube" );
 	}
 	
 	private void registerOreDictionary()

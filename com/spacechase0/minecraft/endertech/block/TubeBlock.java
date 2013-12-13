@@ -1,5 +1,7 @@
 package com.spacechase0.minecraft.endertech.block;
 
+import com.spacechase0.minecraft.endertech.tileentity.TubeTileEntity;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -24,7 +26,7 @@ public class TubeBlock extends BlockContainer
 	public TileEntity createNewTileEntity( World world )
 	{
 		// TODO Auto-generated method stub
-		return null;
+		return new TubeTileEntity();
 	}
 	
 	@Override
