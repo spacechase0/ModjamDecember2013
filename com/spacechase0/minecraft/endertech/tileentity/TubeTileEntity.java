@@ -11,6 +11,8 @@ public class TubeTileEntity extends TileEntity
 	{
 		for(int i=0;i<6;++i)input[i]=true;
 		for(int i=0;i<6;++i)output[i]=true;
+		input[1]=true;
+		output[3]=true;
 	}
 	
 	@Override
