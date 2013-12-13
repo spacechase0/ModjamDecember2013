@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
-public class TransportingRenderer extends Render
+public class TransportingEntityRenderer extends Render
 {
 	@Override
 	public void doRender( Entity entity_, double x, double y, double d2z, float f, float f1 )
@@ -20,5 +20,5 @@ public class TransportingRenderer extends Render
 	{
 		return null;
 	}
-
+	
 }

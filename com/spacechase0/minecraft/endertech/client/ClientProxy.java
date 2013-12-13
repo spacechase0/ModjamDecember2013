@@ -1,7 +1,7 @@
 package com.spacechase0.minecraft.endertech.client;
 
 import com.spacechase0.minecraft.endertech.CommonProxy;
-import com.spacechase0.minecraft.endertech.client.render.entity.TransportingRenderer;
+import com.spacechase0.minecraft.endertech.client.render.entity.TransportingEntityRenderer;
 import com.spacechase0.minecraft.endertech.client.render.tileentity.TubeTileEntityRenderer;
 import com.spacechase0.minecraft.endertech.entity.TransportingEntity;
 import com.spacechase0.minecraft.endertech.tileentity.TubeTileEntity;
@@ -15,6 +15,6 @@ public class ClientProxy extends CommonProxy
 	public void init()
 	{
 		ClientRegistry.bindTileEntitySpecialRenderer( TubeTileEntity.class, new TubeTileEntityRenderer() );
-		RenderingRegistry.registerEntityRenderingHandler( TransportingEntity.class, new TransportingRenderer() );
+		RenderingRegistry.registerEntityRenderingHandler( TransportingEntity.class, new TransportingEntityRenderer() );
 	}
 }
