@@ -96,7 +96,7 @@ public class EnderTech
 		                              'O', Item.eyeOfEnder );
 	}
 	
-	public Blocks blocks;
-	public Items items;
-	public Configuration config;
+	public static Blocks blocks;
+	public static Items items;
+	public static Configuration config;
 }

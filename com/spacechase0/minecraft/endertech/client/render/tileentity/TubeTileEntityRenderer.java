@@ -40,9 +40,11 @@ public class TubeTileEntityRenderer extends TileEntitySpecialRenderer
 					glRotatef( 90, 1, 0, 0 );
 				}
 				
+				boolean isWeirdDir = ( dir == ForgeDirection.EAST || dir == ForgeDirection.NORTH || dir == ForgeDirection.DOWN );
+				
 				double multA = 1;
 				double offB = 0;
-				if ( dir == ForgeDirection.EAST || dir == ForgeDirection.NORTH || dir == ForgeDirection.DOWN )
+				if ( isWeirdDir )
 				{
 					multA = 0;
 					offB = -0.125;
@@ -67,7 +69,7 @@ public class TubeTileEntityRenderer extends TileEntitySpecialRenderer
 				}
 				else draw( 0 );
 				
-				if ( dir == ForgeDirection.EAST || dir == ForgeDirection.NORTH || dir == ForgeDirection.DOWN )
+				if ( isWeirdDir )
 				{
 					offB = 0.125;
 				}
@@ -87,6 +89,7 @@ public class TubeTileEntityRenderer extends TileEntitySpecialRenderer
 				}
 				else draw( 0 );
 				
+				glTranslated( 0, 0, isWeirdDir ? 0.001 : -0.001 ); // Ugh, z-fighting
 				for ( int iu = 0; iu < TubeTileEntity.UPGRADES.length; ++iu )
 				{
 					if ( tube.hasUpgrade( dir, TubeTileEntity.UPGRADES[ iu ] ) )
@@ -109,6 +112,7 @@ public class TubeTileEntityRenderer extends TileEntitySpecialRenderer
 		tess.setColorOpaque_F( 255, 255, 255 );
 		{
 			glTranslated( 0, 0, -0.25 + offset );
+			glColor3f( 1, 1, 1 );
 			
 			tess.addVertexWithUV( 0, 0, 0, 0, 0 );
 			tess.addVertexWithUV( 1, 0, 0, 1, 0 );
@@ -127,6 +131,7 @@ public class TubeTileEntityRenderer extends TileEntitySpecialRenderer
 		glPushMatrix();
 		{
 			glTranslated( 0.375, 0.125, -0.25 );
+			glColor3f( 1, 1, 1 );
 
 			tess.startDrawingQuads();
 			tess.setColorOpaque_F( 255, 255, 255 );

@@ -1,6 +1,9 @@
 package com.spacechase0.minecraft.endertech.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -9,11 +12,22 @@ public class TubeTileEntity extends TileEntity
 	@Override
 	public void updateEntity()
 	{
-		for(int i=0;i<6;++i)input[i]=true;
-		for(int i=0;i<6;++i)output[i]=true;
-		input[1]=true;
-		output[3]=true;
 	}
+
+	@Override
+    public Packet getDescriptionPacket()
+    {
+		NBTTagCompound data = new NBTTagCompound();
+		writeToNBT( data );
+		
+        return new Packet132TileEntityData( xCoord, yCoord, zCoord, 0, data );
+    }
+	
+	@Override
+    public void onDataPacket( INetworkManager net, Packet132TileEntityData packet )
+    {
+		readFromNBT( packet.data );
+    }
 	
 	@Override
     public void readFromNBT( NBTTagCompound tag )
@@ -45,6 +59,18 @@ public class TubeTileEntity extends TileEntity
 		return output[ dir.ordinal() ];
 	}
 	
+	public void toggleInput( ForgeDirection dir )
+	{
+		input[ dir.ordinal() ] = !input[ dir.ordinal() ];
+		worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
+	}
+	
+	public void toggleOutput( ForgeDirection dir )
+	{
+		output[ dir.ordinal() ] = !output[ dir.ordinal() ];
+		worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
+	}
+	
 	public byte getUpgrades( ForgeDirection dir )
 	{
 		return upgrades[ dir.ordinal() ];
@@ -53,6 +79,12 @@ public class TubeTileEntity extends TileEntity
 	public boolean hasUpgrade( ForgeDirection dir, byte upgrade )
 	{
 		return ( ( getUpgrades( dir ) & upgrade ) != 0 );
+	}
+	
+	public void upgrade( ForgeDirection dir, byte upgrade )
+	{
+		upgrades[ dir.ordinal() ] |= upgrade;
+		worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
 	}
 	
 	private static byte condense( boolean[] bools )
