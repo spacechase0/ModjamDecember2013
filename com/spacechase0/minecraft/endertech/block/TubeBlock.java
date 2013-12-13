@@ -39,7 +39,6 @@ public class TubeBlock extends BlockContainer
     {
 		if ( world.isRemote ) return true;
 		TubeTileEntity tube = ( TubeTileEntity ) world.getBlockTileEntity( x, y, z );
-		System.out.println(offX + " "+offY+" "+offZ);
 		
 		ForgeDirection side = ForgeDirection.getOrientation( sideNum );
 		if ( side == ForgeDirection.EAST || side == ForgeDirection.WEST )
@@ -51,8 +50,10 @@ public class TubeBlock extends BlockContainer
 		ItemStack holding = player.getCurrentEquippedItem();
 		if ( holding != null )
 		{
+			boolean didStuff = false;
 			if ( holding.getItem() == EnderTech.items.nugget )
 			{
+				didStuff = true;
 				if ( holding.getItemDamage() == 0 && !tube.hasUpgrade( side, TubeTileEntity.UPGRADE_BLOCK ) )
 				{
 					tube.upgrade( side, TubeTileEntity.UPGRADE_BLOCK );
@@ -66,20 +67,25 @@ public class TubeBlock extends BlockContainer
 			}
 			else if ( holding.getItem() == Item.goldNugget && !tube.hasUpgrade( side, TubeTileEntity.UPGRADE_SPEED ) )
 			{
+				didStuff = true;
 				tube.upgrade( side, TubeTileEntity.UPGRADE_SPEED );
 				if ( !player.capabilities.isCreativeMode ) --holding.stackSize;
 			}
 			else if ( holding.getItem() == Item.redstone && !tube.hasUpgrade( side, TubeTileEntity.UPGRADE_REDSTONE ) )
 			{
+				didStuff = true;
 				tube.upgrade( side, TubeTileEntity.UPGRADE_REDSTONE );
 				if ( !player.capabilities.isCreativeMode ) --holding.stackSize;
 			}
 			
-			if ( holding.stackSize <= 0 )
+			if ( didStuff )
 			{
-				player.setCurrentItemOrArmor( 0, null );
+				if ( holding.stackSize <= 0 )
+				{
+					player.setCurrentItemOrArmor( 0, null );
+				}
+				return true;
 			}
-			return true;
 		}
 		else if ( tube.hasUpgrade( side, TubeTileEntity.UPGRADE_FILTER ) )
 		{
@@ -87,7 +93,42 @@ public class TubeBlock extends BlockContainer
 			return true;
 		}
 		
-		System.out.println( side.offsetX +" "+side.offsetY+" "+side.offsetZ);
+		float[] coords = new float[] { offX, offY, offZ };
+		float[] check = new float[ 2 ];
+		for ( int c = 0, k = 0; c < coords.length; ++c )
+		{
+			if ( coords[ c ] != 0.25 && coords[ c ] != 0.75 )
+			{
+				check[ k++ ] = coords[ c ];
+			}
+		}
+		
+		boolean toggleOut = false;
+		for ( float c : check )
+		{
+			final double IN_A  = 0.50 + 0.08;
+			final double OUT_A = 0.50 + 0.14;
+			final double IN_B  = 0.50 - 0.14;
+			final double OUT_B = 0.50 - 0.08;
+			if ( ( c >= IN_A && c <= OUT_A ) ||
+			     ( c >= IN_B && c <= OUT_B ) )
+			{
+				toggleOut = true;
+			}
+		}
+		if ( toggleOut )
+		{
+			tube.toggleOutput( side );
+			return true;
+		}
+		
+		final double LOW  = 0.50 - 0.06;
+		final double HIGH = 0.50 + 0.06;
+		if ( check[ 0 ] >= LOW && check[ 0 ] <= HIGH && check[ 1 ] >= LOW && check[ 1 ] <= HIGH )
+		{
+			tube.toggleInput( side );
+			return true;
+		}
 		
         return false;
     }
