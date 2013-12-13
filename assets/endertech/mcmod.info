@@ -1,0 +1,17 @@
+[
+{
+  "modid": "SC0_EnderTech",
+  "name": "Ender Tech",
+  "description": "...",
+  "version": "0.1.0",
+  "mcversion": "1.6.4",
+  "logoFile": "",
+  "url": "http://spacechase0.com/minecraft/mods/ender-tech/",
+  "updateUrl": "",
+  "authors": [ "spacechase0" ],
+  "credits": "m",
+  "parent": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

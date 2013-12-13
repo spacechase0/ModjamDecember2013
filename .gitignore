@@ -1,5 +1,4 @@
 net
-mcmod.info
 forge_logo.png
 forge_at.cfg
 fmlversion.properties
@@ -13,3 +12,4 @@ mcpmod.info
 paulscode
 assets/forge
 deobfuscation_data-1.6.4.lzma
+plans.txt
