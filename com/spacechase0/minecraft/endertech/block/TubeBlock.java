@@ -138,6 +138,12 @@ public class TubeBlock extends BlockContainer
 	{
 		return false;
 	}
+
+	@Override
+    public boolean renderAsNormalBlock()
+    {
+        return false;
+    }
 	
 	@Override
 	public void registerIcons( IconRegister register )

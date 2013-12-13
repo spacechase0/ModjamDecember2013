@@ -1,6 +1,8 @@
 package com.spacechase0.minecraft.endertech.tileentity;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
@@ -9,6 +11,15 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class TubeTileEntity extends TileEntity
 {
+	public TubeTileEntity()
+	{
+		filters = new ItemStack[ 6 ][];
+		for ( int i = 0; i < 6; ++i )
+		{
+			filters[ i ] = new ItemStack[ 9 ];
+		}
+	}
+	
 	@Override
 	public void updateEntity()
 	{
@@ -37,6 +48,31 @@ public class TubeTileEntity extends TileEntity
     	input = expand( tag.getByte( "Input" ), 6 );
     	output = expand( tag.getByte( "Output" ), 6 );
     	upgrades = tag.getByteArray( "Upgrades" );
+    	
+    	NBTTagCompound filtersTag = ( NBTTagCompound ) tag.getTag( "Filters" );
+    	if ( filtersTag != null )
+    	{
+    		for ( int i = 0; i < filters.length; ++i )
+    		{
+    			NBTTagCompound filter = ( NBTTagCompound ) filtersTag.getTag( "Side" + i );
+    			if ( filter == null ) continue;
+    			
+    			for ( int is = 0; is < filters[ i ].length; ++is )
+    			{
+    				NBTTagCompound stackTag = ( NBTTagCompound ) filter.getTag( "Item" + is );
+    				if ( stackTag == null ) continue;
+    				
+    				ItemStack stack = ItemStack.loadItemStackFromNBT( stackTag );
+    				filters[ i ][ is ] = stack;
+    			}
+    		}
+    	}
+    	
+    	NBTTagCompound bufferTag = ( NBTTagCompound ) tag.getTag( "Buffer" );
+    	if ( bufferTag != null )
+    	{
+    		buffer = ItemStack.loadItemStackFromNBT( bufferTag );
+    	}
     }
 
 	@Override
@@ -47,6 +83,37 @@ public class TubeTileEntity extends TileEntity
 		tag.setByte( "Input", condense( input ) );
 		tag.setByte( "Output", condense( output ) );
 		tag.setByteArray( "Upgrades", upgrades );
+
+		NBTTagCompound filtersTag = new NBTTagCompound();
+		for ( int i = 0; i < filters.length; ++i )
+		{
+			NBTTagCompound filterTag = new NBTTagCompound();
+			for ( int is = 0; is < filters[ i ].length; ++is )
+			{
+				ItemStack stack = filters[ i ][ is ];
+				if ( stack == null ) continue;
+				
+				NBTTagCompound stackTag = new NBTTagCompound();
+				stack.writeToNBT( stackTag );
+				filterTag.setTag( "Item" + is, stackTag );
+			}
+			
+			if ( !filterTag.hasNoTags() )
+			{
+				filtersTag.setTag( "Side" + i, filterTag );
+			}
+		}
+		if ( !filtersTag.hasNoTags() )
+		{
+			tag.setTag( "Filters", filtersTag );
+		}
+		
+		if ( buffer != null )
+		{
+			NBTTagCompound bufferTag = new NBTTagCompound();
+			buffer.writeToNBT( bufferTag );
+			tag.setTag( "Buffer", bufferTag );
+		}
     }
 	
 	public boolean doesInput( ForgeDirection dir )
@@ -116,6 +183,9 @@ public class TubeTileEntity extends TileEntity
 	private boolean[] input = new boolean[ 6 ];
 	private boolean[] output = new boolean[ 6 ];
 	private byte[] upgrades = new byte[ 6 ];
+	private ItemStack[][] filters;
+	
+	private ItemStack buffer;
 
 	public static final byte UPGRADE_SPEED    = 1 << 0;
 	public static final byte UPGRADE_FILTER   = 1 << 1;
