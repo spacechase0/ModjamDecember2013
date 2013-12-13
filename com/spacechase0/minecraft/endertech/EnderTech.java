@@ -1,7 +1,9 @@
 package com.spacechase0.minecraft.endertech;
 
+import com.spacechase0.minecraft.endertech.block.Blocks;
 import com.spacechase0.minecraft.endertech.item.Items;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
@@ -33,6 +35,9 @@ public class EnderTech
 	public void preInit( FMLPreInitializationEvent event )
 	{
 		config = new Configuration( event.getSuggestedConfigurationFile() );
+		
+		blocks = new Blocks();
+		blocks.register( config );
 		
 		items = new Items();
 		items.register( config );
@@ -72,8 +77,16 @@ public class EnderTech
 		                                             "***",
 		                                             "***",
 		                                             '*', "nuggetDiamond" ) );
+		GameRegistry.addShapedRecipe( new ItemStack( blocks.tube ),
+		                              "HH_",
+		                              "HOH",
+		                              "_HH",
+		                              'H', Block.hopperBlock,
+		                              '_', Block.pressurePlateGold,
+		                              'O', Item.eyeOfEnder );
 	}
 	
+	public Blocks blocks;
 	public Items items;
 	public Configuration config;
 }
