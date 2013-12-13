@@ -6,6 +6,7 @@ import com.spacechase0.minecraft.endertech.tileentity.TubeTileEntity;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,6 +26,7 @@ public class TubeBlock extends BlockContainer
 		setHardness( 10.f );
 		
 		setUnlocalizedName( "endertech:tube" );
+		setCreativeTab( CreativeTabs.tabRedstone );
 	}
 	
 	@Override

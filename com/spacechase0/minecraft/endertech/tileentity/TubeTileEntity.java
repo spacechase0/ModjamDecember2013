@@ -1,5 +1,7 @@
 package com.spacechase0.minecraft.endertech.tileentity;
 
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -23,6 +25,21 @@ public class TubeTileEntity extends TileEntity
 	@Override
 	public void updateEntity()
 	{
+		if ( worldObj.isRemote ) return;
+		
+		if ( buffer != null )
+		{
+			trySend();
+		}
+		
+		if ( buffer == null )
+		{
+			tryInput();
+			if ( buffer != null )
+			{
+				trySend();
+			}
+		}
 	}
 
 	@Override
@@ -152,6 +169,63 @@ public class TubeTileEntity extends TileEntity
 	{
 		upgrades[ dir.ordinal() ] |= upgrade;
 		worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
+	}
+	
+	private void tryInput()
+	{
+		if ( buffer != null ) return;
+		for ( int i = 0; i < input.length; ++i )
+		{
+			if ( !input[ i ] ) continue;
+			
+			ForgeDirection dir = ForgeDirection.getOrientation( i );
+			
+			TileEntity te = worldObj.getBlockTileEntity( xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ );
+			if ( te instanceof ISidedInventory )
+			{
+				ISidedInventory inv = ( ISidedInventory ) te;
+				
+				int[] slots = inv.getAccessibleSlotsFromSide( dir.getOpposite().ordinal() );
+				for ( int slot : slots )
+				{
+					ItemStack inSlot = inv.getStackInSlot( slot );
+					if ( inSlot == null || !inv.canExtractItem( slot, inSlot, dir.getOpposite().ordinal() ) )
+					{
+						continue;
+					}
+					
+					inv.setInventorySlotContents( slot, null );
+					inv.onInventoryChanged();
+					
+					buffer = inSlot;
+					return;
+				}
+			}
+			else if ( te instanceof IInventory )
+			{
+				IInventory inv = ( IInventory ) te;
+				
+				for ( int slot = 0; slot < inv.getSizeInventory(); ++slot )
+				{
+					ItemStack inSlot = inv.getStackInSlot( slot );
+					if ( inSlot == null )
+					{
+						continue;
+					}
+					
+					inv.setInventorySlotContents( slot, null );
+					inv.onInventoryChanged();
+					
+					buffer = inSlot;
+					return;
+				}
+			}
+		}
+	}
+	
+	private void trySend()
+	{
+		// ...
 	}
 	
 	private static byte condense( boolean[] bools )
