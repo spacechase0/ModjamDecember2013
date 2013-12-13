@@ -27,7 +27,7 @@ public class TubeTileEntity extends TileEntity
 
 	@Override
     public void writeToNBT( NBTTagCompound tag )
-    { 
+    {
 		super.writeToNBT( tag );
 
 		tag.setByte( "Input", condense( input ) );
