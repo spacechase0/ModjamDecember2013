@@ -1,6 +1,7 @@
 package com.spacechase0.minecraft.endertech;
 
 import com.spacechase0.minecraft.endertech.block.Blocks;
+import com.spacechase0.minecraft.endertech.entity.TransportingEntity;
 import com.spacechase0.minecraft.endertech.item.Items;
 import com.spacechase0.minecraft.endertech.tileentity.TubeTileEntity;
 
@@ -18,6 +19,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -52,6 +54,7 @@ public class EnderTech
 		LanguageRegistry.instance().loadLocalization( "/assets/endertech/lang/en_US.lang", "en_US", false );
 		registerOreDictionary();
 		registerRecipes();
+		registerEntities();
 		
 		proxy.init();
 	}
@@ -87,7 +90,7 @@ public class EnderTech
 		                                             "***",
 		                                             "***",
 		                                             '*', "nuggetDiamond" ) );
-		GameRegistry.addShapedRecipe( new ItemStack( blocks.tube ),
+		GameRegistry.addShapedRecipe( new ItemStack( blocks.tube, 2 ),
 		                              "HH_",
 		                              "HOH",
 		                              "_HH",
@@ -95,6 +98,14 @@ public class EnderTech
 		                              '_', Block.pressurePlateGold,
 		                              'O', Item.eyeOfEnder );
 	}
+	
+	private void registerEntities()
+	{
+		transportingId = EntityRegistry.findGlobalUniqueEntityId();
+		EntityRegistry.registerModEntity( TransportingEntity.class, "endertech:transporting", transportingId, this, 16, 50, true );
+	}
+	
+	private int transportingId;
 	
 	public static Blocks blocks;
 	public static Items items;

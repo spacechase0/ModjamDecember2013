@@ -27,6 +27,13 @@ public class TubeTileEntity extends TileEntity
 	{
 		if ( worldObj.isRemote ) return;
 		
+		if ( cooldown > 0 )
+		{
+			--cooldown;
+			return;
+		}
+		cooldown = 20;
+		
 		if ( buffer != null )
 		{
 			trySend();
@@ -90,6 +97,8 @@ public class TubeTileEntity extends TileEntity
     	{
     		buffer = ItemStack.loadItemStackFromNBT( bufferTag );
     	}
+    	
+    	cooldown = tag.getByte( "Cooldown" );
     }
 
 	@Override
@@ -131,6 +140,8 @@ public class TubeTileEntity extends TileEntity
 			buffer.writeToNBT( bufferTag );
 			tag.setTag( "Buffer", bufferTag );
 		}
+		
+		tag.setByte( "Cooldown", cooldown );
     }
 	
 	public boolean doesInput( ForgeDirection dir )
@@ -260,6 +271,7 @@ public class TubeTileEntity extends TileEntity
 	private ItemStack[][] filters;
 	
 	private ItemStack buffer;
+	private byte cooldown;
 
 	public static final byte UPGRADE_SPEED    = 1 << 0;
 	public static final byte UPGRADE_FILTER   = 1 << 1;
