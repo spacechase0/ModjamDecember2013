@@ -39,7 +39,6 @@ public class TubeTileEntity extends TileEntity
 			--cooldown;
 			return;
 		}
-		cooldown = 5;
 		
 		if ( buffer != null )
 		{
@@ -312,8 +311,6 @@ public class TubeTileEntity extends TileEntity
 					}
 					
 					doInsertion( inv, slot );
-					
-					return;
 				}
 			}
 			else if ( te instanceof IInventory )
@@ -425,11 +422,12 @@ public class TubeTileEntity extends TileEntity
 		if ( existing == null )
 		{
 			inv.setInventorySlotContents( slot, buffer );
+			buffer = null;
 		}
 		else
 		{
-			int maxStack = Math.max( inv.getInventoryStackLimit(), existing.getMaxStackSize() );
-			int diff = maxStack - existing.stackSize;
+			int maxStack = Math.min( inv.getInventoryStackLimit(), existing.getMaxStackSize() );
+			int diff = Math.min( maxStack - existing.stackSize, buffer.stackSize );
 			if ( diff > 0 )
 			{
 				existing.stackSize += diff;
