@@ -19,6 +19,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -55,6 +56,8 @@ public class EnderTech
 		registerOreDictionary();
 		registerRecipes();
 		registerEntities();
+		
+		NetworkRegistry.instance().registerGuiHandler( this, gui = new GuiHandler() );
 		
 		proxy.init();
 	}
@@ -110,4 +113,6 @@ public class EnderTech
 	public static Blocks blocks;
 	public static Items items;
 	public static Configuration config;
+	
+	private GuiHandler gui;
 }
