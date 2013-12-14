@@ -30,7 +30,7 @@ public class TransportingEntityRenderer extends Render
 		fake.motionX = fake.motionY = fake.motionZ = 0;
 		fake.hoverStart = 0;
 		fake.rotationYaw = 0;
-		render.doRenderItem( fake, x, y, z, f1, f2 );
+		render.doRenderItem( fake, x, y + 0.125, z, f1, f2 );
 	}
 
 	@Override
