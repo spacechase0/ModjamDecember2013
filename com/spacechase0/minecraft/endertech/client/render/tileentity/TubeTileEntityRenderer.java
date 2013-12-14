@@ -19,14 +19,13 @@ public class TubeTileEntityRenderer extends TileEntitySpecialRenderer
 		for ( int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; ++i )
 		{
 			ForgeDirection dir = ForgeDirection.getOrientation( i );
-			if ( dir == ForgeDirection.EAST || dir == ForgeDirection.WEST ) dir = dir.getOpposite();
 			
 			glPushMatrix();
 			{
 				glTranslated( x, y, z );
 				if ( dir == ForgeDirection.EAST || dir == ForgeDirection.WEST )
 				{
-					if ( dir == ForgeDirection.WEST ) glTranslated( 0.5, 0, 0 );
+					if ( dir == ForgeDirection.EAST ) glTranslated( 0.5, 0, 0 );
 					glRotatef( -90, 0, 1, 0 );
 				}
 				else if ( dir == ForgeDirection.NORTH || dir == ForgeDirection.SOUTH )
@@ -41,7 +40,7 @@ public class TubeTileEntityRenderer extends TileEntitySpecialRenderer
 					glRotatef( 90, 1, 0, 0 );
 				}
 				
-				boolean isWeirdDir = ( dir == ForgeDirection.EAST || dir == ForgeDirection.NORTH || dir == ForgeDirection.DOWN );
+				boolean isWeirdDir = ( dir == ForgeDirection.WEST || dir == ForgeDirection.NORTH || dir == ForgeDirection.DOWN );
 				
 				double multA = 1;
 				double offB = 0;
