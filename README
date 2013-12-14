@@ -3,3 +3,6 @@ Documentation: Coming later
 Compilation (forge 953):
 	Paste com and assets folders into mcp/src/minecraft
 	Play as you normally would in MCP
+
+POST-MODJAM:
+	Liquids, energy support to ender tubes.
