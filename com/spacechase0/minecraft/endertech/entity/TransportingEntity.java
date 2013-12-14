@@ -84,7 +84,7 @@ public class TransportingEntity extends Entity
 		motionX = dir.offsetX / 20.0 * speed;
 		motionY = dir.offsetY / 20.0 * speed;
 		motionZ = dir.offsetZ / 20.0 * speed;
-	}
+	} 
 	
 	public ItemStack getItemStack()
 	{
