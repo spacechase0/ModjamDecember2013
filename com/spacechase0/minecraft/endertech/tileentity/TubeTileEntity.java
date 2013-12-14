@@ -281,14 +281,6 @@ public class TubeTileEntity extends TileEntity
 	{
 		if ( buffer == null ) return;
 		
-		/*
-		List inside = worldObj.getEntitiesWithinAABB( TransportingEntity.class, AxisAlignedBB.getBoundingBox( xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1 ) );
-		if ( inside.size() > 0 )
-		{
-			return;
-		}
-		*/
-		
 		// Prefer tile entities to put into over other tubes
 		for ( int i = 0; i < output.length; ++i )
 		{
@@ -303,7 +295,7 @@ public class TubeTileEntity extends TileEntity
 				int[] slots = inv.getAccessibleSlotsFromSide( dir.getOpposite().ordinal() );
 				for ( int slot : slots )
 				{
-					if ( buffer == null ) return;
+					if ( buffer == null ) break;
 					
 					if ( !inv.canInsertItem( slot, buffer, dir.getOpposite().ordinal() ) )
 					{
@@ -319,12 +311,13 @@ public class TubeTileEntity extends TileEntity
 				
 				for ( int slot = 0; slot < inv.getSizeInventory(); ++slot )
 				{
-					if ( buffer == null ) return;
+					if ( buffer == null ) break;
 					doInsertion( inv, slot );
 				}
 			}
+
+			cooldown = ( byte ) Math.max( cooldown, getCooldownFor( dir ) );
 		}
-		
 		
 		for ( int i = 0; i < output.length; ++i )
 		{
@@ -348,14 +341,19 @@ public class TubeTileEntity extends TileEntity
 					continue;
 				}
 				
-				TransportingEntity entity = new TransportingEntity( worldObj, buffer, dir, 1 );
+				TransportingEntity entity = new TransportingEntity( worldObj, buffer, dir, hasUpgrade( dir, UPGRADE_SPEED ) ? 2 : 1 );
 				entity.posX = xCoord + 0.5;
 				entity.posY = yCoord + 0.5 - 0.25;
 				entity.posZ = zCoord + 0.5;
 				worldObj.spawnEntityInWorld( entity );
 				
 				buffer = null;
-				return;
+				break;
+			}
+			
+			if ( buffer == null )
+			{
+				cooldown = ( byte ) Math.max( cooldown, getCooldownFor( dir ) );
 			}
 		}
 	}
@@ -440,6 +438,16 @@ public class TubeTileEntity extends TileEntity
 			}
 		}
 		inv.onInventoryChanged();
+	}
+	
+	private byte getCooldownFor( ForgeDirection side )
+	{
+		if ( hasUpgrade( side, UPGRADE_SPEED ) )
+		{
+			return 10;
+		}
+		
+		return 20;
 	}
 	
 	private static byte condense( boolean[] bools )
