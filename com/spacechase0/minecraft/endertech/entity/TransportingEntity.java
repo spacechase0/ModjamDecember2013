@@ -29,6 +29,7 @@ public class TransportingEntity extends Entity
 	{
 		// I can't remember how to do this properly :P
 		dataWatcher.addObject( DW_STACK, ( stack == null ) ? new ItemStack( Block.pistonMoving ) : stack );
+		dataWatcher.addObject( DW_DIR, ( dir == null ) ? ForgeDirection.UNKNOWN.ordinal() : dir.ordinal() );
 	}
 	
 	@Override
@@ -41,6 +42,7 @@ public class TransportingEntity extends Entity
 		if ( worldObj.isRemote )
 		{
 			stack = dataWatcher.getWatchableObjectItemStack( DW_STACK );
+			dir = ForgeDirection.getOrientation( dataWatcher.getWatchableObjectInt( DW_DIR ) );
 		}
 		else
 		{
@@ -61,6 +63,7 @@ public class TransportingEntity extends Entity
 			{
 				dataWatcher.updateObject( DW_STACK, stack );
 			}
+			dataWatcher.updateObject( DW_DIR, dir.ordinal() );
 		}
 	}
 
@@ -102,9 +105,15 @@ public class TransportingEntity extends Entity
 		return stack;
 	}
 	
+	public int getDistanceTraveled()
+	{
+		return distanceTraveled;
+	}
+	
 	private ItemStack stack;
 	private ForgeDirection dir = ForgeDirection.UNKNOWN;
 	private int distanceTraveled = 0;
 	
 	private static final int DW_STACK = 10;
+	private static final int DW_DIR = 11;
 }

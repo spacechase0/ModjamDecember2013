@@ -160,11 +160,13 @@ public class TubeTileEntity extends TileEntity
 	
 	public boolean doesInput( ForgeDirection dir )
 	{
+		if ( dir == ForgeDirection.UNKNOWN ) return false;
 		return input[ dir.ordinal() ];
 	}
 	
 	public boolean doesOutput( ForgeDirection dir )
 	{
+		if ( dir == ForgeDirection.UNKNOWN ) return false;
 		return output[ dir.ordinal() ];
 	}
 	
@@ -251,8 +253,8 @@ public class TubeTileEntity extends TileEntity
 	
 	private void tryReceive()
 	{
-		List inside = worldObj.getEntitiesWithinAABB( TransportingEntity.class, AxisAlignedBB.getBoundingBox( xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1 ) );
-		if ( inside.size() > 0 )
+		List inside = worldObj.getEntitiesWithinAABB( TransportingEntity.class, AxisAlignedBB.getBoundingBox( xCoord + 0.25, yCoord + 0.25, zCoord + 0.25, xCoord + 0.75, yCoord + 0.75, zCoord + 0.75 ) );
+		if ( inside.size() <= 0 )
 		{
 			return;
 		}
@@ -263,8 +265,9 @@ public class TubeTileEntity extends TileEntity
 
 			TransportingEntity entity = ( TransportingEntity ) obj;
 			
-			if ( !canReceive( entity ) )
+			if ( entity.getDistanceTraveled() < 1 || !canReceive( entity ) )
 			{
+				System.out.println("can't receive");
 				continue;
 			}
 			
@@ -275,14 +278,38 @@ public class TubeTileEntity extends TileEntity
 		}
 	}
 	
+	private void trySend()
+	{
+		if ( buffer == null ) return;
+		
+		/*
+		List inside = worldObj.getEntitiesWithinAABB( TransportingEntity.class, AxisAlignedBB.getBoundingBox( xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1 ) );
+		if ( inside.size() > 0 )
+		{
+			return;
+		}
+		*/
+		
+		for ( int i = 0; i < output.length; ++i )
+		{
+			ForgeDirection dir = ForgeDirection.getOrientation( i );
+			if ( !checkOutputFilter( dir, buffer ) ) continue;
+			
+			if ( dir == ForgeDirection.EAST || dir == ForgeDirection.WEST ) dir = dir.getOpposite();
+			
+			TransportingEntity entity = new TransportingEntity( worldObj, buffer, dir, 1 );
+			entity.posX = xCoord + 0.5;
+			entity.posY = yCoord + 0.5 - 0.25;
+			entity.posZ = zCoord + 0.5;
+			worldObj.spawnEntityInWorld( entity );
+			
+			buffer = null;
+		}
+	}
+	
 	private boolean canReceive( TransportingEntity entity )
 	{
 		ForgeDirection inDir = entity.getDirection().getOpposite();
-		if ( !input[ inDir.ordinal() ] )
-		{
-			return false;
-		}
-		
 		if ( !checkInputFilter( inDir, entity ) )
 		{
 			return false;
@@ -291,40 +318,13 @@ public class TubeTileEntity extends TileEntity
 		for ( int id = 0; id < 6; ++id )
 		{
 			ForgeDirection outDir = ForgeDirection.getOrientation( id );
-			if ( checkOutputFilter( outDir, entity ) )
+			if ( checkOutputFilter( outDir, entity.getItemStack() ) )
 			{
 				return true;
 			}
 		}
 		
 		return false;
-	}
-	
-	private void trySend()
-	{
-		if ( buffer == null ) return;
-		
-		List inside = worldObj.getEntitiesWithinAABB( TransportingEntity.class, AxisAlignedBB.getBoundingBox( xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1 ) );
-		if ( inside.size() > 0 )
-		{
-			return;
-		}
-		
-		for ( int i = 0; i < output.length; ++i )
-		{
-			if ( !output[ i ] ) continue;
-			
-			ForgeDirection dir = ForgeDirection.getOrientation( i );
-			if ( dir == ForgeDirection.EAST || dir == ForgeDirection.WEST ) dir = dir.getOpposite();
-			
-			TransportingEntity entity = new TransportingEntity( worldObj, buffer, dir, 1 );
-			entity.posX = xCoord + 0.5;
-			entity.posY = yCoord + 0.5;
-			entity.posZ = zCoord + 0.5;
-			worldObj.spawnEntityInWorld( entity );
-			
-			buffer = null;
-		}
 	}
 	
 	private boolean checkInputFilter( ForgeDirection dir, TransportingEntity entity )
@@ -334,20 +334,20 @@ public class TubeTileEntity extends TileEntity
 			return false;
 		}
 		
-		return checkFilter( dir.ordinal() * 2, entity );
+		return checkFilter( dir.ordinal() * 2, entity.getItemStack() );
 	}
 	
-	private boolean checkOutputFilter( ForgeDirection dir, TransportingEntity entity )
+	private boolean checkOutputFilter( ForgeDirection dir, ItemStack stack )
 	{
 		if ( !doesOutput( dir ) )
 		{
 			return false;
 		}
 		
-		return checkFilter( ( dir.ordinal() * 2 ) + 1, entity );
+		return checkFilter( ( dir.ordinal() * 2 ) + 1, stack );
 	}
 	
-	private boolean checkFilter( int index, TransportingEntity entity )
+	private boolean checkFilter( int index, ItemStack stack )
 	{
 		return true;
 	}
