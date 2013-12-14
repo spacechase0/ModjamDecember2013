@@ -34,7 +34,7 @@ public class TooltipHandler
 			event.toolTip.add( StatCollector.translateToLocal( "endertech:tube.upgrade.iron" ) );
 		}
 		else */if ( event.itemStack.getItem() instanceof ItemBlock )
-		{
+		{ 
 			// No way to avoid using the block ID?
 			ItemBlock block = ( ItemBlock ) event.itemStack.getItem();
 			if ( block.getBlockID() == EnderTech.blocks.tube.blockID )
