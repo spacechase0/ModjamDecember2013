@@ -13,6 +13,7 @@ public class TransportingEntity extends Entity
 	public TransportingEntity( World world )
 	{
 		super( world );
+		setSize( 0.5f, 0.5f );
 	}
 	
 	public TransportingEntity( World world, ItemStack theStack, ForgeDirection theDir, float speed )
@@ -82,6 +83,11 @@ public class TransportingEntity extends Entity
 		
 		tag.setInteger( "Direction", dir.ordinal() );
 		tag.setInteger( "DistanceTraveled", distanceTraveled );
+	}
+	
+	public ForgeDirection getDirection()
+	{
+		return dir;
 	}
 	
 	public void setDirection( ForgeDirection dir, float speed )

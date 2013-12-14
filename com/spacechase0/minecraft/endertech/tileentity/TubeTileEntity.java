@@ -1,5 +1,7 @@
 package com.spacechase0.minecraft.endertech.tileentity;
 
+import java.util.List;
+
 import com.spacechase0.minecraft.endertech.entity.TransportingEntity;
 
 import net.minecraft.inventory.IInventory;
@@ -11,14 +13,15 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
 
 public class TubeTileEntity extends TileEntity
 {
 	public TubeTileEntity()
 	{
-		filters = new ItemStack[ 6 ][];
-		for ( int i = 0; i < 6; ++i )
+		filters = new ItemStack[ 12 ][]; // 2 per side?
+		for ( int i = 0; i < filters.length; ++i )
 		{
 			filters[ i ] = new ItemStack[ 9 ];
 		}
@@ -34,11 +37,20 @@ public class TubeTileEntity extends TileEntity
 			--cooldown;
 			return;
 		}
-		cooldown = 20;
+		cooldown = 5;
 		
 		if ( buffer != null )
 		{
 			trySend();
+		}
+		
+		if ( buffer == null )
+		{
+			tryReceive();
+			if ( buffer != null )
+			{
+				trySend();
+			}
 		}
 		
 		if ( buffer == null )
@@ -237,9 +249,67 @@ public class TubeTileEntity extends TileEntity
 		}
 	}
 	
+	private void tryReceive()
+	{
+		List inside = worldObj.getEntitiesWithinAABB( TransportingEntity.class, AxisAlignedBB.getBoundingBox( xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1 ) );
+		if ( inside.size() > 0 )
+		{
+			return;
+		}
+		
+		for ( Object obj : inside )
+		{
+			if ( buffer != null ) break;
+
+			TransportingEntity entity = ( TransportingEntity ) obj;
+			
+			if ( !canReceive( entity ) )
+			{
+				continue;
+			}
+			
+			buffer = entity.getItemStack();
+			worldObj.removeEntity( entity );
+			
+			trySend();
+		}
+	}
+	
+	private boolean canReceive( TransportingEntity entity )
+	{
+		ForgeDirection inDir = entity.getDirection().getOpposite();
+		if ( !input[ inDir.ordinal() ] )
+		{
+			return false;
+		}
+		
+		if ( !checkInputFilter( inDir, entity ) )
+		{
+			return false;
+		}
+		
+		for ( int id = 0; id < 6; ++id )
+		{
+			ForgeDirection outDir = ForgeDirection.getOrientation( id );
+			if ( checkOutputFilter( outDir, entity ) )
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	private void trySend()
 	{
 		if ( buffer == null ) return;
+		
+		List inside = worldObj.getEntitiesWithinAABB( TransportingEntity.class, AxisAlignedBB.getBoundingBox( xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1 ) );
+		if ( inside.size() > 0 )
+		{
+			return;
+		}
+		
 		for ( int i = 0; i < output.length; ++i )
 		{
 			if ( !output[ i ] ) continue;
@@ -255,6 +325,31 @@ public class TubeTileEntity extends TileEntity
 			
 			buffer = null;
 		}
+	}
+	
+	private boolean checkInputFilter( ForgeDirection dir, TransportingEntity entity )
+	{
+		if ( !doesInput( dir ) )
+		{
+			return false;
+		}
+		
+		return checkFilter( dir.ordinal() * 2, entity );
+	}
+	
+	private boolean checkOutputFilter( ForgeDirection dir, TransportingEntity entity )
+	{
+		if ( !doesOutput( dir ) )
+		{
+			return false;
+		}
+		
+		return checkFilter( ( dir.ordinal() * 2 ) + 1, entity );
+	}
+	
+	private boolean checkFilter( int index, TransportingEntity entity )
+	{
+		return true;
 	}
 	
 	private static byte condense( boolean[] bools )
@@ -286,7 +381,10 @@ public class TubeTileEntity extends TileEntity
 	private boolean[] input = new boolean[ 6 ];
 	private boolean[] output = new boolean[ 6 ];
 	private byte[] upgrades = new byte[ 6 ];
-	private ItemStack[][] filters;
+	private ItemStack[][] filters; // 0i1, 1o1, 2i2, 3o2, 4i3, 4o3, etc.
+	                               // First num = index
+	                               // Letter = input.output
+	                               // Second num = side
 	
 	private ItemStack buffer;
 	private byte cooldown;
