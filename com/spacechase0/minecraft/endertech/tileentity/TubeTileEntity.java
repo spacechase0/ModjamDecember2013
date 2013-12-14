@@ -268,6 +268,7 @@ public class TubeTileEntity extends TileEntity
 	
 	private void tryReceive()
 	{
+		/*
 		List inside = worldObj.getEntitiesWithinAABB( TransportingEntity.class, AxisAlignedBB.getBoundingBox( xCoord + 0.25, yCoord + 0.25, zCoord + 0.25, xCoord + 0.75, yCoord + 0.75, zCoord + 0.75 ) );
 		if ( inside.size() <= 0 )
 		{
@@ -290,6 +291,7 @@ public class TubeTileEntity extends TileEntity
 			
 			trySend();
 		}
+		*/
 	}
 	
 	private void trySend()
@@ -359,13 +361,18 @@ public class TubeTileEntity extends TileEntity
 					continue;
 				}
 				
-				TransportingEntity entity = new TransportingEntity( worldObj, buffer, dir, hasUpgrade( dir, UPGRADE_SPEED ) ? 2 : 1 );
+				TransportingEntity entity = new TransportingEntity( worldObj, buffer, dir, hasUpgrade( dir, UPGRADE_SPEED ) ? 10 : 5 );
 				entity.posX = xCoord + 0.5;
 				entity.posY = yCoord + 0.5 - 0.25;
 				entity.posZ = zCoord + 0.5;
+				entity.setTarget( x, y, z );
 				worldObj.spawnEntityInWorld( entity );
-				
+
+				//TEMP
+				// TODO: Proper stuff, transferring like original
+				tile.buffer = buffer;
 				buffer = null;
+				
 			}
 			
 			if ( buffer == null )
@@ -422,7 +429,6 @@ public class TubeTileEntity extends TileEntity
 	
 	private boolean checkFilter( int index, ItemStack stack )
 	{
-		if ( stack == null ) { System.out.println( "??????????????????????????" ); Thread.dumpStack(); }
 		ItemStack[] filters = this.filters[ index ];
 		
 		boolean isEmpty = true;

@@ -14,6 +14,8 @@ public class TransportingEntity extends Entity
 	{
 		super( world );
 		setSize( 0.5f, 0.5f );
+		targetX = targetY = targetZ = 0;
+		distanceToTravel = 0;
 	}
 	
 	public TransportingEntity( World world, ItemStack theStack, ForgeDirection theDir, float speed )
@@ -46,6 +48,7 @@ public class TransportingEntity extends Entity
 		}
 		else
 		{
+			/*
 			if ( distanceTraveled > 16 )
 			{
 				EntityItem item = new EntityItem( worldObj, posX, posY, posZ, stack );
@@ -53,10 +56,20 @@ public class TransportingEntity extends Entity
 				
 				worldObj.removeEntity( this );
 			}
+			*/
 			
 			if ( ( int ) prevPosX != ( int ) posX || ( int ) prevPosY != ( int ) posY || ( int ) prevPosZ != ( int ) posZ )
 			{
 				++distanceTraveled;
+			}
+			
+			if ( ( int ) posX == targetX && ( int ) posY == targetY && ( int ) posZ == targetZ )
+			{
+				worldObj.removeEntity( this );
+			}
+			else if ( distanceTraveled >= distanceToTravel  )
+			{
+				worldObj.removeEntity( this );
 			}
 			
 			if ( stack != null )
@@ -75,6 +88,11 @@ public class TransportingEntity extends Entity
 		
 		dir = ForgeDirection.getOrientation( tag.getInteger( "Direction" ) );
 		distanceTraveled = tag.getInteger( "DistanceTraveled" );
+		distanceToTravel = tag.getInteger( "DistanceToTravel" );
+
+		targetX = tag.getInteger( "TargetX" );
+		targetY = tag.getInteger( "TargetY" );
+		targetZ = tag.getInteger( "TargetZ" );
 	}
 
 	@Override
@@ -86,11 +104,15 @@ public class TransportingEntity extends Entity
 		
 		tag.setInteger( "Direction", dir.ordinal() );
 		tag.setInteger( "DistanceTraveled", distanceTraveled );
+		tag.setInteger( "DistanceToTravel", distanceToTravel );
+
+		tag.setInteger( "TargetX", targetX );
+		tag.setInteger( "TargetY", targetY );
+		tag.setInteger( "TargetZ", targetZ );
 	}
 	
 	public ForgeDirection getDirection()
 	{
-		if(!worldObj.isRemote)System.out.println(dir);
 		return dir;
 	}
 	
@@ -107,14 +129,31 @@ public class TransportingEntity extends Entity
 		return stack;
 	}
 	
+	public void setTarget( int x, int y, int z )
+	{
+		targetX = x;
+		targetY = y;
+		targetZ = z;
+		
+		distanceToTravel = -1;
+		distanceToTravel += Math.abs( targetX - ( int ) posX );
+		distanceToTravel += Math.abs( targetY - ( int ) posY );
+		distanceToTravel += Math.abs( targetZ - ( int ) posZ );
+		System.out.println(distanceToTravel+" "+targetX+" "+targetY+" "+targetZ+" "+posX+" "+posY+" "+posZ);
+	}
+	
+	/*
 	public int getDistanceTraveled()
 	{
 		return distanceTraveled;
 	}
+	*/
 	
 	private ItemStack stack;
 	private ForgeDirection dir = ForgeDirection.UNKNOWN;
-	private int distanceTraveled = 0;
+	private int distanceTraveled;
+	private int distanceToTravel;
+	private int targetX, targetY, targetZ;
 	
 	private static final int DW_STACK = 10;
 	private static final int DW_DIR = 11;
