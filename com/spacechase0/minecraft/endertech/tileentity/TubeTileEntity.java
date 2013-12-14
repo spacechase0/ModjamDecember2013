@@ -223,10 +223,13 @@ public class TubeTileEntity extends TileEntity
 	
 	public void dropBuffer()
 	{
-		EntityItem entity = new EntityItem( worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, buffer );
-		worldObj.spawnEntityInWorld( entity );
-		
-		buffer = null;
+		if ( buffer != null )
+		{
+			EntityItem entity = new EntityItem( worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, buffer );
+			worldObj.spawnEntityInWorld( entity );
+			
+			buffer = null;
+		}
 	}
 	
 	private void tryInput()

@@ -13,6 +13,8 @@ public class DropHandler
 	@ForgeSubscribe
 	public void interceptDrops( HarvestDropsEvent event )
 	{
+		// Called after tile entity is destroyed
+		/*
 		if ( event.block == EnderTech.blocks.tube )
 		{
 			TubeTileEntity tube = ( TubeTileEntity ) event.world.getBlockTileEntity( event.x, event.y, event.z );
@@ -39,5 +41,6 @@ public class DropHandler
 				}
 			}
 		}
+		*/
 	}
 }

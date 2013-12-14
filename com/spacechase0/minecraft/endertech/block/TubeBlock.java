@@ -1,5 +1,8 @@
 package com.spacechase0.minecraft.endertech.block;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.spacechase0.minecraft.endertech.EnderTech;
 import com.spacechase0.minecraft.endertech.tileentity.TubeTileEntity;
 
@@ -7,6 +10,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -144,6 +148,36 @@ public class TubeBlock extends BlockContainer
 	{
 		TubeTileEntity tube = ( TubeTileEntity ) world.getBlockTileEntity( x, y, z );
 		tube.dropBuffer();
+
+		// TODO: Do properly and not make these drop if in creative mode
+		List< ItemStack > drops = new ArrayList< ItemStack >();
+		for ( ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS )
+		{
+			if ( tube.hasUpgrade( dir, TubeTileEntity.UPGRADE_SPEED ) )
+			{
+				drops.add( new ItemStack( Item.goldNugget ) );
+			}
+			if ( tube.hasUpgrade( dir, TubeTileEntity.UPGRADE_FILTER ) )
+			{
+				drops.add( new ItemStack( EnderTech.items.nugget, 1, 1 ) );
+			}
+			if ( tube.hasUpgrade( dir, TubeTileEntity.UPGRADE_BLOCK ) )
+			{
+				drops.add( new ItemStack( EnderTech.items.nugget, 1, 0 ) );
+			}
+			if ( tube.hasUpgrade( dir, TubeTileEntity.UPGRADE_REDSTONE ) )
+			{
+				drops.add( new ItemStack( Item.redstone ) );
+			}
+		}
+		
+		for ( ItemStack stack : drops )
+		{
+			EntityItem entity = new EntityItem( world, x + 0.5, y + 0.5, z + 0.5, stack );
+			world.spawnEntityInWorld( entity );
+		}
+		
+		super.breakBlock( world, x, y, z, oldId, oldMeta );
 	}
 	
 	@Override
