@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.Mod;
@@ -58,6 +59,7 @@ public class EnderTech
 		registerEntities();
 		
 		NetworkRegistry.instance().registerGuiHandler( this, gui = new GuiHandler() );
+		MinecraftForge.EVENT_BUS.register( dropHandler = new DropHandler() );
 		
 		proxy.init();
 	}
@@ -65,6 +67,8 @@ public class EnderTech
 	@EventHandler
 	public void postInit( FMLPostInitializationEvent event )
 	{
+		MinecraftForge.setBlockHarvestLevel( blocks.tube, "pickaxe", 2 );
+		
 		config.save();
 	}
 	
@@ -115,4 +119,5 @@ public class EnderTech
 	public static Configuration config;
 	
 	private GuiHandler gui;
+	private DropHandler dropHandler;
 }

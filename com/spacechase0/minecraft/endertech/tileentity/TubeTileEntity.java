@@ -6,6 +6,7 @@ import com.spacechase0.minecraft.endertech.EnderTech;
 import com.spacechase0.minecraft.endertech.entity.TransportingEntity;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -162,12 +163,18 @@ public class TubeTileEntity extends TileEntity
 	public boolean doesInput( ForgeDirection dir )
 	{
 		if ( dir == ForgeDirection.UNKNOWN ) return false;
+		
+		if ( hasUpgrade( dir, UPGRADE_REDSTONE ) && worldObj.getBlockPowerInput( xCoord, yCoord, zCoord ) > 0 ) return false;
+		
 		return input[ dir.ordinal() ];
 	}
 	
 	public boolean doesOutput( ForgeDirection dir )
 	{
 		if ( dir == ForgeDirection.UNKNOWN ) return false;
+		
+		if ( hasUpgrade( dir, UPGRADE_REDSTONE ) && worldObj.getBlockPowerInput( xCoord, yCoord, zCoord ) > 0 ) return false;
+		
 		return output[ dir.ordinal() ];
 	}
 	
@@ -214,14 +221,21 @@ public class TubeTileEntity extends TileEntity
 		return filters[ filter ];
 	}
 	
+	public void dropBuffer()
+	{
+		EntityItem entity = new EntityItem( worldObj, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, buffer );
+		worldObj.spawnEntityInWorld( entity );
+		
+		buffer = null;
+	}
+	
 	private void tryInput()
 	{
 		if ( buffer != null ) return;
 		for ( int i = 0; i < input.length; ++i )
 		{
-			if ( !input[ i ] ) continue;
-			
 			ForgeDirection dir = ForgeDirection.getOrientation( i );
+			if ( !doesInput( dir ) ) continue;
 			
 			TileEntity te = worldObj.getBlockTileEntity( xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ );
 			if ( te instanceof ISidedInventory )

@@ -140,6 +140,13 @@ public class TubeBlock extends BlockContainer
     }
 	
 	@Override
+    public void breakBlock( World world, int x, int y, int z, int oldId, int oldMeta )
+	{
+		TubeTileEntity tube = ( TubeTileEntity ) world.getBlockTileEntity( x, y, z );
+		tube.dropBuffer();
+	}
+	
+	@Override
 	public boolean isOpaqueCube()
 	{
 		return false;
