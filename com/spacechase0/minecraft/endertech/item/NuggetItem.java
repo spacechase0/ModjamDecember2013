@@ -24,6 +24,7 @@ public class NuggetItem extends Item
     {
 		for ( int i = 0; i < types.length; ++i )
 		{
+			if ( i == 0 ) continue;
 			list.add( new ItemStack( this, 1, i ) );
 		}
     }

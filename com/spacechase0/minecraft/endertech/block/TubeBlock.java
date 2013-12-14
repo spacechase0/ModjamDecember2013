@@ -3,6 +3,7 @@ package com.spacechase0.minecraft.endertech.block;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.spacechase0.minecraft.endertech.CommonProxy;
 import com.spacechase0.minecraft.endertech.EnderTech;
 import com.spacechase0.minecraft.endertech.tileentity.TubeTileEntity;
 
@@ -52,6 +53,7 @@ public class TubeBlock extends BlockContainer
 		if ( holding != null )
 		{
 			boolean didStuff = false;
+			/*
 			if ( holding.getItem() == EnderTech.items.nugget )
 			{
 				didStuff = true;
@@ -66,7 +68,8 @@ public class TubeBlock extends BlockContainer
 					if ( !player.capabilities.isCreativeMode ) --holding.stackSize;
 				}
 			}
-			else if ( holding.getItem() == Item.goldNugget && !tube.hasUpgrade( side, TubeTileEntity.UPGRADE_SPEED ) )
+			else */
+			if ( holding.getItem() == Item.goldNugget && !tube.hasUpgrade( side, TubeTileEntity.UPGRADE_SPEED ) )
 			{
 				didStuff = true;
 				tube.upgrade( side, TubeTileEntity.UPGRADE_SPEED );
@@ -76,6 +79,12 @@ public class TubeBlock extends BlockContainer
 			{
 				didStuff = true;
 				tube.upgrade( side, TubeTileEntity.UPGRADE_REDSTONE );
+				if ( !player.capabilities.isCreativeMode ) --holding.stackSize;
+			}
+			else if ( CommonProxy.isOre( "nuggetDiamond", holding ) && !tube.hasUpgrade( side,  TubeTileEntity.UPGRADE_FILTER ) )
+			{
+				didStuff = true;
+				tube.upgrade( side, TubeTileEntity.UPGRADE_FILTER );
 				if ( !player.capabilities.isCreativeMode ) --holding.stackSize;
 			}
 			

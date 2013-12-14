@@ -85,13 +85,13 @@ public class EnderTech
 	
 	private void registerRecipes()
 	{
-		GameRegistry.addShapelessRecipe( new ItemStack( items.nugget, 9, 0 ), Item.ingotIron );
+		//GameRegistry.addShapelessRecipe( new ItemStack( items.nugget, 9, 0 ), Item.ingotIron );
 		GameRegistry.addShapelessRecipe( new ItemStack( items.nugget, 9, 1 ), Item.diamond );
-		GameRegistry.addRecipe( new ShapedOreRecipe( new ItemStack( Item.ingotIron ),
+		/*GameRegistry.addRecipe( new ShapedOreRecipe( new ItemStack( Item.ingotIron ),
 		                                             "***",
 		                                             "***",
 		                                             "***",
-		                                             '*', "nuggetIron" ) );
+		                                             '*', "nuggetIron" ) );*/
 		GameRegistry.addRecipe( new ShapedOreRecipe( new ItemStack( Item.diamond ),
 		                                             "***",
 		                                             "***",
