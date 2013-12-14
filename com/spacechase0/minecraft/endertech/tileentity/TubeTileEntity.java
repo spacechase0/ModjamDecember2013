@@ -2,8 +2,10 @@ package com.spacechase0.minecraft.endertech.tileentity;
 
 import java.util.List;
 
+import com.spacechase0.minecraft.endertech.EnderTech;
 import com.spacechase0.minecraft.endertech.entity.TransportingEntity;
 
+import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -288,18 +290,76 @@ public class TubeTileEntity extends TileEntity
 		}
 		*/
 		
+		// Prefer tile entities to put into over other tubes
 		for ( int i = 0; i < output.length; ++i )
 		{
 			ForgeDirection dir = ForgeDirection.getOrientation( i );
 			if ( !checkOutputFilter( dir, buffer ) ) continue;
 			
-			TransportingEntity entity = new TransportingEntity( worldObj, buffer, dir, 1 );
-			entity.posX = xCoord + 0.5;
-			entity.posY = yCoord + 0.5 - 0.25;
-			entity.posZ = zCoord + 0.5;
-			worldObj.spawnEntityInWorld( entity );
+			TileEntity te = worldObj.getBlockTileEntity( xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ );
+			if ( te instanceof ISidedInventory )
+			{
+				ISidedInventory inv = ( ISidedInventory ) te;
+				
+				int[] slots = inv.getAccessibleSlotsFromSide( dir.getOpposite().ordinal() );
+				for ( int slot : slots )
+				{
+					if ( buffer == null ) return;
+					
+					if ( !inv.canInsertItem( slot, buffer, dir.getOpposite().ordinal() ) )
+					{
+						continue;
+					}
+					
+					doInsertion( inv, slot );
+					
+					return;
+				}
+			}
+			else if ( te instanceof IInventory )
+			{
+				IInventory inv = ( IInventory ) te;
+				
+				for ( int slot = 0; slot < inv.getSizeInventory(); ++slot )
+				{
+					if ( buffer == null ) return;
+					doInsertion( inv, slot );
+				}
+			}
+		}
+		
+		
+		for ( int i = 0; i < output.length; ++i )
+		{
+			ForgeDirection dir = ForgeDirection.getOrientation( i );
+			if ( !checkOutputFilter( dir, buffer ) ) continue;
 			
-			buffer = null;
+			for ( int il = 1; il < 16; ++il )
+			{
+				int x = xCoord + dir.offsetX * il;
+				int y = yCoord + dir.offsetY * il;
+				int z = zCoord + dir.offsetZ * il;
+				Block block = Block.blocksList[ worldObj.getBlockId( x, y, z ) ];
+				if ( block != EnderTech.blocks.tube ) continue;
+				
+				TileEntity te = worldObj.getBlockTileEntity( x, y, z );
+				if ( !( te instanceof TubeTileEntity ) ) continue;
+				TubeTileEntity tile = ( TubeTileEntity ) te;
+				
+				if ( tile.buffer != null || !tile.checkInputFilter( dir.getOpposite(), buffer ) )
+				{
+					continue;
+				}
+				
+				TransportingEntity entity = new TransportingEntity( worldObj, buffer, dir, 1 );
+				entity.posX = xCoord + 0.5;
+				entity.posY = yCoord + 0.5 - 0.25;
+				entity.posZ = zCoord + 0.5;
+				worldObj.spawnEntityInWorld( entity );
+				
+				buffer = null;
+				return;
+			}
 		}
 	}
 	
@@ -308,7 +368,6 @@ public class TubeTileEntity extends TileEntity
 		ForgeDirection inDir = entity.getDirection().getOpposite();
 		if ( !checkInputFilter( inDir, entity ) )
 		{
-			System.out.println( "bad filter for " + inDir + " " + entity );
 			return false;
 		}
 		
@@ -326,12 +385,17 @@ public class TubeTileEntity extends TileEntity
 	
 	private boolean checkInputFilter( ForgeDirection dir, TransportingEntity entity )
 	{
+		return checkInputFilter( dir, entity.getItemStack() );
+	}
+	
+	private boolean checkInputFilter( ForgeDirection dir, ItemStack stack )
+	{
 		if ( !doesInput( dir ) )
 		{
 			return false;
 		}
 		
-		return checkFilter( dir.ordinal() * 2, entity.getItemStack() );
+		return checkFilter( dir.ordinal() * 2, stack );
 	}
 	
 	private boolean checkOutputFilter( ForgeDirection dir, ItemStack stack )
@@ -347,6 +411,37 @@ public class TubeTileEntity extends TileEntity
 	private boolean checkFilter( int index, ItemStack stack )
 	{
 		return true;
+	}
+	
+	private void doInsertion( IInventory inv, int slot )
+	{
+		ItemStack existing = inv.getStackInSlot( slot );
+		if ( existing != null && !existing.isItemEqual( buffer ) ) return;
+		else if ( existing == null || ( existing.getTagCompound() == null && buffer.getTagCompound() == null ) || existing.getTagCompound().equals( buffer.getTagCompound() ) )
+		{
+		}
+		else return;
+		
+		if ( existing == null )
+		{
+			inv.setInventorySlotContents( slot, buffer );
+		}
+		else
+		{
+			int maxStack = Math.max( inv.getInventoryStackLimit(), existing.getMaxStackSize() );
+			int diff = maxStack - existing.stackSize;
+			if ( diff > 0 )
+			{
+				existing.stackSize += diff;
+				inv.setInventorySlotContents( slot, existing );
+				buffer.stackSize -= diff;
+				if ( buffer.stackSize <= 0 )
+				{
+					buffer = null;
+				}
+			}
+		}
+		inv.onInventoryChanged();
 	}
 	
 	private static byte condense( boolean[] bools )
