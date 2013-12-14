@@ -1,5 +1,7 @@
 package com.spacechase0.minecraft.endertech.client;
 
+import net.minecraftforge.common.MinecraftForge;
+
 import com.spacechase0.minecraft.endertech.CommonProxy;
 import com.spacechase0.minecraft.endertech.client.render.entity.TransportingEntityRenderer;
 import com.spacechase0.minecraft.endertech.client.render.tileentity.TubeTileEntityRenderer;
@@ -16,5 +18,9 @@ public class ClientProxy extends CommonProxy
 	{
 		ClientRegistry.bindTileEntitySpecialRenderer( TubeTileEntity.class, new TubeTileEntityRenderer() );
 		RenderingRegistry.registerEntityRenderingHandler( TransportingEntity.class, new TransportingEntityRenderer() );
+		
+		MinecraftForge.EVENT_BUS.register( tooltipHandler = new TooltipHandler() );
 	}
+	
+	private TooltipHandler tooltipHandler;
 }
