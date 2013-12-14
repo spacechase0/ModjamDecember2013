@@ -337,10 +337,13 @@ public class TubeTileEntity extends TileEntity
 		for ( int i = 0; i < output.length; ++i )
 		{
 			ForgeDirection dir = ForgeDirection.getOrientation( i );
+			if ( buffer == null ) break;
 			if ( !checkOutputFilter( dir, buffer ) ) continue;
 			
 			for ( int il = 1; il < 16; ++il )
 			{
+				if ( buffer == null ) break;
+				
 				int x = xCoord + dir.offsetX * il;
 				int y = yCoord + dir.offsetY * il;
 				int z = zCoord + dir.offsetZ * il;
@@ -363,7 +366,6 @@ public class TubeTileEntity extends TileEntity
 				worldObj.spawnEntityInWorld( entity );
 				
 				buffer = null;
-				break;
 			}
 			
 			if ( buffer == null )
@@ -420,7 +422,29 @@ public class TubeTileEntity extends TileEntity
 	
 	private boolean checkFilter( int index, ItemStack stack )
 	{
-		return true;
+		if ( stack == null ) { System.out.println( "??????????????????????????" ); Thread.dumpStack(); }
+		ItemStack[] filters = this.filters[ index ];
+		
+		boolean isEmpty = true;
+		for ( ItemStack filter : filters )
+		{
+			if ( filter == null ) continue;
+			isEmpty = false;
+			
+			if ( filter.isItemEqual( stack ) )
+			{
+				if ( filter.getTagCompound() == null && stack.getTagCompound() == null )
+				{
+					return true;
+				}
+				else if ( filter.getTagCompound() != null && stack.getTagCompound() != null && filter.getTagCompound().equals( stack.getTagCompound() ) )
+				{
+					return true;
+				}
+			}
+		}
+		
+		return isEmpty;
 	}
 	
 	private void doInsertion( IInventory inv, int slot )
