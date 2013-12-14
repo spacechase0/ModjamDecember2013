@@ -19,6 +19,7 @@ public class TubeTileEntityRenderer extends TileEntitySpecialRenderer
 		for ( int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; ++i )
 		{
 			ForgeDirection dir = ForgeDirection.getOrientation( i );
+			if ( dir == ForgeDirection.EAST || dir == ForgeDirection.WEST ) dir = dir.getOpposite();
 			
 			glPushMatrix();
 			{

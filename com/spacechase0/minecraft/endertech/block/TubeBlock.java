@@ -43,11 +43,6 @@ public class TubeBlock extends BlockContainer
 		TubeTileEntity tube = ( TubeTileEntity ) world.getBlockTileEntity( x, y, z );
 		
 		ForgeDirection side = ForgeDirection.getOrientation( sideNum );
-		if ( side == ForgeDirection.EAST || side == ForgeDirection.WEST )
-		{
-			// Weirdness
-			side = side.getOpposite();
-		}
 		
 		ItemStack holding = player.getCurrentEquippedItem();
 		if ( holding != null )

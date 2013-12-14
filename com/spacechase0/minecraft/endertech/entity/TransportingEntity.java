@@ -90,11 +90,13 @@ public class TransportingEntity extends Entity
 	
 	public ForgeDirection getDirection()
 	{
+		if(!worldObj.isRemote)System.out.println(dir);
 		return dir;
 	}
 	
-	public void setDirection( ForgeDirection dir, float speed )
+	public void setDirection( ForgeDirection theDir, float speed )
 	{
+		dir = theDir;
 		motionX = dir.offsetX / 20.0 * speed;
 		motionY = dir.offsetY / 20.0 * speed;
 		motionZ = dir.offsetZ / 20.0 * speed;

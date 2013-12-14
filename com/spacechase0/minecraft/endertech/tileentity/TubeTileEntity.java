@@ -206,7 +206,6 @@ public class TubeTileEntity extends TileEntity
 			if ( !input[ i ] ) continue;
 			
 			ForgeDirection dir = ForgeDirection.getOrientation( i );
-			if ( dir == ForgeDirection.EAST || dir == ForgeDirection.WEST ) dir = dir.getOpposite();
 			
 			TileEntity te = worldObj.getBlockTileEntity( xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ );
 			if ( te instanceof ISidedInventory )
@@ -267,7 +266,6 @@ public class TubeTileEntity extends TileEntity
 			
 			if ( entity.getDistanceTraveled() < 1 || !canReceive( entity ) )
 			{
-				System.out.println("can't receive");
 				continue;
 			}
 			
@@ -295,8 +293,6 @@ public class TubeTileEntity extends TileEntity
 			ForgeDirection dir = ForgeDirection.getOrientation( i );
 			if ( !checkOutputFilter( dir, buffer ) ) continue;
 			
-			if ( dir == ForgeDirection.EAST || dir == ForgeDirection.WEST ) dir = dir.getOpposite();
-			
 			TransportingEntity entity = new TransportingEntity( worldObj, buffer, dir, 1 );
 			entity.posX = xCoord + 0.5;
 			entity.posY = yCoord + 0.5 - 0.25;
@@ -312,6 +308,7 @@ public class TubeTileEntity extends TileEntity
 		ForgeDirection inDir = entity.getDirection().getOpposite();
 		if ( !checkInputFilter( inDir, entity ) )
 		{
+			System.out.println( "bad filter for " + inDir + " " + entity );
 			return false;
 		}
 		
