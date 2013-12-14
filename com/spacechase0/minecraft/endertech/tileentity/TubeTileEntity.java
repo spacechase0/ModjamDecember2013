@@ -192,6 +192,7 @@ public class TubeTileEntity extends TileEntity
 			if ( !input[ i ] ) continue;
 			
 			ForgeDirection dir = ForgeDirection.getOrientation( i );
+			if ( dir == ForgeDirection.EAST || dir == ForgeDirection.WEST ) dir = dir.getOpposite();
 			
 			TileEntity te = worldObj.getBlockTileEntity( xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ );
 			if ( te instanceof ISidedInventory )
@@ -244,6 +245,7 @@ public class TubeTileEntity extends TileEntity
 			if ( !output[ i ] ) continue;
 			
 			ForgeDirection dir = ForgeDirection.getOrientation( i );
+			if ( dir == ForgeDirection.EAST || dir == ForgeDirection.WEST ) dir = dir.getOpposite();
 			
 			TransportingEntity entity = new TransportingEntity( worldObj, buffer, dir, 1 );
 			entity.posX = xCoord + 0.5;

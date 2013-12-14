@@ -55,6 +55,11 @@ public class TransportingEntity extends Entity
 			{
 				++distanceTraveled;
 			}
+			
+			if ( stack != null )
+			{
+				dataWatcher.updateObject( DW_STACK, stack );
+			}
 		}
 	}
 
@@ -71,7 +76,7 @@ public class TransportingEntity extends Entity
 	@Override
 	protected void writeEntityToNBT( NBTTagCompound tag )
 	{
-		NBTTagCompound stackTag = ( NBTTagCompound ) tag.getTag( "Item" );
+		NBTTagCompound stackTag = new NBTTagCompound();
 		stack.writeToNBT( stackTag );
 		tag.setTag( "Item", stackTag );
 		
@@ -84,7 +89,7 @@ public class TransportingEntity extends Entity
 		motionX = dir.offsetX / 20.0 * speed;
 		motionY = dir.offsetY / 20.0 * speed;
 		motionZ = dir.offsetZ / 20.0 * speed;
-	} 
+	}
 	
 	public ItemStack getItemStack()
 	{
@@ -92,7 +97,7 @@ public class TransportingEntity extends Entity
 	}
 	
 	private ItemStack stack;
-	private ForgeDirection dir;
+	private ForgeDirection dir = ForgeDirection.UNKNOWN;
 	private int distanceTraveled = 0;
 	
 	private static final int DW_STACK = 10;

@@ -21,7 +21,15 @@ public class TransportingEntityRenderer extends Render
 			return;
 		}
 		
+		render.setRenderManager( renderManager );
+		
 		EntityItem fake = new EntityItem( entity.worldObj, entity.posX, entity.posY, entity.posZ, entity.getItemStack() );
+		fake.prevPosX = fake.posX;
+		fake.prevPosY = fake.posY;
+		fake.prevPosZ = fake.posZ;
+		fake.motionX = fake.motionY = fake.motionZ = 0;
+		fake.hoverStart = 0;
+		fake.rotationYaw = 0;
 		render.doRenderItem( fake, x, y, z, f1, f2 );
 	}
 
