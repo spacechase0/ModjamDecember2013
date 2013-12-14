@@ -199,6 +199,21 @@ public class TubeTileEntity extends TileEntity
 		worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
 	}
 	
+	public int getInputFilterIndex( ForgeDirection dir )
+	{
+		return ( 2 * dir.ordinal() );
+	}
+	
+	public int getOutputFilterIndex( ForgeDirection dir )
+	{
+		return ( 2 * dir.ordinal() ) + 1;
+	}
+	
+	public ItemStack[] getFilters( int filter )
+	{
+		return filters[ filter ];
+	}
+	
 	private void tryInput()
 	{
 		if ( buffer != null ) return;

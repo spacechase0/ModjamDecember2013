@@ -84,11 +84,6 @@ public class TubeBlock extends BlockContainer
 				return true;
 			}
 		}
-		else if ( tube.hasUpgrade( side, TubeTileEntity.UPGRADE_FILTER ) )
-		{
-			// open gui
-			return true;
-		}
 		
 		float[] coords = new float[] { offX, offY, offZ };
 		float[] check = new float[ 2 ];
@@ -115,7 +110,14 @@ public class TubeBlock extends BlockContainer
 		}
 		if ( toggleOut )
 		{
-			tube.toggleOutput( side );
+			if ( holding == null && tube.hasUpgrade( side, TubeTileEntity.UPGRADE_FILTER ) )
+			{
+				player.openGui( EnderTech.instance, sideNum | 0x8, world, x, y, z );
+			}
+			else
+			{
+				tube.toggleOutput( side );
+			}
 			return true;
 		}
 		
@@ -123,7 +125,14 @@ public class TubeBlock extends BlockContainer
 		final double HIGH = 0.50 + 0.06;
 		if ( check[ 0 ] >= LOW && check[ 0 ] <= HIGH && check[ 1 ] >= LOW && check[ 1 ] <= HIGH )
 		{
-			tube.toggleInput( side );
+			if ( holding == null && tube.hasUpgrade( side, TubeTileEntity.UPGRADE_FILTER ) )
+			{
+				player.openGui( EnderTech.instance, sideNum, world, x, y, z );
+			}
+			else
+			{
+				tube.toggleInput( side );
+			}
 			return true;
 		}
 		
