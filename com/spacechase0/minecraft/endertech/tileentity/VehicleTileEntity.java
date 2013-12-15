@@ -29,6 +29,21 @@ public class VehicleTileEntity extends TileEntity
 		readFromNBT( packet.data );
     }
 	
+	public void setVehicle( int minX, int minY, int minZ, int maxX, int maxY, int maxZ )
+	{
+		System.out.println( maxX - minX );
+		for ( int ix = minX; ix < maxX; ++ix )
+		{
+			for ( int iy = minY; iy < maxY; ++iy )
+			{
+				for ( int iz = minZ; iz < maxZ; ++iz )
+				{
+					
+				}
+			}
+		}
+	}
+	
 	@Override
     public void readFromNBT( NBTTagCompound tag )
     {

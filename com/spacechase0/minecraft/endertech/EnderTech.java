@@ -4,6 +4,7 @@ import com.spacechase0.minecraft.endertech.block.Blocks;
 import com.spacechase0.minecraft.endertech.entity.TransportingEntity;
 import com.spacechase0.minecraft.endertech.item.Items;
 import com.spacechase0.minecraft.endertech.tileentity.TubeTileEntity;
+import com.spacechase0.minecraft.endertech.tileentity.VehicleTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -78,6 +79,7 @@ public class EnderTech
 	private void registerTileEntities()
 	{
 		GameRegistry.registerTileEntity( TubeTileEntity.class, "EnderTube" );
+		GameRegistry.registerTileEntity( VehicleTileEntity.class, "EnderVehicle" );
 	}
 	
 	private void registerOreDictionary()

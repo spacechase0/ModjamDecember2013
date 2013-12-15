@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class VehicleBlock extends BlockContainer
@@ -22,6 +23,12 @@ public class VehicleBlock extends BlockContainer
 		setUnlocalizedName( "endertech:vehicleController" );
 		setCreativeTab( CreativeTabs.tabTransport );
 	}
+
+	@Override
+	public TileEntity createNewTileEntity( World world )
+	{
+		return new VehicleTileEntity();
+	}
 	
 	@Override
 	public void registerIcons( IconRegister register )
@@ -32,12 +39,19 @@ public class VehicleBlock extends BlockContainer
 		
 		blockIcon = disabledIcon;
 	}
-
+	
 	@Override
-	public TileEntity createNewTileEntity( World world )
-	{
-		return new VehicleTileEntity();
-	} 
+    public Icon getBlockTexture( IBlockAccess access, int x, int y, int z, int side )
+    {
+		switch ( access.getBlockMetadata( x, y, z ) )
+		{
+			case 0: return disabledIcon;
+			case 1: return inactiveIcon;
+			case 2: return activeIcon;
+		}
+		
+		return disabledIcon;
+    }
 
 	public Icon activeIcon;
 	public Icon inactiveIcon;
