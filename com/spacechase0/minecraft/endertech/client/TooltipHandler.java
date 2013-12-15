@@ -6,6 +6,7 @@ import com.spacechase0.minecraft.endertech.EnderTech;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -36,6 +37,7 @@ public class TooltipHandler
 		else */if ( event.itemStack.getItem() instanceof ItemBlock )
 		{
 			// No way to avoid using the block ID?
+			// I know I should do this in the block/item class, but this is simpler since I have it set up.
 			ItemBlock block = ( ItemBlock ) event.itemStack.getItem();
 			if ( block.getBlockID() == EnderTech.blocks.tube.blockID )
 			{
@@ -48,6 +50,15 @@ public class TooltipHandler
 			else if ( block.getBlockID() == EnderTech.blocks.vehicleFrame.blockID )
 			{
 				event.toolTip.add( StatCollector.translateToLocal( "tile.endertech:vehicleFrame.tooltip" ) );
+			}
+			else if ( block.getBlockID() == EnderTech.blocks.vehicleFrame.blockID && event.itemStack.getItemDamage() == 1 )
+			{
+				NBTTagCompound tag = event.itemStack.getTagCompound();
+				if ( tag != null )
+				{
+					int size = tag.getInteger( "Size" );
+					event.toolTip.add( StatCollector.translateToLocalFormatted( "tile.endertech:vehicleController.tooltip.size", size ) );
+				}
 			}
 		}
 	}
