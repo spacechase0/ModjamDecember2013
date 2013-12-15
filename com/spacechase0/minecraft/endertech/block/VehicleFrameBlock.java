@@ -109,9 +109,9 @@ public class VehicleFrameBlock extends SimpleBlock
 		int minX = Math.min( x + 1, ( int ) corners[ 2 ].xCoord + 1 );
 		int minY = Math.min( y + 1, ( int ) corners[ 0 ].yCoord + 1 );
 		int minZ = Math.min( z + 1, ( int ) corners[ 1 ].zCoord + 1 );
-		int maxX = Math.max( x + 2, ( int ) corners[ 2 ].xCoord + 0 );
-		int maxY = Math.max( y + 2, ( int ) corners[ 0 ].yCoord + 0 );
-		int maxZ = Math.max( z + 2, ( int ) corners[ 1 ].zCoord + 0 );
+		int maxX = Math.max( x + 0, ( int ) corners[ 2 ].xCoord + 0 );
+		int maxY = Math.max( y + 0, ( int ) corners[ 0 ].yCoord + 0 );
+		int maxZ = Math.max( z + 0, ( int ) corners[ 1 ].zCoord + 0 );
 		
 		int contrX = 0, contrY = 0, contrZ = 0;
 		int contrCount = 0;

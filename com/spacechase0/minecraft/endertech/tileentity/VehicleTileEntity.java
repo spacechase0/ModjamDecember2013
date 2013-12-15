@@ -45,15 +45,12 @@ public class VehicleTileEntity extends TileEntity
 			{
 				for ( int iz = minZ; iz < maxZ; ++iz )
 				{
+					System.out.println(ix+" "+iy+" "+iz);
 					int id = worldObj.getBlockId( ix, iy, iz );
 					int meta = worldObj.getBlockMetadata( ix, iy, iz );
 					short data = getBlockData( id, meta );
 					
 					TileEntity te = worldObj.getBlockTileEntity( ix, iy, iz );
-					te.xCoord = ix;
-					te.yCoord = iy;
-					te.zCoord = iz;
-					
 					if ( te == this )
 					{
 						myX = ix;
@@ -62,7 +59,19 @@ public class VehicleTileEntity extends TileEntity
 						te = new VehicleTileEntity();
 					}
 					
-					int index = ix + ( iy * size ) + ( iz * size * size );
+					if ( te != null )
+					{
+						te.xCoord = ix;
+						te.yCoord = iy;
+						te.zCoord = iz;
+					}
+					
+					int numX = ix - minX;
+					int numY = iy - minY;
+					int numZ = iz - minZ;
+					System.out.println("\t"+numX+" "+numY+" "+numZ);
+					
+					int index = numX + ( numY * size ) + ( numZ * size * size );
 					blockData[ index ] = data;
 					blockTiles[ index ] = te;
 				}
@@ -75,6 +84,8 @@ public class VehicleTileEntity extends TileEntity
 			{
 				for ( int iz = minZ; iz < maxZ; ++iz )
 				{
+					if ( ix == myX && iy == myY && iz == myZ ) continue;
+					
 					worldObj.removeBlockTileEntity( ix, iy, iz );
 					worldObj.setBlock( ix, iy, iz, 0, 0, 0x2 );
 				}
