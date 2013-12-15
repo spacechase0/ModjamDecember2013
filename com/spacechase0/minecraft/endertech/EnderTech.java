@@ -106,7 +106,7 @@ public class EnderTech
 		                              "_HH",
 		                              'H', Block.hopperBlock,
 		                              '_', Block.pressurePlateGold,
-		                              'O', Item.eyeOfEnder );
+		                              'O', blocks.ender );
 		
 		GameRegistry.addShapelessRecipe( new ItemStack( Item.enderPearl, 9 ), blocks.ender );
 		GameRegistry.addShapedRecipe( new ItemStack( blocks.ender ),
