@@ -102,7 +102,13 @@ public class VehicleFrameBlock extends SimpleBlock
 			return true;
 		}
 		
-		if ( !fakeCheck ) player.sendChatToPlayer( ChatMessageComponent.createFromText( "Good for now" ) );
+		
+		for ( int ix = Math.min( x + 1, ( int ) corners[ 2 ].xCoord + 1 ); ix < Math.max( x - 1, ( int ) corners[ 2 ].xCoord - 1 ); ++ix )
+		{
+			// TODO
+		}
+		
+		player.sendChatToPlayer( ChatMessageComponent.createFromText( "Good for now" ) );
 		return true;
     }
 	
