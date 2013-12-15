@@ -28,7 +28,6 @@ public class RailEndBlock extends SimpleBlock
 	@Override
     public int onBlockPlaced( World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta )
     {
-		System.out.println( "meow? " + side );
 		return ForgeDirection.getOrientation( side ).ordinal();
     }
 	

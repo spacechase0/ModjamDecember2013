@@ -16,10 +16,6 @@ public class Blocks
 		ender.setResistance( 4 );
 		ender.setCreativeTab( CreativeTabs.tabBlock );
 		
-		vehicleFrame.setHardness( 6 );
-		vehicleFrame.setResistance( 6 );
-		vehicleFrame.setCreativeTab( CreativeTabs.tabTransport );
-		
 		vehicleEngine.setHardness( 8 );
 		vehicleEngine.setResistance( 8 );
 		vehicleEngine.setCreativeTab( CreativeTabs.tabTransport );
@@ -34,7 +30,7 @@ public class Blocks
 		ender = new SimpleBlock( config.getBlock( "ender", baseId ).getInt( baseId++ ), ( String ) enderParams[ 0 ], ( Material ) enderParams[ 1 ] );
 		GameRegistry.registerBlock( ender, "endertech:ender" );
 		
-		vehicleFrame = new SimpleBlock( config.getBlock( "vehicleFrame", baseId ).getInt( baseId++ ), ( String ) vehicleFrameParams[ 0 ], ( Material ) vehicleFrameParams[ 1 ] );
+		vehicleFrame = new VehicleFrameBlock( config.getBlock( "vehicleFrame", baseId ).getInt( baseId++ ) );
 		GameRegistry.registerBlock( vehicleFrame, "endertech:vehicleFrame" );
 		
 		vehicleEngine = new SimpleBlock( config.getBlock( "vehicleEngine", baseId ).getInt( baseId++ ), ( String ) vehicleEngineParams[ 0 ], ( Material ) vehicleEngineParams[ 1 ] );
@@ -58,8 +54,7 @@ public class Blocks
 	public Object[] enderParams = new Object[] { "ender", Material.dragonEgg };
 	
 	//@ModBlock
-	public SimpleBlock vehicleFrame; 
-	public Object[] vehicleFrameParams = new Object[] { "vehicleFrame", Material.dragonEgg };
+	public VehicleFrameBlock vehicleFrame;
 	
 	//@ModBlock
 	public SimpleBlock vehicleEngine;
