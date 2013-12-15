@@ -45,7 +45,6 @@ public class VehicleTileEntity extends TileEntity
 			{
 				for ( int iz = minZ; iz < maxZ; ++iz )
 				{
-					System.out.println(ix+" "+iy+" "+iz);
 					int id = worldObj.getBlockId( ix, iy, iz );
 					int meta = worldObj.getBlockMetadata( ix, iy, iz );
 					short data = getBlockData( id, meta );
@@ -69,7 +68,6 @@ public class VehicleTileEntity extends TileEntity
 					int numX = ix - minX;
 					int numY = iy - minY;
 					int numZ = iz - minZ;
-					System.out.println("\t"+numX+" "+numY+" "+numZ);
 					
 					int index = numX + ( numY * size ) + ( numZ * size * size );
 					blockData[ index ] = data;
@@ -106,16 +104,19 @@ public class VehicleTileEntity extends TileEntity
     		
     		int[] data = tag.getIntArray( "BlockData" );
     		
-    		int size = ( int ) Math.cbrt( data.length );
+    		int size =( int ) Math.pow( tag.getInteger( "Size" ), 3 );
     		
-    		blockData = new short[ data.length ];
-    		blockTiles = new TileEntity[ data.length ];
+    		blockData = new short[ size ];
+    		blockTiles = new TileEntity[ size ];
     		
     		for ( int i = 0; i < data.length; ++i )
     		{
     			int num = data[ i ];
     			blockData[ ( i * 2 ) + 0 ] = decompressA( num );
-    			blockData[ ( i * 2 ) + 1 ] = decompressB( num );
+    			if ( ( i * 2 ) + 1 < blockData.length )
+    			{
+    				blockData[ ( i * 2 ) + 1 ] = decompressB( num );
+    			}
     		}
     		
     		if ( tag.hasKey( "BlockTiles" ) )
@@ -142,12 +143,14 @@ public class VehicleTileEntity extends TileEntity
 		tag.setInteger( "EmbeddedX", myX );
 		tag.setInteger( "EmbeddedY", myY );
 		tag.setInteger( "EmbeddedZ", myZ );
+		tag.setInteger( "Size", ( int ) Math.cbrt( blockData.length ) );
 		
-		int[] data = new int[ blockData.length / 2 ];
-		for ( int i = 0; i < blockData.length / 2; ++i )
+		int len = ( int ) Math.ceil( blockData.length / 2.f );
+		int[] data = new int[ len ];
+		for ( int i = 0; i < len; ++i )
 		{
 			int indexBase = i * 2;
-			data[ i ] = compress( blockData[ indexBase + 0 ], blockData[ indexBase + 1 ] );
+			data[ i ] = compress( blockData[ indexBase + 0 ], ( blockData.length > indexBase + 1 ) ? blockData[ indexBase + 1 ] : 0 );
 		}
 		tag.setIntArray( "BlockData", data );
 		
