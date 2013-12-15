@@ -58,16 +58,16 @@ public class VehicleTileEntity extends TileEntity
 						te = new VehicleTileEntity();
 					}
 					
-					if ( te != null )
-					{
-						te.xCoord = ix;
-						te.yCoord = iy;
-						te.zCoord = iz;
-					}
-					
 					int numX = ix - minX;
 					int numY = iy - minY;
 					int numZ = iz - minZ;
+					
+					if ( te != null )
+					{
+						te.xCoord = numX;
+						te.yCoord = numY;
+						te.zCoord = numZ;
+					}
 					
 					int index = numX + ( numY * size ) + ( numZ * size * size );
 					blockData[ index ] = data;
@@ -104,10 +104,11 @@ public class VehicleTileEntity extends TileEntity
     		
     		int[] data = tag.getIntArray( "BlockData" );
     		
-    		int size =( int ) Math.pow( tag.getInteger( "Size" ), 3 );
+    		int size = tag.getInteger( "Size" );
+    		int arraySize = ( int ) Math.pow( size, 3 );
     		
-    		blockData = new short[ size ];
-    		blockTiles = new TileEntity[ size ];
+    		blockData = new short[ arraySize ];
+    		blockTiles = new TileEntity[ arraySize ];
     		
     		for ( int i = 0; i < data.length; ++i )
     		{
@@ -126,7 +127,7 @@ public class VehicleTileEntity extends TileEntity
     			{
     				NBTTagCompound nbt = ( NBTTagCompound ) list.tagAt( i );
     				TileEntity te = TileEntity.createAndLoadEntity( nbt );
-
+    				
 					int index = te.xCoord + ( te.yCoord * size ) + ( te.zCoord * size * size );
 					blockTiles[ index ] = te;
     			}
