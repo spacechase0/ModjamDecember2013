@@ -120,6 +120,25 @@ public class EnderTech
 		                              "---",
 		                              '-', Item.ingotIron,
 		                              'B', blocks.ender );
+		GameRegistry.addShapedRecipe( new ItemStack( blocks.rail, 8 ),
+		                              "-B-",
+		                              'B', blocks.ender,
+		                              '-', Item.eyeOfEnder );
+		GameRegistry.addShapedRecipe( new ItemStack( blocks.railEnd, 1 ),
+		                              "-*-",
+		                              "-B-",
+		                              "---",
+		                              '-', Item.ingotGold,
+		                              '*', Item.diamond,
+		                              'B', blocks.ender );
+		GameRegistry.addShapedRecipe( new ItemStack( blocks.vehicleController, 1 ),
+		                              "*E*",
+		                              "*B*",
+		                              "*R*",
+		                              '*', Item.diamond,
+		                              'E', Block.blockEmerald,
+		                              'R', Block.blockRedstone,
+		                              'B', blocks.ender );
 	}
 	
 	private void registerEntities()

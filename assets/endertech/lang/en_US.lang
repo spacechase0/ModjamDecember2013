@@ -16,3 +16,8 @@ tile.endertech:tube.tooltip.11=tube with an empty hand.
 tile.endertech:ender.name=Block of Ender
 tile.endertech:vehicleFrame.name=Ender Vehicle Frame
 tile.endertech:vehicleEngine.name=Ender Vehicle Engine
+tile.endertech:vehicleController.name=Ender Vehicle Controller
+tile.endertech:rail.name=Ender Rail
+tile.endertech:railEnd.name=Ender Rail (End)
+
+container.endertech:filter.name=Filter
