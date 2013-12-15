@@ -45,6 +45,10 @@ public class TooltipHandler
 					event.toolTip.add( StatCollector.translateToLocal( "tile.endertech:tube.tooltip." + i ) );
 				}
 			}
+			else if ( block.getBlockID() == EnderTech.blocks.vehicleFrame.blockID )
+			{
+				event.toolTip.add( StatCollector.translateToLocal( "tile.endertech:vehicleFrame.tooltip" ) );
+			}
 		}
 	}
 }

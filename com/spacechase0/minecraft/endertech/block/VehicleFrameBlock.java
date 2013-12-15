@@ -41,11 +41,11 @@ public class VehicleFrameBlock extends SimpleBlock
 		
 		if ( ( up && down ) || ( north && south ) || ( east && west ) || amt != 3 )
 		{
-			player.sendChatToPlayer( ChatMessageComponent.createFromTranslationKey( "chat.endertech:vehicleFrame.notCorner" ) );
-			return true;
+			//if ( !fakeCheck ) player.sendChatToPlayer( ChatMessageComponent.createFromTranslationKey( "chat.endertech:vehicleFrame.notCorner" ) );
+			return ( fakeCheck ? false : /*true*/false );
 		}
 		
-		int len = 0;
+		int len = fakeCheck ? fakeLen : 0;
 		boolean firstRun = true;
 		Vec3[] corners = new Vec3[ 3 ];
 		int currCorner = 0;
@@ -64,34 +64,48 @@ public class VehicleFrameBlock extends SimpleBlock
 				}
 				else
 				{
-					corners[ currCorner++ ] = Vec3.createVectorHelper( x, y, z );
+					if ( thisLen > 1 ) corners[ currCorner++ ] = Vec3.createVectorHelper( ix - dir.offsetX, iy - dir.offsetY, iz - dir.offsetZ );
 					break;
 				}
 			}
 			
 			if ( thisLen <= 1 ) continue;
 			
-			if ( firstRun )
+			if ( firstRun && fakeLen == -1 )
 			{
 				len = thisLen;
 				firstRun = false;
 			}
 			else if ( thisLen != len )
 			{
-				if ( !partialCheck ) player.sendChatToPlayer( ChatMessageComponent.createFromTranslationKey( "chat.endertech:vehicleFrame.mustBeSquare" ) );
-				return true;
+				if ( !fakeCheck ) player.sendChatToPlayer( ChatMessageComponent.createFromTranslationKey( "chat.endertech:vehicleFrame.mustBeSquare" ) );
+				return ( fakeCheck ? false : true );
 			}
 		}
 		
-		if ( len <= 5 )
+		if ( len < 5 || currCorner < 3 )
 		{
-			if ( !partialCheck ) player.sendChatToPlayer( ChatMessageComponent.createFromTranslationKey( "chat.endertech:vehicleFrame.tooSmall" ) );
+			if ( !fakeCheck ) player.sendChatToPlayer( ChatMessageComponent.createFromTranslationKey( "chat.endertech:vehicleFrame.tooSmall" ) );
+			return ( fakeCheck ? false : true );
+		}
+		
+		if ( fakeCheck ) return true;
+		
+		fakeCheck = true;
+		fakeLen = len;
+		boolean result = onBlockActivated( world, ( int ) corners[ 2 ].xCoord, ( int ) corners[ 0 ].yCoord, ( int ) corners[ 1 ].zCoord, player, sideNum, offX, offY, offZ );
+		fakeCheck = false;
+		fakeLen = -1;
+		if ( !result )
+		{
+			player.sendChatToPlayer( ChatMessageComponent.createFromTranslationKey( "chat.endertech:vehicleFrame.oppositeSideInvalid" ) );
 			return true;
 		}
 		
-		if ( !partialCheck ) player.sendChatToPlayer( ChatMessageComponent.createFromText( "Good for now" ) );
+		if ( !fakeCheck ) player.sendChatToPlayer( ChatMessageComponent.createFromText( "Good for now" ) );
 		return true;
     }
 	
-	private static boolean partialCheck = false;
+	private static boolean fakeCheck = false;
+	private static int fakeLen = -1;
 }
