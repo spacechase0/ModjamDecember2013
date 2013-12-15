@@ -38,7 +38,7 @@ public class EnderTech
 	
 	@EventHandler
 	public void preInit( FMLPreInitializationEvent event )
-	{ 
+	{
 		config = new Configuration( event.getSuggestedConfigurationFile() );
 		
 		blocks = new Blocks();
@@ -68,6 +68,9 @@ public class EnderTech
 	public void postInit( FMLPostInitializationEvent event )
 	{
 		MinecraftForge.setBlockHarvestLevel( blocks.tube, "pickaxe", 2 );
+		MinecraftForge.setBlockHarvestLevel( blocks.ender, "pickaxe", 2 );
+		MinecraftForge.setBlockHarvestLevel( blocks.vehicleFrame, "pickaxe", 2 );
+		MinecraftForge.setBlockHarvestLevel( blocks.vehicleEngine, "pickaxe", 2 );
 		
 		config.save();
 	}
@@ -104,6 +107,19 @@ public class EnderTech
 		                              'H', Block.hopperBlock,
 		                              '_', Block.pressurePlateGold,
 		                              'O', Item.eyeOfEnder );
+		
+		GameRegistry.addShapelessRecipe( new ItemStack( Item.enderPearl, 9 ), blocks.ender );
+		GameRegistry.addShapedRecipe( new ItemStack( blocks.ender ),
+		                              "OOO",
+		                              "OOO",
+		                              "OOO",
+		                              'O', Item.eyeOfEnder );
+		GameRegistry.addShapedRecipe( new ItemStack( blocks.vehicleFrame, 8 ),
+		                              "---",
+		                              "-B-",
+		                              "---",
+		                              '-', Item.ingotIron,
+		                              'B', blocks.ender );
 	}
 	
 	private void registerEntities()

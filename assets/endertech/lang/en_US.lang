@@ -13,3 +13,5 @@ tile.endertech:tube.tooltip.8=  Redstone Dust: Disable the side when the tube re
 tile.endertech:tube.tooltip.9=                 a redstone signal.
 tile.endertech:tube.tooltip.10=To open the filter GUI, right click the inner or outer
 tile.endertech:tube.tooltip.11=tube with an empty hand.
+tile.endertech:ender.name=Block of Ender
+tile.endertech:vehicleFrame.name=Ender Vehicle Frame
