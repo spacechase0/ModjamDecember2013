@@ -39,6 +39,15 @@ public class Blocks
 		
 		vehicleEngine = new SimpleBlock( config.getBlock( "vehicleEngine", baseId ).getInt( baseId++ ), ( String ) vehicleEngineParams[ 0 ], ( Material ) vehicleEngineParams[ 1 ] );
 		GameRegistry.registerBlock( vehicleEngine, "endertech:vehicleEngine" );
+		
+		vehicleController = new VehicleBlock( config.getBlock( "vehicleController", baseId ).getInt( baseId++ ) );
+		GameRegistry.registerBlock( vehicleController, "endertech:vehicleController" );
+		
+		rail = new RailBlock( config.getBlock( "rail", baseId ).getInt( baseId++ ) );
+		GameRegistry.registerBlock( rail, "endertech:rail" );
+		
+		railEnd = new RailEndBlock( config.getBlock( "railEnd", baseId ).getInt( baseId++ ) );
+		GameRegistry.registerBlock( railEnd, "endertech:railEnd" );
 	}
 	
 	//@ModBlock
@@ -55,4 +64,13 @@ public class Blocks
 	//@ModBlock
 	public SimpleBlock vehicleEngine;
 	public Object[] vehicleEngineParams = new Object[] { "vehicleEngine", Material.dragonEgg };
+	
+	//@ModBlock
+	public VehicleBlock vehicleController;
+	
+	//@ModBlock
+	public RailBlock rail;
+	
+	//@ModBlock
+	public RailEndBlock railEnd;
 }
