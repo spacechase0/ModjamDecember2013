@@ -402,7 +402,7 @@ public class FilterContainer extends Container
 	        return itemstack;
 		}
 		catch ( Exception exception )
-		{
+		{ 
 			exception.printStackTrace();
 			return null;
 		}
