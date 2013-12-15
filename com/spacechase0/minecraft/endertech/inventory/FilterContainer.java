@@ -117,6 +117,7 @@ public class FilterContainer extends Container
 	                                itemstack2.stackSize = slot1.getSlotStackLimit();
 	                            }
 	
+	                            if (!(slot1 instanceof FilterSlot))
 	                            l -= itemstack2.stackSize - j1;
 	                            slot1.putStack(itemstack2);
 	                        }
@@ -229,7 +230,11 @@ public class FilterContainer extends Container
 	
 	                                if (itemstack4.stackSize >= k1)
 	                                {
-	                                    slot2.putStack(itemstack4.splitStack(k1));
+
+	    	                            if (!(slot2 instanceof FilterSlot))
+	    	                            	slot2.putStack(itemstack4.splitStack(k1));
+	    	                            else
+		                                    slot2.putStack(itemstack4);
 	                                }
 	
 	                                if (itemstack4.stackSize == 0)
