@@ -1,5 +1,7 @@
 package com.spacechase0.minecraft.endertech.block;
 
+import com.spacechase0.minecraft.endertech.tileentity.VehicleTileEntity;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -34,8 +36,7 @@ public class VehicleBlock extends BlockContainer
 	@Override
 	public TileEntity createNewTileEntity( World world )
 	{
-		// TODO
-		return null;
+		return new VehicleTileEntity();
 	}
 
 	public Icon activeIcon;

@@ -1,6 +1,7 @@
 package com.spacechase0.minecraft.endertech.block;
 
 import com.spacechase0.minecraft.endertech.EnderTech;
+import com.spacechase0.minecraft.endertech.tileentity.VehicleTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -105,18 +106,26 @@ public class VehicleFrameBlock extends SimpleBlock
 			return true;
 		}
 		
+		int minX = Math.min( x + 1, ( int ) corners[ 2 ].xCoord + 1 );
+		int minY = Math.min( y + 1, ( int ) corners[ 0 ].yCoord + 1 );
+		int minZ = Math.min( z + 1, ( int ) corners[ 1 ].zCoord + 1 );
+		int maxX = Math.max( x + 2, ( int ) corners[ 2 ].xCoord + 2 );
+		int maxY = Math.max( y + 2, ( int ) corners[ 0 ].yCoord + 2 );
+		int maxZ = Math.max( z + 2, ( int ) corners[ 1 ].zCoord + 2 );
+		
 		int contrX = 0, contrY = 0, contrZ = 0;
 		int contrCount = 0;
 		int engineCount = 0;
-		for ( int ix = Math.min( x + 1, ( int ) corners[ 2 ].xCoord + 1 ); ix < Math.max( x + 2, ( int ) corners[ 2 ].xCoord + 2 ); ++ix )
+		for ( int ix = minX; ix < maxX; ++ix )
 		{
-			for ( int iy = Math.min( y + 1, ( int ) corners[ 0 ].yCoord + 1 ); iy < Math.max( y + 2, ( int ) corners[ 0 ].yCoord + 2 ); ++iy )
+			for ( int iy = minY; iy < maxY; ++iy )
 			{
-				for ( int iz = Math.min( z + 1, ( int ) corners[ 1 ].zCoord + 1 ); iz < Math.max( z + 2, ( int ) corners[ 1 ].zCoord + 2 ); ++iz )
+				for ( int iz = minZ; iz < maxZ; ++iz )
 				{
 					Block block = Block.blocksList[ world.getBlockId( ix, iy, iz ) ];
 					if ( block == EnderTech.blocks.vehicleController )
 					{
+						if ( world.getBlockMetadata( ix, iy, iz ) != 0 ) continue;
 						contrX = ix;
 						contrY = iy;
 						contrZ = iz;
@@ -163,7 +172,10 @@ public class VehicleFrameBlock extends SimpleBlock
 			return true;
 		}
 		
-		player.sendChatToPlayer( ChatMessageComponent.createFromText( "Good for now" ) );
+		VehicleTileEntity te = ( VehicleTileEntity ) world.getBlockTileEntity( contrX, contrY, contrZ );
+		te.setVehicle( minX, minY, minZ, maxX, maxY, maxZ );
+		world.setBlockMetadataWithNotify( contrX, contrY, contrZ, 1, 0x2 );
+		
 		return true;
     }
 	
