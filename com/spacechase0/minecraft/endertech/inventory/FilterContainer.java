@@ -1,6 +1,8 @@
 package com.spacechase0.minecraft.endertech.inventory;
 
+import java.lang.reflect.Field;
 import java.util.Iterator;
+import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -36,6 +38,16 @@ public class FilterContainer extends Container
     {
 		try
 		{
+			// This is not going to end well
+			// At all
+			Field field_94536_g = getClass().getField( "field_94536_g" );
+			field_94536_g.setAccessible( true );
+			Field field_94537_h_ = getClass().getField( "field_94537_h" );
+			field_94537_h_.setAccessible( true );
+			Set field_94537_h = ( Set ) field_94537_h_.get( this );
+			Field field_94535_f = getClass().getField( "field_94535_f" );
+			field_94535_f.setAccessible( true );
+			
 	        ItemStack itemstack = null;
 	        InventoryPlayer inventoryplayer = par4EntityPlayer.inventory;
 	        int l;
@@ -43,10 +55,10 @@ public class FilterContainer extends Container
 	
 	        if (par3 == 5)
 	        {
-	            int i1 = this.field_94536_g;
-	            this.field_94536_g = func_94532_c(par2);
+	            int i1 = (Integer)field_94536_g.get( this );
+	            field_94536_g.set( this, func_94532_c(par2));
 	
-	            if ((i1 != 1 || this.field_94536_g != 2) && i1 != this.field_94536_g)
+	            if ((i1 != 1 || (Integer)field_94536_g.get( this ) != 2) && i1 != (Integer)field_94536_g.get( this ))
 	            {
 	                this.func_94533_d();
 	            }
@@ -54,46 +66,46 @@ public class FilterContainer extends Container
 	            {
 	                this.func_94533_d();
 	            }
-	            else if (this.field_94536_g == 0)
+	            else if ((Integer)field_94536_g.get( this ) == 0)
 	            {
-	                this.field_94535_f = func_94529_b(par2);
+	            	field_94536_g.set( this, func_94529_b(par2));
 	
-	                if (func_94528_d(this.field_94535_f))
+	                if (func_94528_d((Integer)field_94536_g.get( this )))
 	                {
-	                    this.field_94536_g = 1;
-	                    this.field_94537_h.clear();
+	                    field_94536_g.set(this, 1);
+	                    field_94537_h.clear();
 	                }
 	                else
 	                {
 	                    this.func_94533_d();
 	                }
 	            }
-	            else if (this.field_94536_g == 1)
+	            else if ((Integer)field_94536_g.get( this ) == 1)
 	            {
 	                Slot slot = (Slot)this.inventorySlots.get(par1);
 	
-	                if (slot != null && func_94527_a(slot, inventoryplayer.getItemStack(), true) && slot.isItemValid(inventoryplayer.getItemStack()) && inventoryplayer.getItemStack().stackSize > this.field_94537_h.size() && this.canDragIntoSlot(slot))
+	                if (slot != null && func_94527_a(slot, inventoryplayer.getItemStack(), true) && slot.isItemValid(inventoryplayer.getItemStack()) && inventoryplayer.getItemStack().stackSize > field_94537_h.size() && this.canDragIntoSlot(slot))
 	                {
-	                    this.field_94537_h.add(slot);
+	                    field_94537_h.add(slot);
 	                }
 	            }
-	            else if (this.field_94536_g == 2)
+	            else if ((Integer)field_94536_g.get( this ) == 2)
 	            {
-	                if (!this.field_94537_h.isEmpty())
+	                if (!field_94537_h.isEmpty())
 	                {
 	                    itemstack1 = inventoryplayer.getItemStack().copy();
 	                    l = inventoryplayer.getItemStack().stackSize;
-	                    Iterator iterator = this.field_94537_h.iterator();
+	                    Iterator iterator = field_94537_h.iterator();
 	
 	                    while (iterator.hasNext())
 	                    {
 	                        Slot slot1 = (Slot)iterator.next();
 	
-	                        if (slot1 != null && func_94527_a(slot1, inventoryplayer.getItemStack(), true) && slot1.isItemValid(inventoryplayer.getItemStack()) && inventoryplayer.getItemStack().stackSize >= this.field_94537_h.size() && this.canDragIntoSlot(slot1))
+	                        if (slot1 != null && func_94527_a(slot1, inventoryplayer.getItemStack(), true) && slot1.isItemValid(inventoryplayer.getItemStack()) && inventoryplayer.getItemStack().stackSize >= field_94537_h.size() && this.canDragIntoSlot(slot1))
 	                        {
 	                            ItemStack itemstack2 = itemstack1.copy();
 	                            int j1 = slot1.getHasStack() ? slot1.getStack().stackSize : 0;
-	                            func_94525_a(this.field_94537_h, this.field_94535_f, itemstack2, j1);
+	                            func_94525_a(field_94537_h, (Integer)field_94535_f.get(this), itemstack2, j1);
 	
 	                            if (itemstack2.stackSize > itemstack2.getMaxStackSize())
 	                            {
@@ -127,7 +139,7 @@ public class FilterContainer extends Container
 	                this.func_94533_d();
 	            }
 	        }
-	        else if (this.field_94536_g != 0)
+	        else if ((Integer)field_94536_g.get( this ) != 0)
 	        {
 	            this.func_94533_d();
 	        }
