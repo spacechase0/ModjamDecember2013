@@ -38,7 +38,7 @@ public class EnderTech
 	
 	@EventHandler
 	public void preInit( FMLPreInitializationEvent event )
-	{
+	{ 
 		config = new Configuration( event.getSuggestedConfigurationFile() );
 		
 		blocks = new Blocks();
