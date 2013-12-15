@@ -26,8 +26,9 @@ public class VehicleBlock extends BlockContainer
 	{
 		activeIcon = register.registerIcon( "endertech:vehicle_active" );
 		inactiveIcon = register.registerIcon( "endertech:vehicle_inactive" );
+		disabledIcon = register.registerIcon( "endertech:vehicle_disabled" );
 		
-		blockIcon = inactiveIcon;
+		blockIcon = disabledIcon;
 	}
 
 	@Override
@@ -39,4 +40,5 @@ public class VehicleBlock extends BlockContainer
 
 	public Icon activeIcon;
 	public Icon inactiveIcon;
+	public Icon disabledIcon;
 }
