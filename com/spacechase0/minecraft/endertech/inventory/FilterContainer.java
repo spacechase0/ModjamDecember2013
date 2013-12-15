@@ -40,12 +40,12 @@ public class FilterContainer extends Container
 		{
 			// This is not going to end well
 			// At all
-			Field field_94536_g = getClass().getField( "field_94536_g" );
+			Field field_94536_g = Container.class.getDeclaredField( "field_94536_g" );
 			field_94536_g.setAccessible( true );
-			Field field_94537_h_ = getClass().getField( "field_94537_h" );
+			Field field_94537_h_ = Container.class.getDeclaredField( "field_94537_h" );
 			field_94537_h_.setAccessible( true );
 			Set field_94537_h = ( Set ) field_94537_h_.get( this );
-			Field field_94535_f = getClass().getField( "field_94535_f" );
+			Field field_94535_f = Container.class.getDeclaredField( "field_94535_f" );
 			field_94535_f.setAccessible( true );
 			
 	        ItemStack itemstack = null;
