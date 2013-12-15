@@ -141,6 +141,28 @@ public class VehicleFrameBlock extends SimpleBlock
 			return true;
 		}
 		
+		boolean foundEnginePair = false;
+		ForgeDirection[] toCheck = new ForgeDirection[] { ForgeDirection.UP, ForgeDirection.SOUTH, ForgeDirection.EAST };
+		for ( ForgeDirection check : toCheck )
+		{
+			ForgeDirection oppos = check.getOpposite();
+
+			Block blockA = Block.blocksList[ world.getBlockId( contrX + check.offsetX, contrY + check.offsetY, contrZ + check.offsetZ ) ];
+			Block blockB = Block.blocksList[ world.getBlockId( contrX + oppos.offsetX, contrY + oppos.offsetY, contrZ + oppos.offsetZ ) ];
+			
+			if ( blockA == EnderTech.blocks.vehicleEngine && blockB == EnderTech.blocks.vehicleEngine )
+			{
+				foundEnginePair = true;
+				break;
+			}
+		}
+		
+		if ( !foundEnginePair )
+		{
+			player.sendChatToPlayer( ChatMessageComponent.createFromTranslationKey( "chat.endertech:vehicleFrame.twoEngines" ) );
+			return true;
+		}
+		
 		player.sendChatToPlayer( ChatMessageComponent.createFromText( "Good for now" ) );
 		return true;
     }
