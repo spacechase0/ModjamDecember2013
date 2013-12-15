@@ -17,9 +17,9 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class VehicleBlock extends BlockContainer
+public class VehicleControllerBlock extends BlockContainer
 {
-	protected VehicleBlock( int id )
+	protected VehicleControllerBlock( int id )
 	{
 		super( id, Material.dragonEgg );
 		
