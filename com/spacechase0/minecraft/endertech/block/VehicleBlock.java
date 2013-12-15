@@ -37,7 +37,7 @@ public class VehicleBlock extends BlockContainer
 	public TileEntity createNewTileEntity( World world )
 	{
 		return new VehicleTileEntity();
-	}
+	} 
 
 	public Icon activeIcon;
 	public Icon inactiveIcon;
