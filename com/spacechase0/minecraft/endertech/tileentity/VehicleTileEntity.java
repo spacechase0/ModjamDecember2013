@@ -54,6 +54,14 @@ public class VehicleTileEntity extends TileEntity
 					te.yCoord = iy;
 					te.zCoord = iz;
 					
+					if ( te == this )
+					{
+						myX = ix;
+						myY = iy;
+						myZ = iz;
+						te = new VehicleTileEntity();
+					}
+					
 					int index = ix + ( iy * size ) + ( iz * size * size );
 					blockData[ index ] = data;
 					blockTiles[ index ] = te;
@@ -79,8 +87,12 @@ public class VehicleTileEntity extends TileEntity
     {
     	super.readFromNBT( tag );
     	
-    	if ( tag.hasKey( "BlockData" ) )
+    	if ( tag.hasKey( "EmbeddedX" ) )
     	{
+    		myX = tag.getInteger( "EmbeddedX" );
+    		myY = tag.getInteger( "EmbeddedY" );
+    		myZ = tag.getInteger( "EmbeddedZ" );
+    		
     		int[] data = tag.getIntArray( "BlockData" );
     		
     		int size = ( int ) Math.cbrt( data.length );
@@ -115,17 +127,18 @@ public class VehicleTileEntity extends TileEntity
     {
 		super.writeToNBT( tag );
 		
-		if ( blockData.length > 0 )
+		if ( myX == -1 ) return;
+		tag.setInteger( "EmbeddedX", myX );
+		tag.setInteger( "EmbeddedY", myY );
+		tag.setInteger( "EmbeddedZ", myZ );
+		
+		int[] data = new int[ blockData.length / 2 ];
+		for ( int i = 0; i < blockData.length / 2; ++i )
 		{
-			int[] data = new int[ blockData.length / 2 ];
-			for ( int i = 0; i < blockData.length / 2; ++i )
-			{
-				int indexBase = i * 2;
-				data[ i ] = compress( blockData[ indexBase + 0 ], blockData[ indexBase + 1 ] );
-			}
-			
-			tag.setIntArray( "BlockData", data );
+			int indexBase = i * 2;
+			data[ i ] = compress( blockData[ indexBase + 0 ], blockData[ indexBase + 1 ] );
 		}
+		tag.setIntArray( "BlockData", data );
 		
 		NBTTagList tileEntities = new NBTTagList();
 		for ( TileEntity te : blockTiles )
@@ -175,4 +188,5 @@ public class VehicleTileEntity extends TileEntity
 	
 	private short[] blockData = new short[ 0 ];
 	private TileEntity[] blockTiles = new TileEntity[ 0 ];
+	private int myX = -1, myY = -1, myZ = -1;
 }
