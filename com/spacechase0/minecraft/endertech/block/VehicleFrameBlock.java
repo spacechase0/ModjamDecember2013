@@ -101,7 +101,7 @@ public class VehicleFrameBlock extends SimpleBlock
 			player.sendChatToPlayer( ChatMessageComponent.createFromTranslationKey( "chat.endertech:vehicleFrame.oppositeSideInvalid" ) );
 			return true;
 		}
-		
+		 
 		
 		for ( int ix = Math.min( x + 1, ( int ) corners[ 2 ].xCoord + 1 ); ix < Math.max( x - 1, ( int ) corners[ 2 ].xCoord - 1 ); ++ix )
 		{
