@@ -58,7 +58,7 @@ public class Blocks
 	public Object[] enderParams = new Object[] { "ender", Material.dragonEgg };
 	
 	//@ModBlock
-	public SimpleBlock vehicleFrame;
+	public SimpleBlock vehicleFrame; 
 	public Object[] vehicleFrameParams = new Object[] { "vehicleFrame", Material.dragonEgg };
 	
 	//@ModBlock
