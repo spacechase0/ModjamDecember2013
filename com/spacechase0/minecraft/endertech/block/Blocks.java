@@ -54,5 +54,5 @@ public class Blocks
 	
 	//@ModBlock
 	public SimpleBlock vehicleEngine;
-	public Object[] vehicleEngineParams = new Object[] { "vehicleFrame", Material.dragonEgg };
+	public Object[] vehicleEngineParams = new Object[] { "vehicleEngine", Material.dragonEgg };
 }

@@ -15,3 +15,4 @@ tile.endertech:tube.tooltip.10=To open the filter GUI, right click the inner or 
 tile.endertech:tube.tooltip.11=tube with an empty hand.
 tile.endertech:ender.name=Block of Ender
 tile.endertech:vehicleFrame.name=Ender Vehicle Frame
+tile.endertech:vehicleEngine.name=Ender Vehicle Engine
