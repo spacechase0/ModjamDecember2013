@@ -93,6 +93,10 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 		fakeWorld = new FakeWorld( this );
 		fakeWorld.loadFrom( tag );
 
+		contrX = tag.getInteger( "EmbeddedX" );
+		contrY = tag.getInteger( "EmbeddedY" );
+		contrZ = tag.getInteger( "EmbeddedZ" );
+
 		motionZ = tag.getDouble( "VelocityX" );
 		motionY = tag.getDouble( "VelocityY" );
 		motionZ = tag.getDouble( "VelocityZ" );
@@ -105,6 +109,10 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 	{
 		tag.setInteger( "Size", size );
 		fakeWorld.saveTo( tag );
+
+		tag.setInteger( "EmbeddedX", contrX );
+		tag.setInteger( "EmbeddedY", contrY );
+		tag.setInteger( "EmbeddedZ", contrZ );
 
 		tag.setDouble( "VelocityX", motionX );
 		tag.setDouble( "VelocityY", motionY );
@@ -119,7 +127,6 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 		NBTTagCompound tag = new NBTTagCompound();
 		writeEntityToNBT( tag );
 
-		System.out.println(tag);
 		try
 		{
 			NBTBase.writeNamedTag( tag, data );

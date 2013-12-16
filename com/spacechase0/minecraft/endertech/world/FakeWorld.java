@@ -52,6 +52,8 @@ public class FakeWorld extends World
 
 	        //while (iterator.hasNext())
 	        {
+	        	int i=0,j=0;
+	        	
 	            ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair)new ChunkCoordIntPair(0,0);
 	            int k = chunkcoordintpair.chunkXPos * 16;
 	            int l = chunkcoordintpair.chunkZPos * 16;
@@ -161,9 +163,22 @@ public class FakeWorld extends World
         }
     }
 	
+    @Override
     public BiomeGenBase getBiomeGenForCoordsBody( int x, int z )
     {
     	return entity.worldObj.getBiomeGenForCoords( ( int ) entity.posX, ( int ) entity.posZ );
+    }
+	
+	@Override
+    public int getFullBlockLightValue( int x, int y, int z )
+    {
+		return entity.worldObj.getFullBlockLightValue( ( int ) entity.boundingBox.minX + x, ( int ) entity.boundingBox.minY + y, ( int ) entity.boundingBox.minZ + z );
+    }
+
+    @Override
+    public int getBlockLightValue_do(int x, int y, int z, boolean par4)
+    {
+		return entity.worldObj.getBlockLightValue_do( ( int ) entity.boundingBox.minX + x, ( int ) entity.boundingBox.minY + y, ( int ) entity.boundingBox.minZ + z, par4 );
     }
 	
 	public void loadFrom( VehicleTileEntity vehicle )
