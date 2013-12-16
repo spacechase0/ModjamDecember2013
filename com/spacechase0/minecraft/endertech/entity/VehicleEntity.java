@@ -2,6 +2,8 @@ package com.spacechase0.minecraft.endertech.entity;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
+import com.spacechase0.minecraft.endertech.EnderTech;
+import com.spacechase0.minecraft.endertech.block.RailBlock;
 import com.spacechase0.minecraft.endertech.tileentity.VehicleTileEntity;
 import com.spacechase0.minecraft.endertech.world.FakeWorld;
 
@@ -49,6 +51,23 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 		super.onUpdate();
 		
 		setPosition( posX + motionX, posY + motionY, posZ + motionZ );
+		
+		if( !worldObj.isRemote )
+		{
+			int bx = ( int ) posX, by = ( int ) posY, bz = ( int ) posZ;
+			
+			Block b = Block.blocksList[ worldObj.getBlockId( bx, by, bz ) ];
+			if ( b != EnderTech.blocks.rail || ( worldObj.getBlockMetadata( bx, by, bz ) & RailBlock.ONLINE ) == 0 )
+			{
+				worldObj.removeEntity( this );
+			}
+		}
+	}
+	
+	@Override
+    protected boolean pushOutOfBlocks( double x, double y, double z )
+	{
+		return false;
 	}
 
 	@Override

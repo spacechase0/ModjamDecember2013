@@ -79,6 +79,12 @@ public class TransportingEntity extends Entity
 			dataWatcher.updateObject( DW_DIR, dir.ordinal() );
 		}
 	}
+	
+	@Override
+    protected boolean pushOutOfBlocks( double x, double y, double z )
+	{
+		return false;
+	}
 
 	@Override
 	protected void readEntityFromNBT( NBTTagCompound tag )

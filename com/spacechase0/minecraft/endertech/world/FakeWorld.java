@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -80,6 +81,11 @@ public class FakeWorld extends World
         {
             return 0;
         }
+    }
+	
+    public BiomeGenBase getBiomeGenForCoordsBody( int x, int z )
+    {
+    	return entity.worldObj.getBiomeGenForCoords( ( int ) entity.posX, ( int ) entity.posZ );
     }
 	
 	public void loadFrom( VehicleTileEntity vehicle )
