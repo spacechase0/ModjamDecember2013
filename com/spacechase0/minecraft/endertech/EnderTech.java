@@ -150,9 +150,11 @@ public class EnderTech
 	private void registerEntities()
 	{ 
 		transportingId = EntityRegistry.findGlobalUniqueEntityId();
+		EntityRegistry.registerGlobalEntityID( TransportingEntity.class, "endertech:transporting", transportingId );
 		EntityRegistry.registerModEntity( TransportingEntity.class, "endertech:transporting", transportingId, this, 16, 50, true );
-
+		
 		vehicleId = EntityRegistry.findGlobalUniqueEntityId();
+		EntityRegistry.registerGlobalEntityID( TransportingEntity.class, "endertech:vehicle", vehicleId );
 		EntityRegistry.registerModEntity( VehicleEntity.class, "endertech:vehicle", vehicleId, this, 64, 20, true );
 	}
 	
