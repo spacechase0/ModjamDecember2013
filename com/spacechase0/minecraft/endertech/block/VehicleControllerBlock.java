@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.spacechase0.minecraft.endertech.EnderTech;
+import com.spacechase0.minecraft.endertech.entity.VehicleEntity;
 import com.spacechase0.minecraft.endertech.tileentity.VehicleTileEntity;
 
 import net.minecraft.block.Block;
@@ -169,7 +170,9 @@ public class VehicleControllerBlock extends BlockContainer
 			}
 		}
 		
-		// Spawn the entity
+		VehicleEntity entity = new VehicleEntity( world, te );
+		entity.setPosition( x - te.getEmbeddedX(), y - te.getEmbeddedY(), z - te.getEmbeddedZ() );
+		world.spawnEntityInWorld( entity );
 		
 		int railData = 0;
 		int[] lens = new int[] { forwLen, backLen };
