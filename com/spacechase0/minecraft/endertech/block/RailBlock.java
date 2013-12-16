@@ -72,6 +72,12 @@ public class RailBlock extends SimpleBlock
 	}
 	
 	@Override
+    public Icon getIcon( int side, int meta )
+    {
+		return ( ( meta & 1 ) != 0 ) ? onlineIcon : blockIcon;
+    }
+	
+	@Override
 	public boolean renderAsNormalBlock()
 	{
 		return false;

@@ -45,22 +45,25 @@ public class VehicleControllerBlock extends BlockContainer
 	@Override
     public void breakBlock( World world, int x, int y, int z, int oldId, int oldMeta )
     {
-		ItemStack stack = new ItemStack( this );
-		if ( oldMeta == 1 )
+		if ( dropBlock )
 		{
-			stack.setItemDamage( 1 );
-			
-			NBTTagCompound tag = new NBTTagCompound();
-			world.getBlockTileEntity( x, y, z ).writeToNBT( tag );
-			tag.removeTag( "id" );
-			tag.removeTag( "x" );
-			tag.removeTag( "y" );
-			tag.removeTag( "z" );
-			
-			stack.setTagCompound( tag );
-			
-			EntityItem entity = new EntityItem( world, x + 0.5, y + 0.5, z + 0.5, stack );
-			world.spawnEntityInWorld( entity );
+			ItemStack stack = new ItemStack( this );
+			if ( oldMeta == 1 )
+			{
+				stack.setItemDamage( 1 );
+				
+				NBTTagCompound tag = new NBTTagCompound();
+				world.getBlockTileEntity( x, y, z ).writeToNBT( tag );
+				tag.removeTag( "id" );
+				tag.removeTag( "x" );
+				tag.removeTag( "y" );
+				tag.removeTag( "z" );
+				
+				stack.setTagCompound( tag );
+				
+				EntityItem entity = new EntityItem( world, x + 0.5, y + 0.5, z + 0.5, stack );
+				world.spawnEntityInWorld( entity );
+			}
 		}
 		
 		super.breakBlock( world, x, y, z, oldId, oldMeta );
@@ -141,6 +144,52 @@ public class VehicleControllerBlock extends BlockContainer
 			return true;
 		}
 		
+		int forwLen = -1;
+		int backLen = -1;
+		ForgeDirection[] dirs = new ForgeDirection[] { railDir, railDir.getOpposite() };
+		for ( ForgeDirection dir : dirs )
+		{
+			for ( int i = 1;  ; ++i )
+			{
+				int ix = dir.offsetX * i;
+				int iy = dir.offsetY * i;
+				int iz = dir.offsetZ * i;
+				
+				Block block = Block.blocksList[ world.getBlockId( x + ix, y + iy, z + iz ) ];
+				if ( block == EnderTech.blocks.railEnd )
+				{
+					if ( dir == railDir ) { forwLen = i - 1; break; }
+					else                  { backLen = i - 1; break; }
+				}
+				else if ( block != EnderTech.blocks.rail )
+				{
+					player.sendChatToPlayer( ChatMessageComponent.createFromTranslationKey( "chat.endertech:vehicleController.railEndsEarly" ) );
+					return true;
+				}
+			}
+		}
+		
+		// Spawn the entity
+		
+		int railData = 0;
+		int[] lens = new int[] { forwLen, backLen };
+		for ( int i = 0; i < 2; ++i )
+		{
+			ForgeDirection dir = dirs[ i ];
+			for ( int ib = 1; ib <= lens[ i ]; ++ib )
+			{
+				int ix = dir.offsetX * ib;
+				int iy = dir.offsetY * ib;
+				int iz = dir.offsetZ * ib;
+				
+				railData = world.getBlockMetadata( x + ix, y + iy, z + iz );
+				world.setBlockMetadataWithNotify( x + ix, y + iy, z + iz, railData | RailBlock.ONLINE, 0x2 );
+			}
+		}
+		dropBlock = false;
+		world.setBlock( x, y, z, EnderTech.blocks.rail.blockID, railData | RailBlock.ONLINE, 0x2 );
+		dropBlock = true;
+		
         return true;
     }
 	
@@ -180,4 +229,6 @@ public class VehicleControllerBlock extends BlockContainer
 	public Icon activeIcon;
 	public Icon inactiveIcon;
 	public Icon disabledIcon;
+	
+	public static boolean dropBlock = true;
 }

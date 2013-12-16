@@ -122,7 +122,6 @@ public class VehicleTileEntity extends TileEntity
     				blockData[ ( i * 2 ) + 1 ] = decompressB( num );
     			}
     		}
-			System.out.println();
     		
     		if ( tag.hasKey( "BlockTiles" ) )
     		{
