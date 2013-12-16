@@ -124,7 +124,6 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 		double oldX = player.posX, oldY = player.posY, oldZ = player.posZ;
 		try
 		{
-			System.out.println("meow1");
 			player.worldObj = fakeWorld;
 			player.posX += -posX + ( size / 2.f );
 			player.posY += -posY;
@@ -134,22 +133,17 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 			{
 				player.posY += 1.62; // getEyeHeight() is incorrect?
 			}
-			System.out.println("meow2");
 			
 			boolean flag = true;
 			
             double d0 = player.capabilities.isCreativeMode ? 5 : 4.5;
             MovingObjectPosition mop = rayTrace(player,d0, 1);
-			System.out.println("meow2.5 "+mop);
             if (mop != null && mop.typeOfHit == EnumMovingObjectType.TILE)
             {
                 int j = mop.blockX;
                 int k = mop.blockY;
                 int l = mop.blockZ;
                 int i1 = mop.sideHit;
-                System.out.println(j+" "+k+" "+l);
-    			System.out.println("meow3 "+player.worldObj.getBlockId(j,k,l)+" "+Block.blocksList[player.worldObj.getBlockId(j,k,l)]);
-                if(!player.worldObj.isRemote)System.out.println("TODO: FIX ON SMP");
                 /*
                 if (par1 == 0)
                 {
