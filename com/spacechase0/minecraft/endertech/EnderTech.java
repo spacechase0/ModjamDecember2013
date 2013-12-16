@@ -62,6 +62,7 @@ public class EnderTech
 		
 		NetworkRegistry.instance().registerGuiHandler( this, gui = new GuiHandler() );
 		MinecraftForge.EVENT_BUS.register( dropHandler = new DropHandler() );
+		MinecraftForge.EVENT_BUS.register( containerHandler = new OpenContainerHandler() );
 		
 		proxy.init();
 	}
@@ -167,4 +168,5 @@ public class EnderTech
 	
 	private GuiHandler gui;
 	private DropHandler dropHandler;
+	private OpenContainerHandler containerHandler;
 }

@@ -142,6 +142,7 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
                 int k = mop.blockY;
                 int l = mop.blockZ;
                 int i1 = mop.sideHit;
+                
                 /*
                 if (par1 == 0)
                 {
