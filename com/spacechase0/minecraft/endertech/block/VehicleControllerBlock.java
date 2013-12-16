@@ -173,6 +173,7 @@ public class VehicleControllerBlock extends BlockContainer
 		VehicleEntity entity = new VehicleEntity( world, te );
 		entity.setPosition( x - te.getEmbeddedX(), y - te.getEmbeddedY(), z - te.getEmbeddedZ() );
 		world.spawnEntityInWorld( entity );
+		System.out.println(entity.posX+" "+entity.posY+" "+entity.posZ);
 		
 		int railData = 0;
 		int[] lens = new int[] { forwLen, backLen };

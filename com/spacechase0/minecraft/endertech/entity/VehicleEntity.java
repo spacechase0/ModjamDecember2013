@@ -55,23 +55,23 @@ public class VehicleEntity extends Entity// implements IEntityAdditionalSpawnDat
 
 	@Override
 	public void readEntityFromNBT( NBTTagCompound tag )
-	{
+	{/*
 		size = tag.getInteger( "Size" );
 		fakeWorld = new FakeWorld( this );
 		fakeWorld.loadFrom( tag );
 		
 		//System.out.println("read size of " +size+" "+worldObj.isRemote);
-		setSize( size, size );
+		setSize( size, size );*/
 	}
 
 	@Override
 	public void writeEntityToNBT( NBTTagCompound tag )
-	{
+	{/*
 		tag.setInteger( "Size", size );
 		fakeWorld.saveTo( tag );
 
 		//System.out.println("wrote size of " +size+" "+worldObj.isRemote);
-		setSize( size, size );
+		setSize( size, size );*/
 	}
 	
 	//@Override
