@@ -65,7 +65,7 @@ public class RailBlock extends SimpleBlock
 				if ( ( metadata & ONLINE ) == 0 )
 				{
 					world.setBlockMetadataWithNotify( x, y, z, meta & ~ONLINE, 0x3 );
-					return; 
+					return;
 				}
 			}
 			else

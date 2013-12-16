@@ -139,7 +139,6 @@ public class TransportingEntity extends Entity
 		distanceToTravel += Math.abs( targetX - ( int ) posX );
 		distanceToTravel += Math.abs( targetY - ( int ) posY );
 		distanceToTravel += Math.abs( targetZ - ( int ) posZ );
-		System.out.println(distanceToTravel+" "+targetX+" "+targetY+" "+targetZ+" "+posX+" "+posY+" "+posZ);
 	}
 	
 	/*
