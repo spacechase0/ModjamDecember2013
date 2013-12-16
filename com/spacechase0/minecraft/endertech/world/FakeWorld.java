@@ -57,6 +57,7 @@ public class FakeWorld extends World
     {
 		super.tick();
 		
+		updateEntities();
 		tickUpdates( false );
 		tickBlocksAndAmbiance();
     }

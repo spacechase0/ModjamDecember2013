@@ -1,5 +1,7 @@
 package com.spacechase0.minecraft.endertech;
 
+import java.lang.reflect.Field;
+
 import com.spacechase0.minecraft.endertech.world.FakeWorld;
 
 import net.minecraft.inventory.Container;
@@ -29,7 +31,9 @@ public class OpenContainerHandler
 	{
 		try
 		{
-			return ( TileEntity ) container.getClass().getDeclaredFields()[ num ].get( container );
+			Field f = container.getClass().getDeclaredFields()[ num ];
+			f.setAccessible( true );
+			return ( TileEntity ) f.get( container );
 		}
 		catch ( Exception exception )
 		{
