@@ -1,5 +1,7 @@
 Documentation: Coming later
 
+NOTE: Tubes are currently finicking in SMP.
+
 Compilation (forge 953):
 	Paste com and assets folders into mcp/src/minecraft
 	Play as you normally would in MCP

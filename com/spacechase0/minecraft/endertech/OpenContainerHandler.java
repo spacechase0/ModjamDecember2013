@@ -36,14 +36,15 @@ public class OpenContainerHandler
 		}
 		else if ( container instanceof ContainerChest )
 		{
-			IInventory inv = ( IInventory ) get( container, 1 );
+			IInventory inv = ( IInventory ) get( container, 0 );
 			if ( inv instanceof TileEntityChest )
 			{
 				world = ( ( TileEntity ) inv ).worldObj;
 			}
 			else if ( inv instanceof InventoryLargeChest )
 			{
-				world = ( ( TileEntity ) get( container, 1 ) ).worldObj;
+				Object obj = get( container, 1 );
+				world = ( ( TileEntity )( obj instanceof TileEntity ? obj : get( container, 2 ) ) ).worldObj;
 			}
 		}
 		else if ( container instanceof ContainerWorkbench )
