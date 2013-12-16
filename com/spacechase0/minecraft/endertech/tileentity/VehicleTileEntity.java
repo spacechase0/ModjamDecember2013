@@ -45,6 +45,7 @@ public class VehicleTileEntity extends TileEntity
 		int arraySize = ( int ) Math.pow( size, 3 );
 		blockData = new short[ arraySize ];
 		blockTiles = new TileEntity[ arraySize ];
+		blockTicks = new NextTickListEntry[ arraySize ];
 		
 		for ( int ix = minX; ix < maxX; ++ix )
 		{
@@ -86,9 +87,9 @@ public class VehicleTileEntity extends TileEntity
 						for ( Object obj : list )
 						{
 							NextTickListEntry entry = ( NextTickListEntry ) obj;
-							if ( entry.xCoord == ix && entry.yCoord == iy && entry.zCoord == iz )
+							if ( entry != null && entry.xCoord == ix && entry.yCoord == iy && entry.zCoord == iz )
 							{
-								blockTicks[ index ] = new NextTickListEntry( entry.xCoord - minX, entry.yCoord - minY, entry.zCoord - minZ, entry.blockID );
+								blockTicks[ index ] = new NextTickListEntry( numX, numY, numZ, entry.blockID );
 								blockTicks[ index ].priority = entry.priority;
 								blockTicks[ index ].scheduledTime = entry.scheduledTime;
 							}
