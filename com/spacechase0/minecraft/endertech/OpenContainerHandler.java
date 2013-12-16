@@ -5,8 +5,16 @@ import java.lang.reflect.Field;
 import com.spacechase0.minecraft.endertech.world.FakeWorld;
 
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerBrewingStand;
+import net.minecraft.inventory.ContainerChest;
+import net.minecraft.inventory.ContainerDispenser;
 import net.minecraft.inventory.ContainerFurnace;
+import net.minecraft.inventory.ContainerWorkbench;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.entity.player.PlayerOpenContainerEvent;
@@ -17,23 +25,45 @@ public class OpenContainerHandler
 	public void playerOpenedContainer( PlayerOpenContainerEvent event )
 	{
 		Container container = event.entityPlayer.openContainer;
-		if ( container instanceof ContainerFurnace )
+		World world = null;
+		if ( container instanceof ContainerFurnace || container instanceof ContainerBrewingStand || container instanceof ContainerDispenser )
 		{
-			TileEntity te = get( container, 0 );
-			if ( te != null && te.worldObj instanceof FakeWorld )
+			TileEntity te = ( TileEntity ) get( container, 0 );
+			if ( te != null )
 			{
-				event.setResult( Result.ALLOW );
+				world = te.worldObj;
 			}
+		}
+		else if ( container instanceof ContainerChest )
+		{
+			IInventory inv = ( IInventory ) get( container, 1 );
+			if ( inv instanceof TileEntityChest )
+			{
+				world = ( ( TileEntity ) inv ).worldObj;
+			}
+			else if ( inv instanceof InventoryLargeChest )
+			{
+				world = ( ( TileEntity ) get( container, 1 ) ).worldObj;
+			}
+		}
+		else if ( container instanceof ContainerWorkbench )
+		{
+			world = ( World ) get( container, 2 );
+		}
+		
+		if ( world instanceof FakeWorld )
+		{
+			event.setResult( Result.ALLOW );
 		}
 	}
 	
-	private TileEntity get( Container container, int num )
+	private Object get( Container container, int num )
 	{
 		try
 		{
 			Field f = container.getClass().getDeclaredFields()[ num ];
 			f.setAccessible( true );
-			return ( TileEntity ) f.get( container );
+			return f.get( container );
 		}
 		catch ( Exception exception )
 		{

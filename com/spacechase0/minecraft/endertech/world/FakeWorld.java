@@ -497,6 +497,7 @@ public class FakeWorld extends World
 						if ( te != null )
 						{
 							chunk.addTileEntity( te );
+							loadedTileEntityList.add( te );
 						}
 						
 						if ( tick != null )
