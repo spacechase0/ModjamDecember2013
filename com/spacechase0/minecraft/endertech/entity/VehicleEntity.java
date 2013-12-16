@@ -328,6 +328,8 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 
     private MovingObjectPosition rayTrace(EntityPlayer player,double par1, float par3)
     {
+    	// TODO: FIX ON SMP
+    	
         Vec3 vec3 = player.worldObj.getWorldVec3Pool().getVecFromPool(player.posX, player.posY, player.posZ);
         Vec3 vec31 = player.getLook(par3);
         Vec3 vec32 = vec3.addVector(vec31.xCoord * par1, vec31.yCoord * par1, vec31.zCoord * par1);
