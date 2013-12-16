@@ -92,9 +92,9 @@ public class VehicleControllerBlock extends BlockContainer
 	}
 	
 	@Override
-    public Icon getBlockTexture( IBlockAccess access, int x, int y, int z, int side )
+    public Icon getIcon( int side, int meta )
     {
-		switch ( access.getBlockMetadata( x, y, z ) )
+		switch ( meta )
 		{
 			case 0: return disabledIcon;
 			case 1: return inactiveIcon;
