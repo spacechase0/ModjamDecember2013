@@ -50,6 +50,8 @@ public class FakeWorld extends World
         {
             this.pendingTickListEntriesTreeSet = new TreeSet();
         }
+        
+        addWorldAccess( new HelperWorldAccess( entity, this ) );
 	}
 	
 	@Override

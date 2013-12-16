@@ -21,6 +21,7 @@ import net.minecraft.util.EnumMovingObjectType;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
@@ -252,6 +253,14 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 		{
 			exception.printStackTrace();
 		}
+	}
+	
+	private void sync( int x, int y, int z )
+	{
+		if ( worldObj.isRemote ) return;
+		
+		WorldServer world = ( WorldServer ) worldObj;
+		world.getEntityTracker().sendPacketToAllAssociatedPlayers( this, new SyncBlockPacket( this, x, y, z ).toPacket() );
 	}
 	
 	public int getSize()
