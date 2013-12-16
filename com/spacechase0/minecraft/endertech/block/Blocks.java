@@ -13,6 +13,7 @@ public class Blocks
 	{
 		register( config, 1480 );
 		
+		/*
 		ender.setHardness( 4 );
 		ender.setResistance( 4 );
 		ender.setCreativeTab( CreativeTabs.tabBlock );
@@ -20,6 +21,7 @@ public class Blocks
 		vehicleEngine.setHardness( 8 );
 		vehicleEngine.setResistance( 8 );
 		vehicleEngine.setCreativeTab( CreativeTabs.tabTransport );
+		*/
 	}
 	
 	// I can remove this entire function later :)
@@ -28,6 +30,7 @@ public class Blocks
 		tube = new TubeBlock( config.getBlock( "tube", baseId ).getInt( baseId++ ) );
 		GameRegistry.registerBlock( tube, "endertech:tube" );
 		
+		/*
 		ender = new SimpleBlock( config.getBlock( "ender", baseId ).getInt( baseId++ ), ( String ) enderParams[ 0 ], ( Material ) enderParams[ 1 ] );
 		GameRegistry.registerBlock( ender, "endertech:ender" );
 		
@@ -45,6 +48,7 @@ public class Blocks
 		
 		railEnd = new RailEndBlock( config.getBlock( "railEnd", baseId ).getInt( baseId++ ) );
 		GameRegistry.registerBlock( railEnd, "endertech:railEnd" );
+		*/
 	}
 	
 	//@ModBlock

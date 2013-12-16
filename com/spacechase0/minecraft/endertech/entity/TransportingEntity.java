@@ -16,6 +16,8 @@ public class TransportingEntity extends Entity
 		setSize( 0.5f, 0.5f );
 		targetX = targetY = targetZ = 0;
 		distanceToTravel = 0;
+		
+		noClip = true;
 	}
 	
 	public TransportingEntity( World world, ItemStack theStack, ForgeDirection theDir, float speed )
