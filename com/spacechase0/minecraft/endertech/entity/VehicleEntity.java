@@ -64,6 +64,7 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 			Block b = Block.blocksList[ worldObj.getBlockId( bx, by, bz ) ];
 			if ( b != EnderTech.blocks.rail || ( worldObj.getBlockMetadata( bx, by, bz ) & RailBlock.ONLINE ) == 0 )
 			{
+				// TODO: Place back in block
 				worldObj.removeEntity( this );
 			}
 		}
