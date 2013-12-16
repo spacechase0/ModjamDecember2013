@@ -82,7 +82,7 @@ public class VehicleTileEntity extends TileEntity
 			{
 				for ( int iz = minZ; iz < maxZ; ++iz )
 				{
-					if ( ix == myX && iy == myY && iz == myZ ) continue;
+					if ( ix == minX + myX && iy == minY + myY && iz == minZ + myZ ) continue;
 					
 					worldObj.removeBlockTileEntity( ix, iy, iz );
 					worldObj.setBlock( ix, iy, iz, 0, 0, 0x2 );
