@@ -131,7 +131,7 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 			
             double d0 = player.capabilities.isCreativeMode ? 5 : 4.5;
             MovingObjectPosition mop = player.rayTrace(d0, 1);
-            if (mop.typeOfHit == EnumMovingObjectType.TILE)
+            if (mop != null && mop.typeOfHit == EnumMovingObjectType.TILE)
             {
                 int j = mop.blockX;
                 int k = mop.blockY;

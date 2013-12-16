@@ -412,6 +412,33 @@ public class FakeWorld extends World
         }
     }
 	
+	@Override
+    public int getBlockMetadata(int par1, int par2, int par3)
+    {
+        if (par1 >= 0 && par3 >= 0 && par1 < entity.getSize() && par3 < entity.getSize())
+        {
+            if (par2 < 0)
+            {
+                return 0;
+            }
+            else if (par2 >= 256)
+            {
+                return 0;
+            }
+            else
+            {
+                Chunk chunk = this.getChunkFromChunkCoords(par1 >> 4, par3 >> 4);
+                par1 &= 15;
+                par3 &= 15;
+                return chunk.getBlockMetadata(par1, par2, par3);
+            }
+        }
+        else
+        {
+            return 0;
+        }
+    }
+	
     @Override
     public BiomeGenBase getBiomeGenForCoordsBody( int x, int z )
     {
