@@ -24,8 +24,13 @@ public class VehicleEntity extends Entity
 		this( world );
 		
 		size = vehicle.getSize();
+		contrX = vehicle.getEmbeddedX();
+		contrY = vehicle.getEmbeddedY();
+		contrZ = vehicle.getEmbeddedZ();
 		fakeWorld = new FakeWorld( this );
 		fakeWorld.loadFrom( vehicle );
+		
+		setSize( size, size );
 	}
 
 	@Override
@@ -39,8 +44,6 @@ public class VehicleEntity extends Entity
 		super.onUpdate();
 		
 		setPosition( posX + motionX, posY + motionY, posZ + motionZ );
-		
-		
 	}
 
 	@Override
@@ -58,5 +61,6 @@ public class VehicleEntity extends Entity
 	}
 
 	private int size = -1;
+	private int contrX = -1, contrY = -1, contrZ = -1;
 	private FakeWorld fakeWorld;
 }

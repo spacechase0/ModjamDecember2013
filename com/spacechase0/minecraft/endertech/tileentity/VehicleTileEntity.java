@@ -177,6 +177,21 @@ public class VehicleTileEntity extends TileEntity
 		}
     }
 	
+	public int getEmbeddedX()
+	{
+		return myX;
+	}
+	
+	public int getEmbeddedY()
+	{
+		return myY;
+	}
+	
+	public int getEmbeddedZ()
+	{
+		return myZ;
+	}
+	
 	public int getEmbeddedIndex()
 	{
 		int size = getSize();

@@ -2,6 +2,7 @@ package com.spacechase0.minecraft.endertech;
 
 import com.spacechase0.minecraft.endertech.block.Blocks;
 import com.spacechase0.minecraft.endertech.entity.TransportingEntity;
+import com.spacechase0.minecraft.endertech.entity.VehicleEntity;
 import com.spacechase0.minecraft.endertech.item.Items;
 import com.spacechase0.minecraft.endertech.tileentity.TubeTileEntity;
 import com.spacechase0.minecraft.endertech.tileentity.VehicleTileEntity;
@@ -150,9 +151,13 @@ public class EnderTech
 	{ 
 		transportingId = EntityRegistry.findGlobalUniqueEntityId();
 		EntityRegistry.registerModEntity( TransportingEntity.class, "endertech:transporting", transportingId, this, 16, 50, true );
+
+		vehicleId = EntityRegistry.findGlobalUniqueEntityId();
+		EntityRegistry.registerModEntity( VehicleEntity.class, "endertech:vehicle", vehicleId, this, 64, 20, true );
 	}
 	
 	private int transportingId;
+	private int vehicleId;
 	
 	public static Blocks blocks;
 	public static Items items;
