@@ -12,11 +12,18 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumMovingObjectType;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 {
@@ -99,6 +106,73 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
     {
         this.setPosition(par1, par3, par5);
         this.setRotation(par7, par8);
+    }
+	
+	@Override
+    public boolean interactFirst( EntityPlayer player )
+    {
+		System.out.println("interact");
+		World oldWorld = player.worldObj;
+		try
+		{
+			player.worldObj = fakeWorld;
+			player.posX += -posX - ( size / 2.f ) + contrX;
+			player.posY += -posY - contrY;
+			player.posZ += -posZ - ( size / 2.f ) + contrZ;
+			
+			boolean flag = true;
+			
+            double d0 = player.capabilities.isCreativeMode ? 5 : 4.5;
+            MovingObjectPosition mop = player.rayTrace(d0, 1);
+            if (mop.typeOfHit == EnumMovingObjectType.TILE)
+            {
+                int j = mop.blockX;
+                int k = mop.blockY;
+                int l = mop.blockZ;
+                int i1 = mop.sideHit;
+                /*
+                if (par1 == 0)
+                {
+                    this.playerController.clickBlock(j, k, l, mop.sideHit);
+                }
+                else*/
+                {
+                	ItemStack itemstack = player.getCurrentEquippedItem();
+                    int j1 = itemstack != null ? itemstack.stackSize : 0;
+
+                    boolean result = !ForgeEventFactory.onPlayerInteract(player, Action.RIGHT_CLICK_BLOCK, j, k, l, i1).isCanceled();
+                    if (result && onPlayerRightClick(player, fakeWorld, itemstack, j, k, l, i1, mop.hitVec))
+                    {
+                        flag = false;
+                        //player.swingItem();
+                    }
+
+                    if (itemstack == null)
+                    {
+                        return !flag;
+                    }
+
+                    if (itemstack.stackSize == 0)
+                    {
+                        player.inventory.mainInventory[player.inventory.currentItem] = null;
+                    }
+                    /*else if (itemstack.stackSize != j1 || this.playerController.isInCreativeMode())
+                    {
+                        //this.entityRenderer.itemRenderer.resetEquippedProgress();
+                    }
+                    */
+                }
+            }
+            
+            return !flag;
+		}
+		finally
+		{
+			player.worldObj = oldWorld;
+			player.posX -= -posX - ( size / 2.f ) + contrX;
+			player.posY -= -posY - contrY;
+			player.posZ -= -posZ - ( size / 2.f ) + contrZ;
+		}
     }
 
 	@Override
@@ -190,6 +264,44 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 	public World getFakeWorld()
 	{
 		return fakeWorld;
+	}
+	
+	private boolean onPlayerRightClick(EntityPlayer par1EntityPlayer, World par2World, ItemStack par3ItemStack, int par4, int par5, int par6, int par7, Vec3 par8Vec3)
+	{
+        float f = (float)par8Vec3.xCoord - (float)par4;
+        float f1 = (float)par8Vec3.yCoord - (float)par5;
+        float f2 = (float)par8Vec3.zCoord - (float)par6;
+        boolean flag = false;
+        int i1;
+        if (par3ItemStack != null &&
+            par3ItemStack.getItem() != null &&
+            par3ItemStack.getItem().onItemUseFirst(par3ItemStack, par1EntityPlayer, par2World, par4, par5, par6, par7, f, f1, f2))
+        {
+                return true;
+        }
+
+        if (!par1EntityPlayer.isSneaking() || (par1EntityPlayer.getHeldItem() == null || par1EntityPlayer.getHeldItem().getItem().shouldPassSneakingClickToBlock(par2World, par4, par5, par6)))
+        {
+            i1 = par2World.getBlockId(par4, par5, par6);
+
+            if (i1 > 0 && Block.blocksList[i1].onBlockActivated(par2World, par4, par5, par6, par1EntityPlayer, par7, f, f1, f2))
+            {
+                flag = true;
+            }
+        }
+
+        /*
+        if (!flag && par3ItemStack != null && par3ItemStack.getItem() instanceof ItemBlock)
+        {
+            ItemBlock itemblock = (ItemBlock)par3ItemStack.getItem();
+
+            if (!itemblock.canPlaceItemBlockOnSide(par2World, par4, par5, par6, par7, par1EntityPlayer, par3ItemStack))
+            {
+                return false;
+            }
+        }*/
+        
+        return false;
 	}
 
 	private int size = -1;
