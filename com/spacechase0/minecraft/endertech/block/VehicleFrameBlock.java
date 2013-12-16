@@ -125,6 +125,7 @@ public class VehicleFrameBlock extends SimpleBlock
 					Block block = Block.blocksList[ world.getBlockId( ix, iy, iz ) ];
 					if ( block == EnderTech.blocks.vehicleController )
 					{
+						System.out.println(world.getBlockMetadata( ix, iy, iz ));
 						if ( world.getBlockMetadata( ix, iy, iz ) != 0 ) continue;
 						contrX = ix;
 						contrY = iy;
@@ -141,6 +142,7 @@ public class VehicleFrameBlock extends SimpleBlock
 		
 		if ( contrCount != 1 )
 		{
+			System.out.println(contrCount);
 			player.sendChatToPlayer( ChatMessageComponent.createFromTranslationKey( "chat.endertech:vehicleFrame.singleController" ) );
 			return true;
 		}

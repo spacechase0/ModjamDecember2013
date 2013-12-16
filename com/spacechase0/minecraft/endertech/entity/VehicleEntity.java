@@ -39,6 +39,21 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 		fakeWorld = new FakeWorld( this );
 		fakeWorld.loadFrom( vehicle );
 		
+		for ( int ix = 0; ix < size; ++ix )
+		{
+			for ( int iy = 0; iy < size; ++iy )
+			{
+				for ( int iz = 0; iz < size; ++iz )
+				{
+					Block block = Block.blocksList[ fakeWorld.getBlockId( ix, iy, iz ) ];
+					if ( block == EnderTech.blocks.vehicleController )
+					{
+						fakeWorld.setBlockMetadataWithNotify( ix, iy, iz, 2, 0x2 );
+					}
+				}
+			}
+		}
+		
 		setSize( size, size );
 	}
 

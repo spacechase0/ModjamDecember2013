@@ -118,6 +118,17 @@ public class FakeWorld extends World
 		
 		return chunkProvider;
 	}
+	
+	@Override
+    public boolean spawnEntityInWorld( Entity toSpawn )
+	{
+		toSpawn.worldObj = entity.worldObj;
+		toSpawn.posX += entity.boundingBox.minX;
+		toSpawn.posY += entity.boundingBox.minY;
+		toSpawn.posZ += entity.boundingBox.minZ;
+		
+		return entity.worldObj.spawnEntityInWorld( toSpawn );
+	}
 
 	@Override
 	public Entity getEntityByID( int id )
