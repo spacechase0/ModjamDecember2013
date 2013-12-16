@@ -24,6 +24,8 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 	{
 		super( world );
 		setSize( 3, 3 );
+		
+		noClip = true;
 	}
 	
 	public VehicleEntity( World world, VehicleTileEntity vehicle )
@@ -50,11 +52,14 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 	{
 		//super.onUpdate();
 		
-		setPosition( posX + velX, posY + velY, posZ + velZ );
+		setPosition( posX + motionX, posY + motionY, posZ + motionZ );
 		
 		if( !worldObj.isRemote )
 		{
-			int bx = ( int ) posX, by = ( int ) posY, bz = ( int ) posZ;
+			float halfSize = size / 2.f;
+			int bx = ( int )( posX - halfSize + contrX );
+			int by = ( int )( posY + contrY );
+			int bz = ( int )( posZ - halfSize + contrZ );
 			
 			Block b = Block.blocksList[ worldObj.getBlockId( bx, by, bz ) ];
 			if ( b != EnderTech.blocks.rail || ( worldObj.getBlockMetadata( bx, by, bz ) & RailBlock.ONLINE ) == 0 )
@@ -71,15 +76,22 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 	}
 
 	@Override
+    public void setPositionAndRotation2( double par1, double par3, double par5, float par7, float par8, int par9 )
+    {
+        this.setPosition(par1, par3, par5);
+        this.setRotation(par7, par8);
+    }
+
+	@Override
 	public void readEntityFromNBT( NBTTagCompound tag )
 	{
 		size = tag.getInteger( "Size" );
 		fakeWorld = new FakeWorld( this );
 		fakeWorld.loadFrom( tag );
 
-		velX = tag.getDouble( "VelocityX" );
-		velY = tag.getDouble( "VelocityY" );
-		velZ = tag.getDouble( "VelocityZ" );
+		motionZ = tag.getDouble( "VelocityX" );
+		motionY = tag.getDouble( "VelocityY" );
+		motionZ = tag.getDouble( "VelocityZ" );
 		
 		setSize( size, size );
 	}
@@ -90,9 +102,9 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 		tag.setInteger( "Size", size );
 		fakeWorld.saveTo( tag );
 
-		tag.setDouble( "VelocityX", velX );
-		tag.setDouble( "VelocityY", velY );
-		tag.setDouble( "VelocityZ", velZ );
+		tag.setDouble( "VelocityX", motionX );
+		tag.setDouble( "VelocityY", motionY );
+		tag.setDouble( "VelocityZ", motionZ );
 
 		setSize( size, size );
 	}
@@ -157,6 +169,4 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 	private int size = -1;
 	private int contrX = -1, contrY = -1, contrZ = -1;
 	private FakeWorld fakeWorld;
-	
-	private double velX = 0, velY = 0, velZ = 0;
 }
