@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.spacechase0.minecraft.endertech.EnderTech;
 import com.spacechase0.minecraft.endertech.block.RailBlock;
+import com.spacechase0.minecraft.endertech.network.SyncBlockPacket;
 import com.spacechase0.minecraft.endertech.tileentity.VehicleTileEntity;
 import com.spacechase0.minecraft.endertech.world.FakeWorld;
 
@@ -255,7 +256,7 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 		}
 	}
 	
-	private void sync( int x, int y, int z )
+	public void sync( int x, int y, int z )
 	{
 		if ( worldObj.isRemote ) return;
 		

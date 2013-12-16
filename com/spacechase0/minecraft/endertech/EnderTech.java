@@ -4,6 +4,7 @@ import com.spacechase0.minecraft.endertech.block.Blocks;
 import com.spacechase0.minecraft.endertech.entity.TransportingEntity;
 import com.spacechase0.minecraft.endertech.entity.VehicleEntity;
 import com.spacechase0.minecraft.endertech.item.Items;
+import com.spacechase0.minecraft.endertech.network.PacketHandler;
 import com.spacechase0.minecraft.endertech.tileentity.TubeTileEntity;
 import com.spacechase0.minecraft.endertech.tileentity.VehicleTileEntity;
 
@@ -61,6 +62,7 @@ public class EnderTech
 		registerEntities();
 		
 		NetworkRegistry.instance().registerGuiHandler( this, gui = new GuiHandler() );
+		packets = new PacketHandler();
 		MinecraftForge.EVENT_BUS.register( dropHandler = new DropHandler() );
 		MinecraftForge.EVENT_BUS.register( containerHandler = new OpenContainerHandler() );
 		
@@ -167,6 +169,7 @@ public class EnderTech
 	public static Configuration config;
 	
 	private GuiHandler gui;
+	private PacketHandler packets;
 	private DropHandler dropHandler;
 	private OpenContainerHandler containerHandler;
 }
