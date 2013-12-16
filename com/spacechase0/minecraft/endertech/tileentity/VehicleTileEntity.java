@@ -15,6 +15,7 @@ public class VehicleTileEntity extends TileEntity
 	public VehicleTileEntity()
 	{
 	}
+	
 	@Override
 	public void updateEntity()
 	{
@@ -79,6 +80,8 @@ public class VehicleTileEntity extends TileEntity
 			}
 		}
 		
+		if ( fromFakeWorld ) return;
+		
 		for ( int ix = minX; ix < maxX; ++ix )
 		{
 			for ( int iy = minY; iy < maxY; ++iy )
@@ -97,7 +100,7 @@ public class VehicleTileEntity extends TileEntity
 	@Override
     public void readFromNBT( NBTTagCompound tag )
     {
-    	super.readFromNBT( tag );
+    	if ( !fromFakeWorld ) super.readFromNBT( tag );
     	
     	if ( tag.hasKey( "EmbeddedX" ) )
     	{
@@ -141,7 +144,7 @@ public class VehicleTileEntity extends TileEntity
 	@Override
     public void writeToNBT( NBTTagCompound tag )
     {
-		super.writeToNBT( tag );
+		if ( !fromFakeWorld ) super.writeToNBT( tag );
 		
 		if ( myX == -1 ) return;
 		tag.setInteger( "EmbeddedX", myX );
@@ -185,9 +188,14 @@ public class VehicleTileEntity extends TileEntity
 		return ( int ) Math.cbrt( blockData.length );
 	}
 	
-	public short[] getData()
+	public short[] getBlockData()
 	{
 		return blockData;
+	}
+	
+	public TileEntity[] getBlockTiles()
+	{
+		return blockTiles;
 	}
 	
 	public int getBlockId( short data )
@@ -223,4 +231,6 @@ public class VehicleTileEntity extends TileEntity
 	private short[] blockData = new short[ 0 ];
 	private TileEntity[] blockTiles = new TileEntity[ 0 ];
 	private int myX = -1, myY = -1, myZ = -1;
+	
+	public static boolean fromFakeWorld = false;
 }

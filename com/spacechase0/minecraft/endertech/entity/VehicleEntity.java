@@ -22,7 +22,10 @@ public class VehicleEntity extends Entity
 	public VehicleEntity( World world, VehicleTileEntity vehicle )
 	{
 		this( world );
+		
+		size = vehicle.getSize();
 		fakeWorld = new FakeWorld( this );
+		fakeWorld.loadFrom( vehicle );
 	}
 
 	@Override
@@ -43,12 +46,17 @@ public class VehicleEntity extends Entity
 	@Override
 	protected void readEntityFromNBT( NBTTagCompound tag )
 	{
+		size = tag.getInteger( "Size" );
+		fakeWorld.loadFrom( tag );
 	}
 
 	@Override
 	protected void writeEntityToNBT( NBTTagCompound tag )
 	{
+		tag.setInteger( "Size", size );
+		fakeWorld.saveTo( tag );
 	}
 
-	private World fakeWorld;
+	private int size = -1;
+	private FakeWorld fakeWorld;
 }

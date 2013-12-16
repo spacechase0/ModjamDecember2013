@@ -132,7 +132,7 @@ public class VehicleControllerBlock extends BlockContainer
 		for ( int i = 0; i < off.length; ++i )
 		{
 			int arrayOffset = off[ i ];
-			if ( te.getBlockId( te.getData()[ te.getEmbeddedIndex() + arrayOffset ] ) == EnderTech.blocks.vehicleEngine.blockID )
+			if ( te.getBlockId( te.getBlockData()[ te.getEmbeddedIndex() + arrayOffset ] ) == EnderTech.blocks.vehicleEngine.blockID )
 			{
 				good[ i ] = true;
 			}
