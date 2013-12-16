@@ -53,7 +53,7 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 		//super.onUpdate();
 		
 		setPosition( posX + motionX, posY + motionY, posZ + motionZ );
-		
+		 
 		if( !worldObj.isRemote )
 		{
 			float halfSize = size / 2.f;
