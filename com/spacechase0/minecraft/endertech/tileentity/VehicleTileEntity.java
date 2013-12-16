@@ -1,5 +1,7 @@
 package com.spacechase0.minecraft.endertech.tileentity;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,6 +11,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.NextTickListEntry;
 
 public class VehicleTileEntity extends TileEntity
 {
@@ -76,6 +79,18 @@ public class VehicleTileEntity extends TileEntity
 					int index = numX + ( numY * size ) + ( numZ * size * size );
 					blockData[ index ] = data;
 					blockTiles[ index ] = te;
+
+					List list = worldObj.getPendingBlockUpdates( worldObj.getChunkFromBlockCoords( ix, iz ), false );
+					for ( Object obj : list )
+					{
+						NextTickListEntry entry = ( NextTickListEntry ) obj;
+						if ( entry.xCoord == ix && entry.yCoord == iy && entry.zCoord == iz )
+						{
+							blockTicks[ index ] = new NextTickListEntry( entry.xCoord - minX, entry.yCoord - minY, entry.zCoord - minZ, entry.blockID );
+							blockTicks[ index ].priority = entry.priority;
+							blockTicks[ index ].scheduledTime = entry.scheduledTime;
+						}
+					}
 				}
 			}
 		}
@@ -117,6 +132,7 @@ public class VehicleTileEntity extends TileEntity
     		
     		blockData = new short[ arraySize ];
     		blockTiles = new TileEntity[ arraySize ];
+    		blockTicks = new NextTickListEntry[ arraySize ];
 
     		for ( int i = 0; i < data.length; ++i )
     		{
@@ -144,6 +160,22 @@ public class VehicleTileEntity extends TileEntity
     				
 					int index = te.xCoord + ( te.yCoord * size ) + ( te.zCoord * size * size );
 					blockTiles[ index ] = te;
+    			}
+    		}
+    		
+    		if ( tag.hasKey( "BlockTicks" ) )
+    		{
+    			NBTTagList list = ( NBTTagList ) tag.getTag( "BlockTicks" );
+    			for ( int i = 0; i < list.tagCount(); ++i )
+    			{
+    				NBTTagCompound nbt = ( NBTTagCompound ) list.tagAt( i );
+    				
+    				NextTickListEntry tick = new NextTickListEntry( nbt.getInteger( "X" ), nbt.getInteger( "Y" ), nbt.getInteger( "Z" ), nbt.getInteger( "BlockID" ) );
+    				tick.priority = nbt.getInteger( "Priority" );
+    				tick.scheduledTime = nbt.getLong( "Time" );
+
+					int index = tick.xCoord + ( tick.yCoord * size ) + ( tick.zCoord * size * size );
+					blockTicks[ index ] = tick;
     			}
     		}
     	}
@@ -188,6 +220,26 @@ public class VehicleTileEntity extends TileEntity
 		{
 			tag.setTag( "BlockTiles", tileEntities );
 		}
+		
+		NBTTagList ticks = new NBTTagList();
+		for ( NextTickListEntry tick : blockTicks )
+		{
+			if ( tick == null ) continue;
+			
+			NBTTagCompound nbt = new NBTTagCompound();
+			nbt.setInteger( "X", tick.xCoord );
+			nbt.setInteger( "Y", tick.yCoord );
+			nbt.setInteger( "Z", tick.zCoord );
+			nbt.setInteger( "BlockID", tick.blockID );
+			nbt.setInteger( "Priority", tick.priority );
+			nbt.setLong( "Time", tick.scheduledTime );
+			
+			ticks.appendTag( nbt );
+		}
+		if ( ticks.tagCount() > 0 )
+		{
+			tag.setTag( "blockTicks", ticks );
+		}
     }
 	
 	public int getEmbeddedX()
@@ -226,6 +278,11 @@ public class VehicleTileEntity extends TileEntity
 		return blockTiles;
 	}
 	
+	public NextTickListEntry[] getBlockTicks()
+	{
+		return blockTicks;
+	}
+	
 	public int getBlockId( short data )
 	{
 		return ( data & 0x0FFF );
@@ -258,6 +315,7 @@ public class VehicleTileEntity extends TileEntity
 	
 	private short[] blockData = new short[ 0 ];
 	private TileEntity[] blockTiles = new TileEntity[ 0 ];
+	private NextTickListEntry[] blockTicks = new NextTickListEntry[ 0 ];
 	private int myX = -1, myY = -1, myZ = -1;
 	
 	public static boolean fromFakeWorld = false;

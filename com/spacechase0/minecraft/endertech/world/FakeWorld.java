@@ -15,6 +15,7 @@ import net.minecraft.util.ReportedException;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.EnumGameType;
 import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.NextTickListEntry;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldSettings;
@@ -203,6 +204,8 @@ public class FakeWorld extends World
 	{
 		Chunk chunk = createChunkProvider().provideChunk( 0, 0 );
 		
+		worldInfo.setWorldTime( 0 );
+		
 		int size = vehicle.getSize();
 		for ( int ix = 0; ix < size; ++ix )
 		{
@@ -216,6 +219,7 @@ public class FakeWorld extends World
 					int id = vehicle.getBlockId( data );
 					int meta = vehicle.getBlockMeta( data );
 					TileEntity te = vehicle.getBlockTiles()[ index ];
+					NextTickListEntry tick = vehicle.getBlockTicks()[ index ];
 					
 					chunk.setBlockIDWithMetadata( ix, iy, iz, id, meta );
 					if ( te != null )
@@ -227,10 +231,14 @@ public class FakeWorld extends World
 						te.zCoord = iz;
 						
 						chunk.addTileEntity( te );
+						
+						scheduleBlockUpdateWithPriority( tick.xCoord, tick.yCoord, tick.zCoord, id, ( int ) tick.scheduledTime, tick.priority );
 					}
 				}
 			}
 		}
+		
+		worldInfo.setWorldTime( entity.worldObj.getWorldTime() );
 	}
 	
 	public void loadFrom( NBTTagCompound tag )
