@@ -18,6 +18,7 @@ tile.endertech:vehicleFrame.name=Ender Vehicle Frame
 tile.endertech:vehicleFrame.tooltip=Form an edged cube with the frames and right click a corner.
 tile.endertech:vehicleEngine.name=Ender Vehicle Engine
 tile.endertech:vehicleController.name=Ender Vehicle Controller
+tile.endertech:vehicleController.tooltip.size=Vehicle size: %s
 tile.endertech:rail.name=Ender Rail
 tile.endertech:railEnd.name=Ender Rail (End)
 

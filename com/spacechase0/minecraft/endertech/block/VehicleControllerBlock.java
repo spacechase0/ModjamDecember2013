@@ -38,12 +38,12 @@ public class VehicleControllerBlock extends BlockContainer
 	}
 	
 	@Override
-    public ArrayList< ItemStack > getBlockDropped( World world, int x, int y, int z, int meta, int fortune )
+    public void breakBlock( World world, int x, int y, int z, int oldId, int oldMeta )
     {
 		ItemStack stack = new ItemStack( this );
-		if ( meta == 1 )
+		if ( oldMeta == 1 )
 		{
-			stack.setItemDamage( 1 );
+			stack = new ItemStack( this, 1, 1 );
 			
 			NBTTagCompound tag = new NBTTagCompound();
 			world.getBlockTileEntity( x, y, z ).writeToNBT( tag );
@@ -53,12 +53,12 @@ public class VehicleControllerBlock extends BlockContainer
 			tag.removeTag( "z" );
 			
 			stack.setTagCompound( tag );
+			
+			EntityItem entity = new EntityItem( world, x + 0.5, y + 0.5, z + 0.5, stack );
+			world.spawnEntityInWorld( entity );
 		}
 		
-		ArrayList< ItemStack > stacks = new ArrayList< ItemStack >();
-		stacks.add( stack );
-		
-		return stacks;
+		super.breakBlock( world, x, y, z, oldId, oldMeta );
     }
 	
 	@Override

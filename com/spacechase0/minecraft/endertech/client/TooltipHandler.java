@@ -51,10 +51,10 @@ public class TooltipHandler
 			{
 				event.toolTip.add( StatCollector.translateToLocal( "tile.endertech:vehicleFrame.tooltip" ) );
 			}
-			else if ( block.getBlockID() == EnderTech.blocks.vehicleFrame.blockID && event.itemStack.getItemDamage() == 1 )
+			else if ( block.getBlockID() == EnderTech.blocks.vehicleController.blockID /*&& event.itemStack.getItemDamage() == 1*/ )
 			{
 				NBTTagCompound tag = event.itemStack.getTagCompound();
-				if ( tag != null )
+				if ( tag != null && tag.hasKey( "Size" ) )
 				{
 					int size = tag.getInteger( "Size" );
 					event.toolTip.add( StatCollector.translateToLocalFormatted( "tile.endertech:vehicleController.tooltip.size", size ) );

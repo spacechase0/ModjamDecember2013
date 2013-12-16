@@ -72,6 +72,9 @@ public class EnderTech
 		MinecraftForge.setBlockHarvestLevel( blocks.ender, "pickaxe", 2 );
 		MinecraftForge.setBlockHarvestLevel( blocks.vehicleFrame, "pickaxe", 2 );
 		MinecraftForge.setBlockHarvestLevel( blocks.vehicleEngine, "pickaxe", 2 );
+		MinecraftForge.setBlockHarvestLevel( blocks.vehicleController, "pickaxe", 2 );
+		MinecraftForge.setBlockHarvestLevel( blocks.rail, "pickaxe", 2 );
+		MinecraftForge.setBlockHarvestLevel( blocks.railEnd, "pickaxe", 2 );
 		
 		config.save();
 	}
