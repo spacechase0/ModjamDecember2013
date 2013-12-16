@@ -118,14 +118,19 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 	@Override
     public boolean interactFirst( EntityPlayer player )
     {
-		System.out.println("interact");
 		World oldWorld = player.worldObj;
+		double oldX = player.posX, oldY = player.posY, oldZ = player.posZ;
 		try
 		{
 			player.worldObj = fakeWorld;
-			player.posX += -posX - ( size / 2.f ) + contrX;
-			player.posY += -posY - contrY;
-			player.posZ += -posZ - ( size / 2.f ) + contrZ;
+			player.posX += -posX + ( size / 2.f );
+			player.posY += -posY;
+			player.posZ += -posZ + ( size / 2.f );
+			
+			if ( !worldObj.isRemote )
+			{
+				player.posY += 1.62; // getEyeHeight() is incorrect?
+			}
 			
 			boolean flag = true;
 			
@@ -176,9 +181,9 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 		finally
 		{
 			player.worldObj = oldWorld;
-			player.posX -= -posX - ( size / 2.f ) + contrX;
-			player.posY -= -posY - contrY;
-			player.posZ -= -posZ - ( size / 2.f ) + contrZ;
+			player.posX = oldX;
+			player.posY = oldY;
+			player.posZ = oldZ;
 		}
     }
 
