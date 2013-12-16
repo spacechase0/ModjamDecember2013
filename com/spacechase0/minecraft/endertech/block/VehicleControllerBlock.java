@@ -97,7 +97,7 @@ public class VehicleControllerBlock extends BlockContainer
 		switch ( meta )
 		{
 			case 0: return disabledIcon;
-			case 1: return inactiveIcon;
+			case 1: return inactiveIcon; 
 			case 2: return activeIcon;
 		}
 		
