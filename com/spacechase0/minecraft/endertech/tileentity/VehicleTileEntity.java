@@ -49,18 +49,18 @@ public class VehicleTileEntity extends TileEntity
 					int meta = worldObj.getBlockMetadata( ix, iy, iz );
 					short data = getBlockData( id, meta );
 					
-					TileEntity te = worldObj.getBlockTileEntity( ix, iy, iz );
-					if ( te == this )
-					{
-						myX = ix;
-						myY = iy;
-						myZ = iz;
-						te = new VehicleTileEntity();
-					}
-					
 					int numX = ix - minX;
 					int numY = iy - minY;
 					int numZ = iz - minZ;
+					
+					TileEntity te = worldObj.getBlockTileEntity( ix, iy, iz );
+					if ( te == this )
+					{
+						myX = numX;
+						myY = numY;
+						myZ = numZ;
+						te = new VehicleTileEntity();
+					}
 					
 					if ( te != null )
 					{
@@ -171,12 +171,29 @@ public class VehicleTileEntity extends TileEntity
 		}
     }
 	
-	private int getBlockId( short data )
+	public int getEmbeddedIndex()
+	{
+		int size = getSize();
+		System.out.println(size+" "+myX+" "+myY+" "+myZ);
+		return myX + ( myY * size ) + ( myZ * size * size );
+	}
+	
+	public int getSize()
+	{
+		return ( int ) Math.cbrt( blockData.length );
+	}
+	
+	public short[] getData()
+	{
+		return blockData;
+	}
+	
+	public int getBlockId( short data )
 	{
 		return ( data & 0x0FFF );
 	}
 	
-	private int getBlockMeta( short data )
+	public int getBlockMeta( short data )
 	{
 		return ( ( data & 0xF000 ) >> 12 );
 	}

@@ -114,6 +114,33 @@ public class VehicleControllerBlock extends BlockContainer
 			return true;
 		}
 		
+		VehicleTileEntity te = ( VehicleTileEntity ) world.getBlockTileEntity( x, y, z );
+		
+		int size = te.getSize();
+		int offD = ( int ) -Math.pow( size, 2 );
+		int offU = ( int ) +Math.pow( size, 2 );
+		int offN = ( int ) -Math.pow( size, 3 );
+		int offS = ( int ) +Math.pow( size, 3 );
+		int offW = ( int ) -1;
+		int offE = ( int ) +1;
+		int[] off = new int[] { offD, offU, offN, offS, offW, offE };
+		
+		boolean[] good = new boolean[ off.length ];
+		for ( int i = 0; i < off.length; ++i )
+		{
+			int arrayOffset = off[ i ];
+			if ( te.getBlockId( te.getData()[ te.getEmbeddedIndex() ] ) == EnderTech.blocks.vehicleEngine.blockID )
+			{
+				good[ i ] = true;
+			}
+		}
+		
+		if ( !( good[ railDir.ordinal() ] && good[ railDir.getOpposite().ordinal() ] ) )
+		{
+			player.sendChatToPlayer( ChatMessageComponent.createFromTranslationKey( "chat.endertech:vehicleController.nonMatchingRails" ) );
+			return true;
+		}
+		
         return true;
     }
 	
