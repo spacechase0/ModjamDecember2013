@@ -96,6 +96,13 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 	}
 	
 	@Override
+    public boolean canBeCollidedWith()
+    {
+		// Needed for right clicking, hope it doesn't mess anything up.
+        return true;
+    }
+	
+	@Override
     protected boolean pushOutOfBlocks( double x, double y, double z )
 	{
 		return true;
