@@ -43,7 +43,7 @@ public class VehicleControllerBlock extends BlockContainer
 		ItemStack stack = new ItemStack( this );
 		if ( oldMeta == 1 )
 		{
-			stack = new ItemStack( this, 1, 1 );
+			stack.setItemDamage( 1 );
 			
 			NBTTagCompound tag = new NBTTagCompound();
 			world.getBlockTileEntity( x, y, z ).writeToNBT( tag );

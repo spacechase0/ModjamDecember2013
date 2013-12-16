@@ -3,6 +3,7 @@ package com.spacechase0.minecraft.endertech.block;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraftforge.common.Configuration;
 
 // I'm following a structure similar to what I use in SpaceCore, so I can remove the manual registering afterwards.
@@ -37,7 +38,7 @@ public class Blocks
 		GameRegistry.registerBlock( vehicleEngine, "endertech:vehicleEngine" );
 		
 		vehicleController = new VehicleControllerBlock( config.getBlock( "vehicleController", baseId ).getInt( baseId++ ) );
-		GameRegistry.registerBlock( vehicleController, "endertech:vehicleController" );
+		GameRegistry.registerBlock( vehicleController, ItemBlockWithMetadata.class, "endertech:vehicleController" );
 		
 		rail = new RailBlock( config.getBlock( "rail", baseId ).getInt( baseId++ ) );
 		GameRegistry.registerBlock( rail, "endertech:rail" );
