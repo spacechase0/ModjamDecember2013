@@ -133,6 +133,12 @@ public class VehicleTileEntity extends TileEntity
     			{
     				NBTTagCompound nbt = ( NBTTagCompound ) list.tagAt( i );
     				TileEntity te = TileEntity.createAndLoadEntity( nbt );
+    				if ( te == null )
+    				{
+    					System.out.println( "SOMETHING WENT WRONG!!! " + list + " "+ this +" ");
+    					Thread.dumpStack();
+    					continue;
+    				}
     				
 					int index = te.xCoord + ( te.yCoord * size ) + ( te.zCoord * size * size );
 					blockTiles[ index ] = te;

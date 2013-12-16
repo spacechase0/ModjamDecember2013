@@ -51,6 +51,9 @@ public class VehicleEntity extends Entity
 	{
 		size = tag.getInteger( "Size" );
 		fakeWorld.loadFrom( tag );
+		
+		System.out.println("read size of " +size+" "+worldObj.isRemote);
+		setSize( size, size );
 	}
 
 	@Override
@@ -58,6 +61,9 @@ public class VehicleEntity extends Entity
 	{
 		tag.setInteger( "Size", size );
 		fakeWorld.saveTo( tag );
+
+		System.out.println("wrote size of " +size+" "+worldObj.isRemote);
+		setSize( size, size );
 	}
 	
 	public int getSize()
