@@ -43,6 +43,7 @@ public class OpenContainerHandler
 			}
 			else if ( inv instanceof InventoryLargeChest )
 			{
+				if ( true ) return; // BROKEN
 				Object obj = get( container, 1 );
 				world = ( ( TileEntity )( obj instanceof TileEntity ? obj : get( container, 2 ) ) ).worldObj;
 			}

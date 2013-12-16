@@ -11,6 +11,11 @@ public class CommonProxy
 	{
 	}
 	
+	public boolean isMultiplayer()
+	{
+		return true;
+	}
+	
 	public static boolean isOre( String type, ItemStack stack )
 	{
 		List< ItemStack > stacks = OreDictionary.getOres( type );

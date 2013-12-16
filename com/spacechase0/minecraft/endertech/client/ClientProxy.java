@@ -25,5 +25,11 @@ public class ClientProxy extends CommonProxy
 		MinecraftForge.EVENT_BUS.register( tooltipHandler = new TooltipHandler() );
 	}
 	
+	@Override
+	public boolean isMultiplayer()
+	{
+		return false;
+	}
+	
 	private TooltipHandler tooltipHandler;
 }

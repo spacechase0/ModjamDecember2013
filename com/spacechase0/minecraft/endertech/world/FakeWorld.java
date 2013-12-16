@@ -36,7 +36,7 @@ public class FakeWorld extends World
 {
 	public FakeWorld( VehicleEntity theEntity )
 	{
-		super( new FakeSaveHandler(), "Vehicle" + theEntity.entityId, new FakeWorldProvider(), new WorldSettings( 0, EnumGameType.NOT_SET, false, false, WorldType.FLAT ), new Profiler(), new FakeLogAgent() );
+		super( new FakeSaveHandler(), "Vehicle" + theEntity.entityId, new WorldSettings( 0, EnumGameType.NOT_SET, false, false, WorldType.FLAT ), new FakeWorldProvider(), new Profiler(), new FakeLogAgent() );
 		entity = theEntity;
 		
 		provider.registerWorld( this );

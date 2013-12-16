@@ -108,13 +108,19 @@ public class TubeBlock extends BlockContainer
 			}
 		}
 		
+		int mult = 1;
+		if ( EnderTech.proxy.isMultiplayer() )
+		{
+			mult = 2;
+		}
+		
 		boolean toggleOut = false;
 		for ( float c : check )
 		{
-			final double IN_A  = 0.50 + 0.08;
-			final double OUT_A = 0.50 + 0.14;
-			final double IN_B  = 0.50 - 0.14;
-			final double OUT_B = 0.50 - 0.08;
+			final double IN_A  = 0.50 + 0.08 * mult;
+			final double OUT_A = 0.50 + 0.14 * mult;
+			final double IN_B  = 0.50 - 0.14 * mult;
+			final double OUT_B = 0.50 - 0.08 * mult;
 			if ( ( c >= IN_A && c <= OUT_A ) ||
 			     ( c >= IN_B && c <= OUT_B ) )
 			{
@@ -134,8 +140,8 @@ public class TubeBlock extends BlockContainer
 			return true;
 		}
 		
-		final double LOW  = 0.50 - 0.06;
-		final double HIGH = 0.50 + 0.06;
+		final double LOW  = 0.50 - 0.06 * mult;
+		final double HIGH = 0.50 + 0.06 * mult;
 		if ( check[ 0 ] >= LOW && check[ 0 ] <= HIGH && check[ 1 ] >= LOW && check[ 1 ] <= HIGH )
 		{
 			if ( holding == null && tube.hasUpgrade( side, TubeTileEntity.UPGRADE_FILTER ) )
