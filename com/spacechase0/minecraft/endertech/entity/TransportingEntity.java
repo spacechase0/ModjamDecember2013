@@ -83,7 +83,7 @@ public class TransportingEntity extends Entity
 	@Override
     protected boolean pushOutOfBlocks( double x, double y, double z )
 	{
-		return false;
+		return true;
 	}
 
 	@Override

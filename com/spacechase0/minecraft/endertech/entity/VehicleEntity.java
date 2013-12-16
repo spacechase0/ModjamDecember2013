@@ -48,9 +48,9 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 	@Override
 	public void onUpdate()
 	{
-		super.onUpdate();
+		//super.onUpdate();
 		
-		setPosition( posX + motionX, posY + motionY, posZ + motionZ );
+		setPosition( posX + velX, posY + velY, posZ + velZ );
 		
 		if( !worldObj.isRemote )
 		{
@@ -67,7 +67,7 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 	@Override
     protected boolean pushOutOfBlocks( double x, double y, double z )
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -76,6 +76,10 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 		size = tag.getInteger( "Size" );
 		fakeWorld = new FakeWorld( this );
 		fakeWorld.loadFrom( tag );
+
+		velX = tag.getDouble( "VelocityX" );
+		velY = tag.getDouble( "VelocityY" );
+		velZ = tag.getDouble( "VelocityZ" );
 		
 		setSize( size, size );
 	}
@@ -85,6 +89,10 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 	{
 		tag.setInteger( "Size", size );
 		fakeWorld.saveTo( tag );
+
+		tag.setDouble( "VelocityX", velX );
+		tag.setDouble( "VelocityY", velY );
+		tag.setDouble( "VelocityZ", velZ );
 
 		setSize( size, size );
 	}
@@ -149,4 +157,6 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 	private int size = -1;
 	private int contrX = -1, contrY = -1, contrZ = -1;
 	private FakeWorld fakeWorld;
+	
+	private double velX = 0, velY = 0, velZ = 0;
 }
