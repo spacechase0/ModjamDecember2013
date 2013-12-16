@@ -16,14 +16,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-public class VehicleEntity extends Entity// implements IEntityAdditionalSpawnData
+public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 {
 	public VehicleEntity( World world )
 	{
 		super( world );
 		setSize( 3, 3 );
-		
-		System.out.println("created with " + world.isRemote);
 	}
 	
 	public VehicleEntity( World world, VehicleTileEntity vehicle )
@@ -49,35 +47,32 @@ public class VehicleEntity extends Entity// implements IEntityAdditionalSpawnDat
 	public void onUpdate()
 	{
 		super.onUpdate();
-		//System.out.println("update:"+worldObj.isRemote);
+		
 		setPosition( posX + motionX, posY + motionY, posZ + motionZ );
 	}
 
 	@Override
 	public void readEntityFromNBT( NBTTagCompound tag )
-	{/*
+	{
 		size = tag.getInteger( "Size" );
 		fakeWorld = new FakeWorld( this );
 		fakeWorld.loadFrom( tag );
 		
-		//System.out.println("read size of " +size+" "+worldObj.isRemote);
-		setSize( size, size );*/
+		setSize( size, size );
 	}
 
 	@Override
 	public void writeEntityToNBT( NBTTagCompound tag )
-	{/*
+	{
 		tag.setInteger( "Size", size );
 		fakeWorld.saveTo( tag );
 
-		//System.out.println("wrote size of " +size+" "+worldObj.isRemote);
-		setSize( size, size );*/
+		setSize( size, size );
 	}
 	
-	//@Override
+	@Override
 	public void writeSpawnData( ByteArrayDataOutput data )
 	{
-		//System.out.println("writing spawn data");
 		NBTTagCompound tag = new NBTTagCompound();
 		writeEntityToNBT( tag );
 
@@ -92,10 +87,9 @@ public class VehicleEntity extends Entity// implements IEntityAdditionalSpawnDat
 		}
 	}
 
-	//@Override
+	@Override
 	public void readSpawnData( ByteArrayDataInput data )
 	{
-		//System.out.println("reading spawn data");
 		try
 		{
 			NBTTagCompound tag = ( NBTTagCompound ) NBTBase.readNamedTag( data );

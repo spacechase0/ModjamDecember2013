@@ -20,15 +20,12 @@ public class VehicleEntityRenderer extends Render
 	@Override
 	public void doRender( Entity entity, double x, double y, double z, float f, float f1 )
 	{
-		System.out.println("meow?");
 		//if ( !( entity instanceof VehicleEntity ) ) return;
 		VehicleEntity vehicle = ( VehicleEntity ) entity;
 		
 		glPushMatrix();
 		{
 			glTranslated( x, y, z );
-			
-			System.out.println( vehicle.getSize() );
 			
 			World world = vehicle.getFakeWorld();
 			for ( int ix = 0; ix < vehicle.getSize(); ++ix )
