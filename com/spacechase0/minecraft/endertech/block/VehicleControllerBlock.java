@@ -9,6 +9,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -59,6 +60,26 @@ public class VehicleControllerBlock extends BlockContainer
 		
 		return stacks;
     }
+	
+	@Override
+    public void onBlockPlacedBy( World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack )
+	{
+		if ( stack.getItemDamage() == 1 )
+		{
+			VehicleTileEntity te = ( VehicleTileEntity ) world.getBlockTileEntity( x, y, z );
+			
+			NBTTagCompound tmp = new NBTTagCompound();
+			te.writeToNBT( tmp );
+			
+			NBTTagCompound tag = ( NBTTagCompound ) stack.getTagCompound().copy();
+			tag.setString( "id", tmp.getString( "id" ) );
+			tag.setInteger( "x", tmp.getInteger( "x" ) );
+			tag.setInteger( "y", tmp.getInteger( "y" ) );
+			tag.setInteger( "z", tmp.getInteger( "z" ) );
+			
+			te.readFromNBT( tag );
+		}
+	}
 	
 	@Override
 	public void registerIcons( IconRegister register )
