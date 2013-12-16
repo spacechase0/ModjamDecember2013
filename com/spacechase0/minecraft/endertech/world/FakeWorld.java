@@ -14,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.EnumGameType;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldSettings;
@@ -179,6 +180,12 @@ public class FakeWorld extends World
     public int getBlockLightValue_do(int x, int y, int z, boolean par4)
     {
 		return entity.worldObj.getBlockLightValue_do( ( int ) entity.boundingBox.minX + x, ( int ) entity.boundingBox.minY + y, ( int ) entity.boundingBox.minZ + z, par4 );
+    }
+    
+    @Override
+    public int getLightBrightnessForSkyBlocks(int x, int y, int z, int par4)
+    {
+		return entity.worldObj.getLightBrightnessForSkyBlocks( ( int ) entity.boundingBox.minX + x, ( int ) entity.boundingBox.minY + y, ( int ) entity.boundingBox.minZ + z, par4 );
     }
 	
 	public void loadFrom( VehicleTileEntity vehicle )

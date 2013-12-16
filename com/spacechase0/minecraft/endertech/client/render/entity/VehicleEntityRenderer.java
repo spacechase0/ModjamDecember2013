@@ -24,6 +24,7 @@ public class VehicleEntityRenderer extends Render
 		//if ( !( entity instanceof VehicleEntity ) ) return;
 		VehicleEntity vehicle = ( VehicleEntity ) entity;
 		
+		glDisable( GL_LIGHTING );
 		glPushMatrix();
 		{
 			glTranslated( x - vehicle.getSize() / 2.f, y, z - vehicle.getSize() / 2.f );
@@ -39,7 +40,10 @@ public class VehicleEntityRenderer extends Render
 						Block block = Block.blocksList[ world.getBlockId( ix, iy, iz ) ];
 						if ( block == null ) continue;
 						
+						glColor3f( 1, 1, 1 );
+						
 						Tessellator tess = Tessellator.instance;
+						tess.setColorOpaque( 255, 255, 255 );
 						tess.startDrawingQuads();
 						renderManager.renderEngine.bindTexture( TextureMap.locationBlocksTexture );
 						blocks.renderBlockAllFaces( block, ix, iy, iz );
@@ -56,6 +60,7 @@ public class VehicleEntityRenderer extends Render
 			}
 		}
 		glPopMatrix();
+		glEnable( GL_LIGHTING );
 	}
 
 	@Override
