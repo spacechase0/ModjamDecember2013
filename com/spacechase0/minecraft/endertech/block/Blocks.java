@@ -13,11 +13,11 @@ public class Blocks
 	{
 		register( config, 1480 );
 		
-		/*
 		ender.setHardness( 4 );
 		ender.setResistance( 4 );
 		ender.setCreativeTab( CreativeTabs.tabBlock );
-		
+
+		/*
 		vehicleEngine.setHardness( 8 );
 		vehicleEngine.setResistance( 8 );
 		vehicleEngine.setCreativeTab( CreativeTabs.tabTransport );
@@ -30,10 +30,10 @@ public class Blocks
 		tube = new TubeBlock( config.getBlock( "tube", baseId ).getInt( baseId++ ) );
 		GameRegistry.registerBlock( tube, "endertech:tube" );
 		
-		/*
 		ender = new SimpleBlock( config.getBlock( "ender", baseId ).getInt( baseId++ ), ( String ) enderParams[ 0 ], ( Material ) enderParams[ 1 ] );
 		GameRegistry.registerBlock( ender, "endertech:ender" );
-		
+
+		/*
 		vehicleFrame = new VehicleFrameBlock( config.getBlock( "vehicleFrame", baseId ).getInt( baseId++ ) );
 		GameRegistry.registerBlock( vehicleFrame, "endertech:vehicleFrame" );
 		

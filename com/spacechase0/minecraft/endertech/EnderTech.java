@@ -73,12 +73,12 @@ public class EnderTech
 	public void postInit( FMLPostInitializationEvent event )
 	{
 		MinecraftForge.setBlockHarvestLevel( blocks.tube, "pickaxe", 2 );
-		MinecraftForge.setBlockHarvestLevel( blocks.ender, "pickaxe", 2 );
+		MinecraftForge.setBlockHarvestLevel( blocks.ender, "pickaxe", 2 );/*
 		MinecraftForge.setBlockHarvestLevel( blocks.vehicleFrame, "pickaxe", 2 );
 		MinecraftForge.setBlockHarvestLevel( blocks.vehicleEngine, "pickaxe", 2 );
 		MinecraftForge.setBlockHarvestLevel( blocks.vehicleController, "pickaxe", 2 );
 		MinecraftForge.setBlockHarvestLevel( blocks.rail, "pickaxe", 2 );
-		MinecraftForge.setBlockHarvestLevel( blocks.railEnd, "pickaxe", 2 );
+		MinecraftForge.setBlockHarvestLevel( blocks.railEnd, "pickaxe", 2 );*/
 		
 		config.save();
 	}
@@ -86,7 +86,7 @@ public class EnderTech
 	private void registerTileEntities()
 	{
 		GameRegistry.registerTileEntity( TubeTileEntity.class, "EnderTube" );
-		GameRegistry.registerTileEntity( VehicleTileEntity.class, "EnderVehicle" );
+		//GameRegistry.registerTileEntity( VehicleTileEntity.class, "EnderVehicle" );
 	}
 	
 	private void registerOreDictionary()
@@ -122,7 +122,7 @@ public class EnderTech
 		                              "OOO",
 		                              "OOO",
 		                              "OOO",
-		                              'O', Item.eyeOfEnder );
+		                              'O', Item.eyeOfEnder );/*
 		GameRegistry.addShapedRecipe( new ItemStack( blocks.vehicleFrame, 8 ),
 		                              "---",
 		                              "-B-",
@@ -147,7 +147,7 @@ public class EnderTech
 		                              '*', Item.diamond,
 		                              'E', Block.blockEmerald,
 		                              'R', Block.blockRedstone,
-		                              'B', blocks.ender );
+		                              'B', blocks.ender );*/
 	}
 	
 	private void registerEntities()
@@ -155,10 +155,10 @@ public class EnderTech
 		transportingId = EntityRegistry.findGlobalUniqueEntityId();
 		EntityRegistry.registerGlobalEntityID( TransportingEntity.class, "endertech:transporting", transportingId );
 		EntityRegistry.registerModEntity( TransportingEntity.class, "endertech:transporting", transportingId, this, 16, 50, true );
-		
+		/*
 		vehicleId = EntityRegistry.findGlobalUniqueEntityId();
 		EntityRegistry.registerGlobalEntityID( TransportingEntity.class, "endertech:vehicle", vehicleId );
-		EntityRegistry.registerModEntity( VehicleEntity.class, "endertech:vehicle", vehicleId, this, 64, 20, true );
+		EntityRegistry.registerModEntity( VehicleEntity.class, "endertech:vehicle", vehicleId, this, 64, 20, true );*/
 	}
 	
 	private int transportingId;

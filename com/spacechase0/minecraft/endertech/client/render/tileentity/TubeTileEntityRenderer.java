@@ -225,14 +225,14 @@ public class TubeTileEntityRenderer extends TileEntitySpecialRenderer
 		glEnable( GL_CULL_FACE );
 	}
 
-	private static final ResourceLocation INNER_FLAT = new ResourceLocation( "endertech:/textures/blocks/tube/inner_flat.png" );
-	private static final ResourceLocation OUTER_FLAT = new ResourceLocation( "endertech:/textures/blocks/tube/outer_flat.png" );
-	private static final ResourceLocation TUBE       = new ResourceLocation( "endertech:/textures/blocks/tube/tube.png" );
+	private static final ResourceLocation INNER_FLAT = new ResourceLocation( "endertech:textures/blocks/tube/inner_flat.png" );
+	private static final ResourceLocation OUTER_FLAT = new ResourceLocation( "endertech:textures/blocks/tube/outer_flat.png" );
+	private static final ResourceLocation TUBE       = new ResourceLocation( "endertech:textures/blocks/tube/tube.png" );
 	private static final ResourceLocation[] UPGRADES = new ResourceLocation[]
 	                                                   {
-	                                                   	new ResourceLocation( "endertech:/textures/blocks/tube/upgrade_gold.png" ),
-	                                                   	new ResourceLocation( "endertech:/textures/blocks/tube/upgrade_diamond.png" ),
-	                                                   	new ResourceLocation( "endertech:/textures/blocks/tube/upgrade_iron.png" ),
-	                                                   	new ResourceLocation( "endertech:/textures/blocks/tube/upgrade_redstone.png" ),
+	                                                   	new ResourceLocation( "endertech:textures/blocks/tube/upgrade_gold.png" ),
+	                                                   	new ResourceLocation( "endertech:textures/blocks/tube/upgrade_diamond.png" ),
+	                                                   	new ResourceLocation( "endertech:textures/blocks/tube/upgrade_iron.png" ),
+	                                                   	new ResourceLocation( "endertech:textures/blocks/tube/upgrade_redstone.png" ),
 	                                                   };
 }
