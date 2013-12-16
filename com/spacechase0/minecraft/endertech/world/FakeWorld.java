@@ -3,13 +3,16 @@ package com.spacechase0.minecraft.endertech.world;
 import com.spacechase0.minecraft.endertech.entity.VehicleEntity;
 import com.spacechase0.minecraft.endertech.tileentity.VehicleTileEntity;
 
+import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.profiler.Profiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ReportedException;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.EnumGameType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -18,6 +21,7 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 
 public class FakeWorld extends World
 {
@@ -28,6 +32,78 @@ public class FakeWorld extends World
 		
 		provider.registerWorld( this );
 	}
+	
+	@Override
+    public void tick()
+    {
+		super.tick();
+		
+		tickUpdates( false );
+		tickBlocksAndAmbiance();
+    }
+	
+	@Override
+    protected void tickBlocksAndAmbiance()
+    {
+		super.tickBlocksAndAmbiance();
+		if ( !isRemote )
+		{
+	        final long startTime = System.nanoTime();
+
+	        //while (iterator.hasNext())
+	        {
+	            ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair)new ChunkCoordIntPair(0,0);
+	            int k = chunkcoordintpair.chunkXPos * 16;
+	            int l = chunkcoordintpair.chunkZPos * 16;
+	            this.theProfiler.startSection("getChunk");
+	            Chunk chunk = this.getChunkFromChunkCoords(chunkcoordintpair.chunkXPos, chunkcoordintpair.chunkZPos);
+	            this.moodSoundAndLightCheck(k, l, chunk);
+	            this.theProfiler.endStartSection("tickChunk");
+	            //Limits and evenly distributes the lighting update time
+	            if (System.nanoTime() - startTime <= 4000000 && true)
+	            {
+	                chunk.updateSkylight();
+	            }
+	            int i1;
+	            int j1;
+	            int k1;
+	            int l1;
+	            int i2;
+	            
+	            this.theProfiler.endStartSection("tickTiles");
+	            ExtendedBlockStorage[] aextendedblockstorage = chunk.getBlockStorageArray();
+	            j1 = aextendedblockstorage.length;
+
+	            for (k1 = 0; k1 < j1; ++k1)
+	            {
+	                ExtendedBlockStorage extendedblockstorage = aextendedblockstorage[k1];
+
+	                if (extendedblockstorage != null && extendedblockstorage.getNeedsRandomTick())
+	                {
+	                    for (int j2 = 0; j2 < 3; ++j2)
+	                    {
+	                        this.updateLCG = this.updateLCG * 3 + 1013904223;
+	                        i2 = this.updateLCG >> 2;
+	                        int k2 = i2 & 15;
+	                        int l2 = i2 >> 8 & 15;
+	                        int i3 = i2 >> 16 & 15;
+	                        int j3 = extendedblockstorage.getExtBlockID(k2, i3, l2);
+	                        ++j;
+	                        Block block = Block.blocksList[j3];
+
+	                        if (block != null && block.getTickRandomly())
+	                        {
+	                            ++i;
+	                            block.updateTick(this, k2 + k, i3 + extendedblockstorage.getYLocation(), l2 + l, this.rand);
+	                        }
+	                    }
+	                }
+	            }
+
+	            this.theProfiler.endSection();
+	        }
+		}
+    }
 	
 	@Override
 	protected IChunkProvider createChunkProvider()

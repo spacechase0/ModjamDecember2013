@@ -53,8 +53,8 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 		//super.onUpdate();
 		
 		setPosition( posX + motionX, posY + motionY, posZ + motionZ );
-		 
-		if( !worldObj.isRemote )
+		
+		if ( !worldObj.isRemote )
 		{
 			float halfSize = size / 2.f;
 			int bx = ( int )( posX - halfSize + contrX );
@@ -68,6 +68,9 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 				worldObj.removeEntity( this );
 			}
 		}
+		
+		fakeWorld.isRemote = worldObj.isRemote;
+		fakeWorld.tick();
 	}
 	
 	@Override
