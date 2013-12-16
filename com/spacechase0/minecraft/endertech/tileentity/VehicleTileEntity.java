@@ -12,6 +12,9 @@ import net.minecraft.tileentity.TileEntity;
 
 public class VehicleTileEntity extends TileEntity
 {
+	public VehicleTileEntity()
+	{
+	}
 	@Override
 	public void updateEntity()
 	{
@@ -109,7 +112,7 @@ public class VehicleTileEntity extends TileEntity
     		
     		blockData = new short[ arraySize ];
     		blockTiles = new TileEntity[ arraySize ];
-    		
+
     		for ( int i = 0; i < data.length; ++i )
     		{
     			int num = data[ i ];
@@ -119,6 +122,7 @@ public class VehicleTileEntity extends TileEntity
     				blockData[ ( i * 2 ) + 1 ] = decompressB( num );
     			}
     		}
+			System.out.println();
     		
     		if ( tag.hasKey( "BlockTiles" ) )
     		{
@@ -174,7 +178,6 @@ public class VehicleTileEntity extends TileEntity
 	public int getEmbeddedIndex()
 	{
 		int size = getSize();
-		System.out.println(size+" "+myX+" "+myY+" "+myZ);
 		return myX + ( myY * size ) + ( myZ * size * size );
 	}
 	
@@ -205,7 +208,7 @@ public class VehicleTileEntity extends TileEntity
 	
 	private int compress( short a, short b )
 	{
-		return ( short )( a | ( b << 16 ) );
+		return ( ( a & 0x0000FFFF ) | ( ( b << 16 ) & 0xFFFF0000 ) );
 	}
 	
 	private short decompressA( int num )

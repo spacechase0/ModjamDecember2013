@@ -117,10 +117,10 @@ public class VehicleControllerBlock extends BlockContainer
 		VehicleTileEntity te = ( VehicleTileEntity ) world.getBlockTileEntity( x, y, z );
 		
 		int size = te.getSize();
-		int offD = ( int ) -Math.pow( size, 2 );
-		int offU = ( int ) +Math.pow( size, 2 );
-		int offN = ( int ) -Math.pow( size, 3 );
-		int offS = ( int ) +Math.pow( size, 3 );
+		int offD = ( int ) -size;
+		int offU = ( int ) +size;
+		int offN = ( int ) -Math.pow( size, 2 );
+		int offS = ( int ) +Math.pow( size, 2 );
 		int offW = ( int ) -1;
 		int offE = ( int ) +1;
 		int[] off = new int[] { offD, offU, offN, offS, offW, offE };
@@ -129,7 +129,7 @@ public class VehicleControllerBlock extends BlockContainer
 		for ( int i = 0; i < off.length; ++i )
 		{
 			int arrayOffset = off[ i ];
-			if ( te.getBlockId( te.getData()[ te.getEmbeddedIndex() ] ) == EnderTech.blocks.vehicleEngine.blockID )
+			if ( te.getBlockId( te.getData()[ te.getEmbeddedIndex() + arrayOffset ] ) == EnderTech.blocks.vehicleEngine.blockID )
 			{
 				good[ i ] = true;
 			}
