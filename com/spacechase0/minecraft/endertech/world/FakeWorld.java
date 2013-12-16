@@ -104,6 +104,7 @@ public class FakeWorld extends World
 					if ( te != null )
 					{
 						// Just in case
+						te.setWorldObj( this );
 						te.xCoord = ix;
 						te.yCoord = iy;
 						te.zCoord = iz;
@@ -130,16 +131,10 @@ public class FakeWorld extends World
 		
 		VehicleTileEntity te = new VehicleTileEntity();
 		te.setWorldObj( this );
-		//System.out.println("PRE");
+		
 		VehicleTileEntity.fromFakeWorld = true;
 		te.setVehicle( 0, 0, 0, size, size, size );
-		//System.out.println("emb1: "+te.getEmbeddedX()+" "+te.getEmbeddedY()+" "+te.getEmbeddedZ());
 		te.writeToNBT( tag );
-		//System.out.println(te.getEmbeddedIndex());
-		//System.out.println("emb2: "+te.getEmbeddedX()+" "+te.getEmbeddedY()+" "+te.getEmbeddedZ());
-		//System.out.println("POST");
-		
-		//System.out.println("the tag:"+tag);
 	}
 	
 	private VehicleEntity entity;

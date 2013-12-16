@@ -28,6 +28,7 @@ public class VehicleEntityRenderer extends Render
 			glTranslated( x, y, z );
 			
 			World world = vehicle.getFakeWorld();
+			blocks.blockAccess = world;
 			for ( int ix = 0; ix < vehicle.getSize(); ++ix )
 			{
 				for ( int iy = 0; iy < vehicle.getSize(); ++iy )
@@ -43,6 +44,7 @@ public class VehicleEntityRenderer extends Render
 						TileEntity te = world.getBlockTileEntity( ix, iy, iz );
 						if ( te != null )
 						{
+							te.setWorldObj( world );
 							TileEntityRenderer.instance.renderTileEntityAt( te, ix, iy, iz, f1 );
 						}
 					}
