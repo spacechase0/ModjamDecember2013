@@ -1,17 +1,22 @@
 package com.spacechase0.minecraft.endertech.entity;
 
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
 import com.spacechase0.minecraft.endertech.tileentity.VehicleTileEntity;
 import com.spacechase0.minecraft.endertech.world.FakeWorld;
+
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-public class VehicleEntity extends Entity
+public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 {
 	public VehicleEntity( World world )
 	{
@@ -64,6 +69,40 @@ public class VehicleEntity extends Entity
 
 		System.out.println("wrote size of " +size+" "+worldObj.isRemote);
 		setSize( size, size );
+	}
+	
+	@Override
+	public void writeSpawnData( ByteArrayDataOutput data )
+	{
+		System.out.println("writing spawn data");
+		NBTTagCompound tag = new NBTTagCompound();
+		writeEntityToNBT( tag );
+
+		System.out.println(tag);
+		try
+		{
+			NBTBase.writeNamedTag( tag, data );
+		}
+		catch ( Exception exception )
+		{
+			exception.printStackTrace();
+		}
+	}
+
+	@Override
+	public void readSpawnData( ByteArrayDataInput data )
+	{
+		System.out.println("reading spawn data");
+		try
+		{
+			NBTTagCompound tag = ( NBTTagCompound ) NBTBase.readNamedTag( data );
+			System.out.println(tag);
+			readEntityFromNBT( tag );
+		}
+		catch ( Exception exception )
+		{
+			exception.printStackTrace();
+		}
 	}
 	
 	public int getSize()

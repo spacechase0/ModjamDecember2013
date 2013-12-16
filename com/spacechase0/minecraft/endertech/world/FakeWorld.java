@@ -118,9 +118,9 @@ public class FakeWorld extends World
 	public void loadFrom( NBTTagCompound tag )
 	{
 		VehicleTileEntity te = new VehicleTileEntity();
-		VehicleTileEntity.fromFakeWorld = false;
-		te.readFromNBT( tag );
 		VehicleTileEntity.fromFakeWorld = true;
+		te.readFromNBT( tag );
+		VehicleTileEntity.fromFakeWorld = false;
 		
 		loadFrom( te );
 	}
@@ -131,10 +131,12 @@ public class FakeWorld extends World
 		
 		VehicleTileEntity te = new VehicleTileEntity();
 		te.setWorldObj( this );
-		VehicleTileEntity.fromFakeWorld = false;
+		VehicleTileEntity.fromFakeWorld = true;
 		te.setVehicle( 0, 0, 0, size, size, size );
 		te.writeToNBT( tag );
-		VehicleTileEntity.fromFakeWorld = true;
+		VehicleTileEntity.fromFakeWorld = false;
+		
+		System.out.println(tag);
 	}
 	
 	private VehicleEntity entity;

@@ -135,7 +135,7 @@ public class VehicleTileEntity extends TileEntity
     				TileEntity te = TileEntity.createAndLoadEntity( nbt );
     				if ( te == null )
     				{
-    					System.out.println( "SOMETHING WENT WRONG!!! " + list + " "+ this +" ");
+    					System.out.println( "SOMETHING WENT WRONG!!! " + nbt + " "+ this +" ");
     					Thread.dumpStack();
     					continue;
     				}
@@ -152,7 +152,7 @@ public class VehicleTileEntity extends TileEntity
     {
 		if ( !fromFakeWorld ) super.writeToNBT( tag );
 		
-		if ( myX == -1 ) return;
+		if ( myX == -1 ) { System.out.println("no x");return;}
 		tag.setInteger( "EmbeddedX", myX );
 		tag.setInteger( "EmbeddedY", myY );
 		tag.setInteger( "EmbeddedZ", myZ );
@@ -174,6 +174,7 @@ public class VehicleTileEntity extends TileEntity
 			
 			NBTTagCompound nbt = new NBTTagCompound();
 			te.writeToNBT( nbt );
+			System.out.println("wrote "+nbt);
 			
 			tileEntities.appendTag( nbt );
 		}
