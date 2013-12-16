@@ -81,14 +81,17 @@ public class VehicleTileEntity extends TileEntity
 					blockTiles[ index ] = te;
 
 					List list = worldObj.getPendingBlockUpdates( worldObj.getChunkFromBlockCoords( ix, iz ), false );
-					for ( Object obj : list )
+					if ( list != null )
 					{
-						NextTickListEntry entry = ( NextTickListEntry ) obj;
-						if ( entry.xCoord == ix && entry.yCoord == iy && entry.zCoord == iz )
+						for ( Object obj : list )
 						{
-							blockTicks[ index ] = new NextTickListEntry( entry.xCoord - minX, entry.yCoord - minY, entry.zCoord - minZ, entry.blockID );
-							blockTicks[ index ].priority = entry.priority;
-							blockTicks[ index ].scheduledTime = entry.scheduledTime;
+							NextTickListEntry entry = ( NextTickListEntry ) obj;
+							if ( entry.xCoord == ix && entry.yCoord == iy && entry.zCoord == iz )
+							{
+								blockTicks[ index ] = new NextTickListEntry( entry.xCoord - minX, entry.yCoord - minY, entry.zCoord - minZ, entry.blockID );
+								blockTicks[ index ].priority = entry.priority;
+								blockTicks[ index ].scheduledTime = entry.scheduledTime;
+							}
 						}
 					}
 				}
