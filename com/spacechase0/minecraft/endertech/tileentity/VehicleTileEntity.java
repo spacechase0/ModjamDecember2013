@@ -80,7 +80,7 @@ public class VehicleTileEntity extends TileEntity
 			}
 		}
 		
-		System.out.println("my: "+myX+" "+myY+" "+myZ);
+		//System.out.println("my: "+myX+" "+myY+" "+myZ);
 		if ( fromFakeWorld ) return;
 		
 		for ( int ix = minX; ix < maxX; ++ix )
