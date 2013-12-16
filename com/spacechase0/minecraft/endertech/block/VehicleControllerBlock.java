@@ -3,20 +3,25 @@ package com.spacechase0.minecraft.endertech.block;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.spacechase0.minecraft.endertech.EnderTech;
 import com.spacechase0.minecraft.endertech.tileentity.VehicleTileEntity;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 public class VehicleControllerBlock extends BlockContainer
 {
@@ -82,6 +87,37 @@ public class VehicleControllerBlock extends BlockContainer
 	}
 	
 	@Override
+    public boolean onBlockActivated( World world, int x, int y, int z, EntityPlayer player, int side, float offX, float offY, float offZ )
+    {
+		int meta = world.getBlockMetadata( x, y, z );
+		if ( meta == 0 )
+		{
+			return false;
+		}
+		
+		if ( world.isRemote ) return true;
+		
+		ForgeDirection railDir = null;
+		int railCount = 0;
+		for ( ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS )
+		{
+			if ( isRail( getBlockIn( world, x, y, z, dir ) ) )
+			{
+				railDir = dir;
+				++railCount;
+			}
+		}
+		
+		if ( railCount != 2 || !isRail( getBlockIn( world, x, y, z, railDir.getOpposite() ) ) )
+		{
+			player.sendChatToPlayer( ChatMessageComponent.createFromTranslationKey( "chat.endertech:vehicleController.oppositeRails" ) );
+			return true;
+		}
+		
+        return true;
+    }
+	
+	@Override
 	public void registerIcons( IconRegister register )
 	{
 		activeIcon = register.registerIcon( "endertech:vehicle_active" );
@@ -103,6 +139,16 @@ public class VehicleControllerBlock extends BlockContainer
 		
 		return disabledIcon;
     }
+	
+	private Block getBlockIn( World world, int x, int y, int z, ForgeDirection dir )
+	{
+		return Block.blocksList[ world.getBlockId( x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ ) ];
+	}
+	
+	private boolean isRail( Block block )
+	{
+		return ( block == EnderTech.blocks.rail || block == EnderTech.blocks.railEnd );
+	}
 
 	public Icon activeIcon;
 	public Icon inactiveIcon;

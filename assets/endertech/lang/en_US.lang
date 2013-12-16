@@ -30,3 +30,4 @@ chat.endertech:vehicleFrame.tooSmall=The frame must be at least 5x5x5.
 chat.endertech:vehicleFrame.oppositeSideInvalid=The opposite side is invalid.
 chat.endertech:vehicleFrame.singleController=A single unused Ender Vehicle Controller is required.
 chat.endertech:vehicleFrame.twoEngines=Two Ender Vehicle Engines on opposite sides of the Controller are required.
+chat.endertech:vehicleController.oppositeRails=Two rails on opposite sides of the controller are required.
