@@ -56,7 +56,7 @@ public class FakeWorld extends World
 	
 	@Override
     public void tick()
-    {
+    { 
 		super.tick();
 		
 		updateEntities();
