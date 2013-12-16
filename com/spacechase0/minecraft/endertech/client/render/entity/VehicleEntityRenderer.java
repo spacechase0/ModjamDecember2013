@@ -6,6 +6,7 @@ import com.spacechase0.minecraft.endertech.entity.VehicleEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -25,7 +26,7 @@ public class VehicleEntityRenderer extends Render
 		
 		glPushMatrix();
 		{
-			glTranslated( x, y, z );
+			glTranslated( x - vehicle.getSize() / 2.f, y, z - vehicle.getSize() / 2.f );
 			
 			World world = vehicle.getFakeWorld();
 			blocks.blockAccess = world;
@@ -38,8 +39,11 @@ public class VehicleEntityRenderer extends Render
 						Block block = Block.blocksList[ world.getBlockId( ix, iy, iz ) ];
 						if ( block == null ) continue;
 						
+						Tessellator tess = Tessellator.instance;
+						tess.startDrawingQuads();
 						renderManager.renderEngine.bindTexture( TextureMap.locationBlocksTexture );
 						blocks.renderBlockAllFaces( block, ix, iy, iz );
+						tess.draw();
 						
 						TileEntity te = world.getBlockTileEntity( ix, iy, iz );
 						if ( te != null )

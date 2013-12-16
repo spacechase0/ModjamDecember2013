@@ -172,7 +172,7 @@ public class VehicleControllerBlock extends BlockContainer
 
 		float halfSize = te.getSize() / 2.f;
 		VehicleEntity entity = new VehicleEntity( world, te );
-		entity.setPosition( x + halfSize - te.getEmbeddedX(), y + halfSize - te.getEmbeddedY(), z + halfSize - te.getEmbeddedZ() );
+		entity.setPosition( x + halfSize - te.getEmbeddedX(), y - te.getEmbeddedY(), z + halfSize - te.getEmbeddedZ() );
 		world.spawnEntityInWorld( entity );
 		
 		int railData = 0;
