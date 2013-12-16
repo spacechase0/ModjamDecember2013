@@ -47,17 +47,42 @@ public class VehicleEntity extends Entity
 	}
 
 	@Override
-	protected void readEntityFromNBT( NBTTagCompound tag )
+	public void readEntityFromNBT( NBTTagCompound tag )
 	{
 		size = tag.getInteger( "Size" );
 		fakeWorld.loadFrom( tag );
 	}
 
 	@Override
-	protected void writeEntityToNBT( NBTTagCompound tag )
+	public void writeEntityToNBT( NBTTagCompound tag )
 	{
 		tag.setInteger( "Size", size );
 		fakeWorld.saveTo( tag );
+	}
+	
+	public int getSize()
+	{
+		return size;
+	}
+	
+	public int getEmbeddedX()
+	{
+		return contrX;
+	}
+	
+	public int getEmbeddedY()
+	{
+		return contrY;
+	}
+	
+	public int getEmbeddedZ()
+	{
+		return contrZ;
+	}
+	
+	public World getFakeWorld()
+	{
+		return fakeWorld;
 	}
 
 	private int size = -1;
