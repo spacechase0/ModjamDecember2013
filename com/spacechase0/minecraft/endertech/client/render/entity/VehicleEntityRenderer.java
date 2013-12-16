@@ -20,6 +20,7 @@ public class VehicleEntityRenderer extends Render
 	@Override
 	public void doRender( Entity entity, double x, double y, double z, float f, float f1 )
 	{
+		System.out.println("meow?");
 		//if ( !( entity instanceof VehicleEntity ) ) return;
 		VehicleEntity vehicle = ( VehicleEntity ) entity;
 		

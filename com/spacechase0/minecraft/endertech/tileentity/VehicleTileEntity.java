@@ -102,6 +102,7 @@ public class VehicleTileEntity extends TileEntity
     public void readFromNBT( NBTTagCompound tag )
     {
     	if ( !fromFakeWorld ) super.readFromNBT( tag );
+		fromFakeWorld = false;
     	
     	if ( tag.hasKey( "EmbeddedX" ) )
     	{
@@ -151,8 +152,11 @@ public class VehicleTileEntity extends TileEntity
 	@Override
     public void writeToNBT( NBTTagCompound tag )
     {
+		System.out.println("fw1:"+getEmbeddedIndex());
 		if ( !fromFakeWorld ) super.writeToNBT( tag );
+		fromFakeWorld = false;
 		
+		System.out.println("fw2:"+getEmbeddedIndex());
 		if ( myX == -1 ) { System.out.println("no x:"+myX+" "+myY+" "+myZ);return;}
 		tag.setInteger( "EmbeddedX", myX );
 		tag.setInteger( "EmbeddedY", myY );
@@ -174,6 +178,7 @@ public class VehicleTileEntity extends TileEntity
 			if ( te == null ) continue;
 			
 			NBTTagCompound nbt = new NBTTagCompound();
+			System.out.println("saving TE:"+te);
 			te.writeToNBT( nbt );
 			System.out.println("wrote "+nbt);
 			

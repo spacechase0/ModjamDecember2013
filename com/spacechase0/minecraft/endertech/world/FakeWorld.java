@@ -120,7 +120,6 @@ public class FakeWorld extends World
 		VehicleTileEntity te = new VehicleTileEntity();
 		VehicleTileEntity.fromFakeWorld = true;
 		te.readFromNBT( tag );
-		VehicleTileEntity.fromFakeWorld = false;
 		
 		loadFrom( te );
 	}
@@ -136,8 +135,8 @@ public class FakeWorld extends World
 		te.setVehicle( 0, 0, 0, size, size, size );
 		System.out.println("emb1: "+te.getEmbeddedX()+" "+te.getEmbeddedY()+" "+te.getEmbeddedZ());
 		te.writeToNBT( tag );
+		System.out.println(te.getEmbeddedIndex());
 		System.out.println("emb2: "+te.getEmbeddedX()+" "+te.getEmbeddedY()+" "+te.getEmbeddedZ());
-		VehicleTileEntity.fromFakeWorld = false;
 		System.out.println("POST");
 		
 		System.out.println("the tag:"+tag);

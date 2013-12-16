@@ -55,6 +55,7 @@ public class VehicleEntity extends Entity implements IEntityAdditionalSpawnData
 	public void readEntityFromNBT( NBTTagCompound tag )
 	{
 		size = tag.getInteger( "Size" );
+		fakeWorld = new FakeWorld( this );
 		fakeWorld.loadFrom( tag );
 		
 		System.out.println("read size of " +size+" "+worldObj.isRemote);
