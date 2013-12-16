@@ -58,7 +58,7 @@ public class VehicleTileEntity extends TileEntity
 					int numZ = iz - minZ;
 					
 					TileEntity te = worldObj.getBlockTileEntity( ix, iy, iz );
-					if ( te == this )
+					if ( te instanceof VehicleTileEntity/*te == this*/ )
 					{
 						myX = numX;
 						myY = numY;
@@ -80,6 +80,7 @@ public class VehicleTileEntity extends TileEntity
 			}
 		}
 		
+		System.out.println("my: "+myX+" "+myY+" "+myZ);
 		if ( fromFakeWorld ) return;
 		
 		for ( int ix = minX; ix < maxX; ++ix )
@@ -152,7 +153,7 @@ public class VehicleTileEntity extends TileEntity
     {
 		if ( !fromFakeWorld ) super.writeToNBT( tag );
 		
-		if ( myX == -1 ) { System.out.println("no x");return;}
+		if ( myX == -1 ) { System.out.println("no x:"+myX+" "+myY+" "+myZ);return;}
 		tag.setInteger( "EmbeddedX", myX );
 		tag.setInteger( "EmbeddedY", myY );
 		tag.setInteger( "EmbeddedZ", myZ );
